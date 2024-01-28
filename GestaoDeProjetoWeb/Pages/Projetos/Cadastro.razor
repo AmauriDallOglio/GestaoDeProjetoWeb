@@ -1,0 +1,115 @@
+﻿@page "/Projetos/Cadastro"
+@using System.Text.Json
+@using GestaoDeProjetoWeb.Data
+@* @inject ProjetoService ProjetoService *@
+@inject NavigationManager NavigationManager
+
+<h3>Cadastrar Novo Projeto</h3>
+
+
+
+
+ <form class="row g-1">
+    @if (!string.IsNullOrWhiteSpace(erro))
+    {
+        <div class="alert alert-danger" role="alert">
+            @erro
+        </div>
+    }
+
+    <div class="col-12">
+        <label for="nomeProjeto">Nome do Projeto:</label>
+        <input type="text" class="form-control is-invalid" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto"  required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+
+    <div class="col-12">
+        <label for="descricao">Descrição:</label>
+        <textarea  class="form-control is-invalid" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva o nome do projeto" required></textarea>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+     
+    <div class="col-md-4">
+        <label for="status">Status:</label>
+        <input type="number" class="form-control is-invalid" id="status" @bind="projetoCadastro.Status">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <label for="dataInicio">Data inicial:</label>
+        <input type="date" class="form-control is-invalid"   id="dataInicio" @bind="projetoCadastro.DataInicio">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <label for="dataFim">Data final:</label>
+        <input type="date" class="form-control is-invalid"  id="dataFim" @bind="projetoCadastro.DataFim">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div> 
+
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+            <label class="form-check-label" for="invalidCheck2">
+                 Inativo
+            </label>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="button" class="btn btn-primary" @onclick="CadastrarProjeto">Salvar</button>
+    </div>
+
+</form>
+ 
+
+
+
+@code 
+{
+    private ProjetoDto projetoCadastro = new ProjetoDto();
+    private string erro;
+    private async Task CadastrarProjeto()
+    {
+        try
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var resultado = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
+                if (!resultado.IsSuccessStatusCode)
+                {
+                    erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + resultado.ToString();
+                    AtivarTemporizadorErro();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + ex.Message.ToString();
+            AtivarTemporizadorErro();
+        }
+
+    }
+
+    private async Task AtivarTemporizadorErro()
+    {
+        await Task.Delay(10000); // Aguarda segundos
+        erro = null;
+
+        StateHasChanged(); // Notifica o Blazor para atualizar a exibição
+    }
+
+}
+
+
+ 

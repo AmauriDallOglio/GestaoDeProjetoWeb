@@ -1,0 +1,292 @@
+﻿@page "/Projetos/Grid"
+@using System.Text.Json
+@using GestaoDeProjetoWeb.Data
+@* @inject ProjetoService ProjetoService *@
+@inject NavigationManager NavigationManager
+
+<h3>Projetos</h3>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Página das projetos</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            h3 {
+                text-align: center; /* Centraliza o texto */
+                color: #333; /* Define a cor do texto */
+            }
+
+            .container {
+                display: flex; /* Usa o modelo de layout flexível */
+                justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
+                align-items: center; /* Alinha os itens verticalmente */
+                height: 100vh; /* Define a altura como 100% da altura da janela */
+                padding: 20px; /* Adiciona espaçamento interno */
+            }
+
+            .espaco {
+                margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+            }
+
+            .espaco-10 {
+                margin-bottom: 10px; /* Adiciona espaço entre grupos de formulários */
+            }
+
+  
+            .btn-Adicionar {
+                background-color: #007bff; /* Cor de fundo azul */
+                color: #fff; /* Cor do texto branco */
+                padding: 10px 15px; /* Espaçamento interno do botão */
+                border: 1px solid #007bff; /* Uma borda sólida de 1px com cor vermelha (#FF0000) */
+                border-radius: 10px; /* Borda arredondada */
+                cursor: pointer; /* Cursor ao passar sobre o botão */
+ 
+            }.btn-Adicionar:hover {
+                background-color: #0000FF; /* Cor de fundo alterada ao passar o mouse */
+                color: #fff; /* Cor do texto branco */
+            }
+
+            .btn-Atualizar {
+                color: #FFA500; /* Cor do texto */
+                background-color: transparent; /* Fundo transparente */
+                background-image: none; /* Remove qualquer imagem de fundo */
+                border-color: #FFA500; /* Cor da borda */
+                padding: 10px 15px; /* Espaçamento interno do botão */
+                border: 1px solid #FFA500; /* Uma borda sólida de 1px com cor vermelha (#FF0000) */
+                border-radius: 10px; /* Borda arredondada */
+                cursor: pointer; /* Cursor ao passar sobre o botão */
+            }.btn-Atualizar:hover {
+                color: #fff; /* Cor do texto quando em hover */
+                background-color: #FFA500; /* Fundo laranja quando em hover */
+                border-color: #FFA500; /* Cor da borda quando em hover */
+            }
+        </style>
+    </head>
+
+    <body>
+        @if (!string.IsNullOrWhiteSpace(erro))
+        {
+            <div class="alert alert-danger" role="alert">
+                @erro
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(sucesso))
+        {
+            <div class="alert alert-success" role="alert">
+                @sucesso
+            </div>
+        }
+
+        <form class="row g-3">    <!-- row para criar uma linha e g-3 para adicionar um espaçamento entre os elementos filhos -->
+            <div class="col-md-4">     <!-- Cria uma coluna que ocupará 4 unidades de largura em dispositivos de tamanho médio (md). -->
+                <div class="form-floating mb-3">    <!-- Define um contêiner com um espaçamento inferior (mb-3) para os elementos filhos. -->
+                    <input type="text" class="form-control" id="descricao" placeholder="Descrição" @bind="@novaEmpresa.Descricao" required>
+                    <label for="floatingInput">Informe a descrição</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="" placeholder="Descrição" >
+                    <label for="floatingInput">Campo de teste</label>
+                </div>
+            </div>
+            <div class="col-md-4">  
+                <div class="form-floating mb-3">  
+                    <input type="text" class="form-control" id="" placeholder="Descrição">
+                    <label for="floatingInput">Campo de teste</label>
+                </div>
+            </div>
+            <div class="col-md-4">  
+                <div class="form-floating mb-3">  
+                    <input type="text" class="form-control" id="" placeholder="Descrição">
+                    <label for="floatingInput">Campo de teste</label>
+                </div>
+            </div>
+        </form>
+        <div class="espaco">
+            <button type="button" class="btn btn-outline-success" @onclick="AbrirFormulario">Inserir</button>
+            <button type="button" class="btn btn-outline-primary" @onclick="Atualizar">Atualizar</button>
+            <button type="button" class="btn btn-outline-danger" @onclick="Atualizar">Excluir</button>
+
+        </div>
+         
+        @if (projetos != null && projetos.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
+                        </th>
+                        <th>Id</th>
+                        <th>Nome do projeto</th>
+                        <th>Descrição</th>
+                        <th>Data de início</th>
+                        <th>Data de fim</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var projeto in projetos)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" @onchange="() => SelecionarEmpresa(projeto)">
+                            </td>
+                            <td>@projeto.Id</td>
+                            <td>@projeto.NomeProjeto</td>
+                            <td>@projeto.Descricao</td>
+                            <td>@projeto.DataInicio.ToString("dd/MM/yyyy")</td>
+                            <td>@projeto.DataFim.ToString("dd/MM/yyyy")</td>
+                            <td>@projeto.Status</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Carregando...</p>
+        }
+    </body>
+</html>
+
+
+@code 
+{
+    private List<ProjetoDto> projetos;
+    protected override async Task OnInitializedAsync()
+    {
+        projetos = await CarregaTodosProjetosAsync();
+    }
+
+
+    private async Task<List<ProjetoDto>> CarregaTodosProjetosAsync()
+    {
+        try
+        {
+            // projetos = await ProjetoService.ObterTodosProjetosAsync();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+                projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+        }
+        catch (Exception)
+        {
+            projetos = new List<ProjetoDto>
+            {
+                new ProjetoDto
+                {
+                    Id = 1,
+                    NomeProjeto = "Exemplo OFF",
+                    Descricao = "Projeto de exemplo OFF",
+                    DataInicio = DateTime.Now,
+                    DataFim = DateTime.Now.AddDays(30),
+                    Status = 0
+                }
+            };
+        }
+        return projetos;
+    }
+
+
+    private ProjetoDto empresaSelecionada = null;
+    private void SelecionarEmpresa(ProjetoDto empresa)
+    {
+        if (empresaSelecionada == empresa)
+        {
+            empresaSelecionada = null;
+        }
+        else
+        {
+            empresaSelecionada = empresa;
+        }
+    }
+
+
+    private string erro;
+    private string sucesso;
+    private ProjetoDto novaEmpresa = new ProjetoDto();
+    private async Task Adicionar()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(novaEmpresa.Descricao))
+            {
+                erro = "Descrição não possui informação!";
+                AtivarTemporizadorErro();
+            }
+            else
+            {
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+                    projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+
+                    if (projetos.Count() > 0)
+                    {
+                        await CarregaTodosProjetosAsync();
+                        sucesso = "Salvo com sucesso!";
+                        AtivarTemporizadorSucesso();
+                    }
+                    else
+                    {
+                        erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente.";
+                        AtivarTemporizadorErro();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            erro = "Ocorreu um erro inesperado: " + ex.Message;
+            AtivarTemporizadorErro();
+        }
+    }
+
+    private async Task AtivarTemporizadorErro()
+    {
+        await Task.Delay(2000); // Aguarda segundos
+        erro = null;
+        sucesso = null;
+        StateHasChanged(); // Notifica o Blazor para atualizar a exibição
+    }
+
+    private async Task AtivarTemporizadorSucesso()
+    {
+        await Task.Delay(2000); // Aguarda segundos
+        erro = null;
+        sucesso = null;
+        StateHasChanged(); // Notifica o Blazor para atualizar a exibição
+    }
+
+    private async Task Atualizar()
+    {
+        try
+        {
+            novaEmpresa = new ProjetoDto();
+            await CarregaTodosProjetosAsync();
+        }
+        catch (Exception ex)
+        {
+            erro = "Ocorreu um erro inesperado: " + ex.Message;
+            AtivarTemporizadorErro();
+        }
+    }
+
+    private void AbrirFormulario()
+    {
+        NavigationManager.NavigateTo("Projetos/Cadastro");
+    }
+}
+
+
