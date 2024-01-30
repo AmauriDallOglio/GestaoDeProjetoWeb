@@ -4,25 +4,17 @@
 @* @inject ProjetoService ProjetoService *@
 @inject NavigationManager NavigationManager
 
-<h3>Projetos</h3>
+@inject IJSRuntime JSRuntime
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <meta charset="UTF-8">
-    <title>Página das projetos</title>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <meta charset="UTF-8">
+        <title>Página das projetos</title>
+
         <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
-
-            h3 {
-                text-align: center; /* Centraliza o texto */
-                color: #333; /* Define a cor do texto */
-            }
-
-            .container {
+           .container {
                 display: flex; /* Usa o modelo de layout flexível */
                 justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
                 align-items: center; /* Alinha os itens verticalmente */
@@ -34,42 +26,21 @@
                 margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
             }
 
-            .espaco-10 {
-                margin-bottom: 10px; /* Adiciona espaço entre grupos de formulários */
+            .custom-font {
+                font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
             }
 
-  
-            .btn-Adicionar {
-                background-color: #007bff; /* Cor de fundo azul */
-                color: #fff; /* Cor do texto branco */
-                padding: 10px 15px; /* Espaçamento interno do botão */
-                border: 1px solid #007bff; /* Uma borda sólida de 1px com cor vermelha (#FF0000) */
-                border-radius: 10px; /* Borda arredondada */
-                cursor: pointer; /* Cursor ao passar sobre o botão */
- 
-            }.btn-Adicionar:hover {
-                background-color: #0000FF; /* Cor de fundo alterada ao passar o mouse */
-                color: #fff; /* Cor do texto branco */
+            .custom-btn {
+                height: 40px; /* Altura desejada */
+                width: 120px; /* Largura desejada */
             }
 
-            .btn-Atualizar {
-                color: #FFA500; /* Cor do texto */
-                background-color: transparent; /* Fundo transparente */
-                background-image: none; /* Remove qualquer imagem de fundo */
-                border-color: #FFA500; /* Cor da borda */
-                padding: 10px 15px; /* Espaçamento interno do botão */
-                border: 1px solid #FFA500; /* Uma borda sólida de 1px com cor vermelha (#FF0000) */
-                border-radius: 10px; /* Borda arredondada */
-                cursor: pointer; /* Cursor ao passar sobre o botão */
-            }.btn-Atualizar:hover {
-                color: #fff; /* Cor do texto quando em hover */
-                background-color: #FFA500; /* Fundo laranja quando em hover */
-                border-color: #FFA500; /* Cor da borda quando em hover */
-            }
         </style>
     </head>
 
     <body>
+        <h3 class="espaco">Projetos</h3>
+
         @if (!string.IsNullOrWhiteSpace(erro))
         {
             <div class="alert alert-danger" role="alert">
@@ -83,70 +54,71 @@
                 @sucesso
             </div>
         }
-
-        <form class="row g-3">    <!-- row para criar uma linha e g-3 para adicionar um espaçamento entre os elementos filhos -->
-            <div class="col-md-4">     <!-- Cria uma coluna que ocupará 4 unidades de largura em dispositivos de tamanho médio (md). -->
-                <div class="form-floating mb-3">    <!-- Define um contêiner com um espaçamento inferior (mb-3) para os elementos filhos. -->
-                    <input type="text" class="form-control" id="descricao" placeholder="Descrição" @bind="@novaEmpresa.Descricao" required>
-                    <label for="floatingInput">Informe a descrição</label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="" placeholder="Descrição" >
-                    <label for="floatingInput">Campo de teste</label>
-                </div>
-            </div>
-            <div class="col-md-4">  
-                <div class="form-floating mb-3">  
-                    <input type="text" class="form-control" id="" placeholder="Descrição">
-                    <label for="floatingInput">Campo de teste</label>
-                </div>
-            </div>
-            <div class="col-md-4">  
-                <div class="form-floating mb-3">  
-                    <input type="text" class="form-control" id="" placeholder="Descrição">
-                    <label for="floatingInput">Campo de teste</label>
-                </div>
-            </div>
-        </form>
-        <div class="espaco">
-            <button type="button" class="btn btn-outline-success" @onclick="AbrirFormulario">Inserir</button>
-            <button type="button" class="btn btn-outline-primary" @onclick="Atualizar">Atualizar</button>
-            <button type="button" class="btn btn-outline-danger" @onclick="Atualizar">Excluir</button>
-
-        </div>
-         
+    
         @if (projetos != null && projetos.Any())
         {
-            <table class="table table-striped">
+            <div class="row g-3 align-items-center espaco">
+                <div class="col-md-auto">
+                    <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario">Inserir</button>
+                    <button type="button" class="btn btn-outline-danger custom-btn" @onclick="Atualizar" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
+                </div>
+
+                <div class="col-md-auto">
+                    <label for="filtro" class="col-form-label">Filtrar:</label>
+                </div>
+                
+                <div class="col-md-auto">
+                    <input type="text" class="form-control" id="filtro" @bind="filtro">
+                </div>
+            </div>
+
+            <table class="table table-striped border border-silver">
                 <thead>
                     <tr>
-                        <th>
-                            <input type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
+                        <th class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
+                                <label class="form-check-label" for="selecionarTodos"></label>
+                            </div>
                         </th>
-                        <th>Id</th>
-                        <th>Nome do projeto</th>
-                        <th>Descrição</th>
-                        <th>Data de início</th>
-                        <th>Data de fim</th>
-                        <th>Status</th>
+                        <th class="col-1 custom-font">Id</th>
+                        <th class="col-3 custom-font">Nome do projeto</th>
+                        <th class="col-3 custom-font">Descrição</th>
+                        <th class="col-2 custom-font">Data de início</th>
+                        <th class="col-2 custom-font">Data de fim</th>
+                        <th class="col-1 custom-font">Status</th>
+ 
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var projeto in projetos)
+                    @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
+                                                            p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                                                            p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                                                            p.Status.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
                     {
                         <tr>
-                            <td>
-                                <input type="checkbox" @onchange="() => SelecionarEmpresa(projeto)">
+                            <td class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @onchange="() => SelecionarEmpresa(projeto)">
+                                    <label class="form-check-label" for="checkboxEmpresa"></label>
+                                </div>
                             </td>
-                            <td>@projeto.Id</td>
-                            <td>@projeto.NomeProjeto</td>
-                            <td>@projeto.Descricao</td>
-                            <td>@projeto.DataInicio.ToString("dd/MM/yyyy")</td>
-                            <td>@projeto.DataFim.ToString("dd/MM/yyyy")</td>
-                            <td>@projeto.Status</td>
+                            <td class="col-1">@projeto.Id</td>
+                            <td class="col-3">@projeto.NomeProjeto</td>
+                            <td class="col-3">@projeto.Descricao</td>
+                            <td class="col-2">@projeto.DataInicio.ToString("dd/MM/yyyy")</td>
+                            <td class="col-2">@projeto.DataFim.ToString("dd/MM/yyyy")</td>
+                            <td class="col-1">@projeto.Status</td>
                         </tr>
+                        @if (empresaSelecionada == projeto)
+                        {
+                            <tr>
+                                <td colspan="8">
+                                    <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(null)">Alterar</button>
+                                    <button class="btn btn-outline-danger custom-btn" @onclick="() => EditarEmpresa(null)">Excluir</button>
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -161,12 +133,12 @@
 
 @code 
 {
+    private string filtro = string.Empty;
     private List<ProjetoDto> projetos;
     protected override async Task OnInitializedAsync()
     {
         projetos = await CarregaTodosProjetosAsync();
     }
-
 
     private async Task<List<ProjetoDto>> CarregaTodosProjetosAsync()
     {
@@ -196,21 +168,6 @@
         }
         return projetos;
     }
-
-
-    private ProjetoDto empresaSelecionada = null;
-    private void SelecionarEmpresa(ProjetoDto empresa)
-    {
-        if (empresaSelecionada == empresa)
-        {
-            empresaSelecionada = null;
-        }
-        else
-        {
-            empresaSelecionada = empresa;
-        }
-    }
-
 
     private string erro;
     private string sucesso;
@@ -287,6 +244,34 @@
     {
         NavigationManager.NavigateTo("Projetos/Cadastro");
     }
+
+    private void EditarEmpresa(ProjetoDto empresa)
+    {
+ 
+    }
+
+    private bool botaoExcluirHabilitado = false;
+    private ProjetoDto empresaSelecionada = null;
+    private int quantidadeSelecionada = 0;
+    private void SelecionarEmpresa(ProjetoDto projeto)
+    {
+
+ 
+        if (empresaSelecionada == projeto)
+        {
+            empresaSelecionada = null;
+            quantidadeSelecionada--;
+        }
+        else
+        {
+            empresaSelecionada = projeto;
+            quantidadeSelecionada++;
+        }
+        botaoExcluirHabilitado = quantidadeSelecionada > 0;
+    }
+
+    
+
 }
 
 
