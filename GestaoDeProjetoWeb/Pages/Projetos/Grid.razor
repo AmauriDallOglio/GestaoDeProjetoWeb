@@ -148,7 +148,8 @@
             using (HttpClient httpClient = new HttpClient())
             {
                 var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-                projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                projetos = resultado.Modelos.ToList();
             }
         }
         catch (Exception)
