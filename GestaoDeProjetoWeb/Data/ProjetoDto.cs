@@ -8,5 +8,6 @@
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public int Status { get; set; }
+        public bool Selecionado { get; set; }
     }
 }

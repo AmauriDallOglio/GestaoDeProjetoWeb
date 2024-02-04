@@ -60,7 +60,10 @@
             <div class="row g-3 align-items-center espaco">
                 <div class="col-md-auto">
                     <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario">Inserir</button>
-                    <button type="button" class="btn btn-outline-danger custom-btn" @onclick="Atualizar" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
+                    <button type="button" class="btn btn-outline-success custom-btn" @onclick="Atualizar">Atualizar</button>
+
+                    <button type="button" class="btn btn-outline-danger custom-btn"  disabled="@(!botaoExcluirHabilitado)">Excluir</button>
+ 
                 </div>
 
                 <div class="col-md-auto">
@@ -77,8 +80,12 @@
                     <tr>
                         <th class="text-center">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
-                                <label class="form-check-label" for="selecionarTodos"></label>
+@*                                 <input class="form-check-input" type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
+                                <label class="form-check-label" for="selecionarTodos"></label> *@
+
+                                <input class="form-check-input" type="checkbox" id="selecionarTodos" @onclick="SelecionarTodos" />
+@*                                 <label class="form-check-label" for="selecionarTodos"></label> *@
+
                             </div>
                         </th>
                         <th class="col-1 custom-font">Id</th>
@@ -99,8 +106,8 @@
                         <tr>
                             <td class="text-center">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @onchange="() => SelecionarEmpresa(projeto)">
-                                    <label class="form-check-label" for="checkboxEmpresa"></label>
+                                    <input class="form-check-input" type="checkbox"  @onchange="() => SelecionarEmpresa(projeto)">
+                          @*           <label class="form-check-label" for="checkboxEmpresa"></label> *@
                                 </div>
                             </td>
                             <td class="col-1">@projeto.Id</td>
@@ -110,7 +117,7 @@
                             <td class="col-2">@projeto.DataFim.ToString("dd/MM/yyyy")</td>
                             <td class="col-1">@projeto.Status</td>
                         </tr>
-                        @if (empresaSelecionada == projeto)
+                        @if (projetoSelecionado == projeto)
                         {
                             <tr>
                                 <td colspan="8">
@@ -122,17 +129,23 @@
                     }
                 </tbody>
             </table>
+            <div class="col-md-auto">
+                <label>Projetos Selecionados: @contadorSelecionados</label>
+            </div>
         }
         else
         {
             <p>Carregando...</p>
         }
+
+       
     </body>
 </html>
 
 
 @code 
 {
+    private HttpClient httpClient = new HttpClient();
     private string filtro = string.Empty;
     private List<ProjetoDto> projetos;
     protected override async Task OnInitializedAsync()
@@ -145,12 +158,12 @@
         try
         {
             // projetos = await ProjetoService.ObterTodosProjetosAsync();
-            using (HttpClient httpClient = new HttpClient())
-            {
+            // using (HttpClient httpClient = new HttpClient())
+            // {
                 var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
                 var resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 projetos = resultado.Modelos.ToList();
-            }
+            // }
         }
         catch (Exception)
         {
@@ -184,8 +197,8 @@
             }
             else
             {
-                using (HttpClient httpClient = new HttpClient())
-                {
+                // using (HttpClient httpClient = new HttpClient())
+                // {
                     var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
                     projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
@@ -201,7 +214,7 @@
                         erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente.";
                         AtivarTemporizadorErro();
                     }
-                }
+                // }
             }
         }
         catch (Exception ex)
@@ -248,31 +261,102 @@
 
     private void EditarEmpresa(ProjetoDto empresa)
     {
- 
+
     }
 
-    private bool botaoExcluirHabilitado = false;
-    private ProjetoDto empresaSelecionada = null;
-    private int quantidadeSelecionada = 0;
-    private void SelecionarEmpresa(ProjetoDto projeto)
-    {
+    private List<ProjetoDto> projetosSelecionados = new List<ProjetoDto>();
 
- 
-        if (empresaSelecionada == projeto)
+    private void ExcluirProjetosSelecionados()
+    {
+        // Lógica para excluir projetos selecionados
+        foreach (var projeto in projetosSelecionados)
         {
-            empresaSelecionada = null;
-            quantidadeSelecionada--;
+            // Lógica de exclusão
         }
-        else
-        {
-            empresaSelecionada = projeto;
-            quantidadeSelecionada++;
-        }
-        botaoExcluirHabilitado = quantidadeSelecionada > 0;
+
+        // Limpa a lista de projetos selecionados após a exclusão
+        projetosSelecionados.Clear();
     }
 
     
 
+    private bool selecionarTodasAsLinhas = false;
+
+    // ... seu código existente ...
+    private ProjetoDto projetoSelecionado = null;
+    // private bool botaoExcluirHabilitado = false;
+    private int quantidadeSelecionada = 0;
+    private int contadorSelecionados = 0;
+    private void SelecionarEmpresa(ProjetoDto projeto)
+    {
+        if (selecionarTodasAsLinhas)
+        {
+            // Lógica para adicionar ou remover todos os projetos com base no estado de 'selecionarTodasAsLinhas'
+            if (projetosSelecionados.Contains(projeto))
+            {
+                projetosSelecionados.Remove(projeto);
+                contadorSelecionados--;
+                quantidadeSelecionada--;
+            }
+            else
+            {
+                projetosSelecionados.Add(projeto);
+                contadorSelecionados++;
+                quantidadeSelecionada++;
+            }
+        }
+        else
+        {
+            // Lógica para adicionar ou remover apenas o projeto atual
+            if (projetosSelecionados.Contains(projeto))
+            {
+                projetoSelecionado = projeto;
+                projetosSelecionados.Remove(projeto);
+                contadorSelecionados--;
+            }
+            else
+            {
+                projetoSelecionado = projeto;
+                projetosSelecionados.Add(projeto);
+                contadorSelecionados++;
+            }
+            // botaoExcluirHabilitado = quantidadeSelecionada > 0;
+        }
+    }
+
+    private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
+
+ 
+    private void SelecionarTodos()
+    {
+ 
+        // Alterna entre marcar ou desmarcar todos os projetos
+        selecionarTodasAsLinhas = !selecionarTodasAsLinhas;
+        // Lógica para adicionar ou remover todos os projetos com base no estado de 'selecionarTodasAsLinhas'
+        if (selecionarTodasAsLinhas)
+        {
+            foreach (var projeto in projetos)
+            {
+                if (!projetosSelecionados.Contains(projeto))
+                {
+                    projetosSelecionados.Add(projeto);
+                    contadorSelecionados++;
+                }
+            }
+            projetosSelecionados.Clear();
+            projetosSelecionados.AddRange(projetos);
+            contadorSelecionados = projetos.Count;
+        }
+        else
+        {
+            projetosSelecionados.Clear();
+            contadorSelecionados = 0;
+        }
+    }
+
+
 }
+
+
 
 
