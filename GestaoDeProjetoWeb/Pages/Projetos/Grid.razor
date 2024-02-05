@@ -62,8 +62,11 @@
                     <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario">Inserir</button>
                     <button type="button" class="btn btn-outline-success custom-btn" @onclick="Atualizar">Atualizar</button>
 
-                    <button type="button" class="btn btn-outline-danger custom-btn"  disabled="@(!botaoExcluirHabilitado)">Excluir</button>
- 
+                    <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
+
+                    <button class="btn btn-primary" @onclick="SelecionarTodos">Atualizar Grid</button>
+
+
                 </div>
 
                 <div class="col-md-auto">
@@ -122,7 +125,7 @@
                             <tr>
                                 <td colspan="8">
                                     <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(null)">Alterar</button>
-                                    <button class="btn btn-outline-danger custom-btn" @onclick="() => EditarEmpresa(null)">Excluir</button>
+                                    <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados ">Excluir</button>
                                 </td>
                             </tr>
                         }
@@ -160,9 +163,9 @@
             // projetos = await ProjetoService.ObterTodosProjetosAsync();
             // using (HttpClient httpClient = new HttpClient())
             // {
-                var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-                var resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                projetos = resultado.Modelos.ToList();
+            var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+            var resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            projetos = resultado.Modelos.ToList();
             // }
         }
         catch (Exception)
@@ -199,21 +202,21 @@
             {
                 // using (HttpClient httpClient = new HttpClient())
                 // {
-                    var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-                    projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+                projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 
-                    if (projetos.Count() > 0)
-                    {
-                        await CarregaTodosProjetosAsync();
-                        sucesso = "Salvo com sucesso!";
-                        AtivarTemporizadorSucesso();
-                    }
-                    else
-                    {
-                        erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente.";
-                        AtivarTemporizadorErro();
-                    }
+                if (projetos.Count() > 0)
+                {
+                    await CarregaTodosProjetosAsync();
+                    sucesso = "Salvo com sucesso!";
+                    AtivarTemporizadorSucesso();
+                }
+                else
+                {
+                    erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente.";
+                    AtivarTemporizadorErro();
+                }
                 // }
             }
         }
@@ -272,13 +275,16 @@
         foreach (var projeto in projetosSelecionados)
         {
             // Lógica de exclusão
+            sucesso = "Salvo com sucesso!";
+            AtivarTemporizadorSucesso();
+
         }
 
         // Limpa a lista de projetos selecionados após a exclusão
         projetosSelecionados.Clear();
     }
 
-    
+
 
     private bool selecionarTodasAsLinhas = false;
 
@@ -289,69 +295,54 @@
     private int contadorSelecionados = 0;
     private void SelecionarEmpresa(ProjetoDto projeto)
     {
-        if (selecionarTodasAsLinhas)
+ 
+        // Lógica para adicionar ou remover apenas o projeto atual
+        if (projetosSelecionados.Contains(projeto))
         {
-            // Lógica para adicionar ou remover todos os projetos com base no estado de 'selecionarTodasAsLinhas'
-            if (projetosSelecionados.Contains(projeto))
-            {
-                projetosSelecionados.Remove(projeto);
-                contadorSelecionados--;
-                quantidadeSelecionada--;
-            }
-            else
-            {
-                projetosSelecionados.Add(projeto);
-                contadorSelecionados++;
-                quantidadeSelecionada++;
-            }
+            projetoSelecionado = projeto;
+            projetosSelecionados.Remove(projeto);
+            contadorSelecionados--;
         }
         else
         {
-            // Lógica para adicionar ou remover apenas o projeto atual
-            if (projetosSelecionados.Contains(projeto))
-            {
-                projetoSelecionado = projeto;
-                projetosSelecionados.Remove(projeto);
-                contadorSelecionados--;
-            }
-            else
-            {
-                projetoSelecionado = projeto;
-                projetosSelecionados.Add(projeto);
-                contadorSelecionados++;
-            }
-            // botaoExcluirHabilitado = quantidadeSelecionada > 0;
+            projetoSelecionado = projeto;
+            projetosSelecionados.Add(projeto);
+            contadorSelecionados++;
         }
+        // botaoExcluirHabilitado = quantidadeSelecionada > 0;
+      
     }
 
     private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
 
- 
+
     private void SelecionarTodos()
     {
- 
-        // Alterna entre marcar ou desmarcar todos os projetos
-        selecionarTodasAsLinhas = !selecionarTodasAsLinhas;
-        // Lógica para adicionar ou remover todos os projetos com base no estado de 'selecionarTodasAsLinhas'
-        if (selecionarTodasAsLinhas)
-        {
+
+        // // Alterna entre marcar ou desmarcar todos os projetos
+        // selecionarTodasAsLinhas = !selecionarTodasAsLinhas;
+        // // Lógica para adicionar ou remover todos os projetos com base no estado de 'selecionarTodasAsLinhas'
+        // if (selecionarTodasAsLinhas)
+        // {
+            contadorSelecionados = 0;
+            projetosSelecionados.Clear();
             foreach (var projeto in projetos)
             {
                 if (!projetosSelecionados.Contains(projeto))
                 {
                     projetosSelecionados.Add(projeto);
                     contadorSelecionados++;
+                    projeto.Selecionado = true;
                 }
             }
-            projetosSelecionados.Clear();
-            projetosSelecionados.AddRange(projetos);
-            contadorSelecionados = projetos.Count;
-        }
-        else
-        {
-            projetosSelecionados.Clear();
-            contadorSelecionados = 0;
-        }
+            // projetosSelecionados.AddRange(projetos);
+            // contadorSelecionados = projetos.Count;
+        // }
+        // else
+        // {
+        //     projetosSelecionados.Clear();
+        //     contadorSelecionados = 0;
+        // }
     }
 
 
