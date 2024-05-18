@@ -1,10 +1,13 @@
 ﻿@page "/Projetos/Grid"
 @using System.Text.Json
 @using GestaoDeProjetoWeb.Data
+@using System.Text
 @* @inject ProjetoService ProjetoService *@
 @inject NavigationManager NavigationManager
-
 @inject IJSRuntime JSRuntime
+
+
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -96,7 +99,7 @@
                         <th class="col-3 custom-font">Descrição</th>
                         <th class="col-2 custom-font">Data de início</th>
                         <th class="col-2 custom-font">Data de fim</th>
-                        <th class="col-1 custom-font">Status</th>
+                        <th class="col-1 custom-font">Situacao</th>
  
                     </tr>
                 </thead>
@@ -104,7 +107,7 @@
                     @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
                                                             p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
                                                             p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                                                            p.Status.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
+                                                            p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
                     {
                         <tr>
                             <td class="text-center">
@@ -115,9 +118,9 @@
                             <td class="col-1">@projeto.Id</td>
                             <td class="col-3">@projeto.NomeProjeto</td>
                             <td class="col-3">@projeto.Descricao</td>
-                            <td class="col-2">@projeto.DataInicio.ToString("dd/MM/yyyy")</td>
-                            <td class="col-2">@projeto.DataFim.ToString("dd/MM/yyyy")</td>
-                            <td class="col-1">@projeto.Status</td>
+                        <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                        <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                            <td class="col-1">@projeto.Situacao</td>
                         </tr>
                         @if (projetoSelecionado == projeto)
                         {
@@ -163,7 +166,7 @@
             // using (HttpClient httpClient = new HttpClient())
             // {
             var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-            var resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             projetos = resultado.Modelos.ToList();
             // }
         }
@@ -176,9 +179,9 @@
                     Id = 1,
                     NomeProjeto = "Exemplo OFF",
                     Descricao = "Projeto de exemplo OFF",
-                    DataInicio = DateTime.Now,
-                    DataFim = DateTime.Now.AddDays(30),
-                    Status = 0
+                    DataHoraInicio = DateTime.Now,
+                    DataHoraFim = DateTime.Now.AddDays(30),
+                    Situacao = 0
                 }
             };
         }
@@ -227,6 +230,36 @@
         }
     }
 
+    private async Task ExcluirProjetosSelecionados()
+    {
+        foreach (var projeto in projetosSelecionados)
+        {
+            // Cria a requisição de exclusão
+            var request = new ProjetoExcluirRequest { Id = projeto.Id };
+
+            // Serializa a requisição para JSON
+            var requestContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+
+            // Configura a requisição HTTP DELETE com o corpo JSON
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, "https://localhost:7006/api/v1/Projeto/Excluir")
+                {
+                    Content = requestContent
+                };
+
+            // Faz a chamada HTTP DELETE
+            var response = await httpClient.SendAsync(requestMessage);
+
+            // Verifica se a resposta foi bem-sucedida
+            if (!response.IsSuccessStatusCode)
+            {
+                // Lidar com erros de exclusão
+                Console.WriteLine($"Erro ao excluir o projeto com Id: {projeto.Id}");
+            }
+        }
+        projetosSelecionados.Clear();
+        await CarregaTodosProjetosAsync();
+    }
+
     private async Task AtivarTemporizadorErro()
     {
         await Task.Delay(2000); // Aguarda segundos
@@ -267,14 +300,13 @@
 
     }
 
-    private void ExcluirProjetosSelecionados()
-    {
-    }
+
 
     private List<ProjetoDto> projetosSelecionados = new List<ProjetoDto>();
     private int contadorSelecionados = 0;
     private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
     bool idSelecionarTodos = false;
+
 
     private void SelecionarTodos()
     {
@@ -308,6 +340,7 @@
             }
             Console.WriteLine("Checkbox não selecionado");
         }
+        
     }
 
 

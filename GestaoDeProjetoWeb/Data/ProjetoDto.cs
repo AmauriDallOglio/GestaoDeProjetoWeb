@@ -5,9 +5,9 @@
         public int Id { get; set; }
         public string NomeProjeto { get; set; }
         public string Descricao { get; set; }
-        public DateTime DataInicio { get; set; }
-        public DateTime DataFim { get; set; }
-        public int Status { get; set; }
+        public DateTime DataHoraInicio { get; set; }
+        public DateTime? DataHoraFim { get; set; }
+        public int Situacao { get; set; }
         public bool Selecionado { get; set; }
     }
 }
