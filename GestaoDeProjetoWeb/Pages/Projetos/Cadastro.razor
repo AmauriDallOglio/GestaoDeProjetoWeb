@@ -4,94 +4,130 @@
 @* @inject ProjetoService ProjetoService *@
 @inject NavigationManager NavigationManager
 
-<h3>Cadastrar Novo Projeto</h3>
-
-
-
-
- <form class="row g-1">
-    @if (!string.IsNullOrWhiteSpace(erro))
-    {
-        <div class="alert alert-danger" role="alert">
-            @erro
-        </div>
-    }
-
-    <div class="col-12">
-        <label for="nomeProjeto">Nome do Projeto:</label>
-        <input type="text" class="form-control is-invalid" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto"  required>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-
-    <div class="col-12">
-        <label for="descricao">Descrição:</label>
-        <textarea  class="form-control is-invalid" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva o nome do projeto" required></textarea>
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-     
-    <div class="col-md-4">
-        <label for="situacao">Situacao:</label>
-        <input type="number" class="form-control is-invalid" id="situacao" @bind="projetoCadastro.Situacao">
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <label for="dataHoraInicio">Data inicial:</label>
-        <input type="date" class="form-control is-invalid" id="dataHoraInicio" @bind="projetoCadastro.DataHoraInicio">
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <label for="dataHoraFim">Data final:</label>
-        <input type="date" class="form-control is-invalid" id="dataHoraFim" @bind="projetoCadastro.DataHoraFim">
-        <div class="valid-feedback">
-            Looks good!
-        </div>
-    </div> 
-
-    <div class="col-12">
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
-            <label class="form-check-label" for="invalidCheck2">
-                 Inativo
-            </label>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <button type="button" class="btn btn-primary" @onclick="CadastrarProjeto">Salvar</button>
-    </div>
-
-</form>
  
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+    <title>Projeto</title>
 
+        <h3>Novo Projeto</h3>
+
+        <style>
+            .form-custom {
+                font-size: 18px; /* Tamanho da fonte */
+                font-family: Arial, sans-serif; /* Tipo da fonte */
+                row-gap: 15px; /* Espaçamento entre os inputs na vertical */
+            }
+
+            .form-custom .form-outline {
+                margin-bottom: 20px; /* Espaçamento entre os inputs */
+            }
+
+            .form-control-lg {
+                font-size: 16px; /* Tamanho da fonte dos inputs */
+            }
+
+            .form-label {
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="row g-1 form-custom">
+            @if (!string.IsNullOrWhiteSpace(erro))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @erro
+                </div>
+            }
+
+            <div class="form-floating col-12">
+                <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" required>
+                <label for="nomeProjeto">Nome do Projeto</label>
+            </div>
+
+            <div class="form-floating col-12">
+                <textarea class="form-control form-control-lg" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva o descrição do projeto" required></textarea>
+                <label for="nomeProjeto">Descrição</label>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="projetoCadastro.DataHoraInicio">
+                <label for="nomeProjeto">Data inicial</label>
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="projetoCadastro.DataHoraFim">
+                <label for="nomeProjeto">Data final</label>
+            </div>
+
+            <div class="form-floating col-6">
+                <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                    <option value="1">Planejado</option>
+                    <option value="2">Em Andamento</option>
+                    <option value="3">Atrasado</option>
+                    <option value="4">Em Revisão</option>
+                    <option value="5">Em Espera</option>
+                    <option value="6">Em Andamento (Baixa Prioridade)</option>
+                    <option value="7">Em Andamento (Média Prioridade)</option>
+                    <option value="8">Em Andamento (Alta Prioridade)</option>
+                    <option value="9">Em Teste</option>
+                    <option value="10">Pendente Aprovação</option>
+                    <option value="11">Pendente Recursos</option>
+                    <option value="12">Aguardando Feedback do Cliente</option>
+                    <option value="13">Aguardando Aprovação Interna</option>
+                    <option value="14">Cancelado</option>
+                    <option value="15">Concluído</option>
+                </select>
+                <label for="floatingSelect">Situação:</label>
+            </div>
+
+   
+
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" @onclick="CadastrarProjeto">Salvar</button>
+            </div>
+        </form>
+
+    </body>
+</html>
+
+ 
 
 
 @code 
 {
+    private HttpClient httpClient = new HttpClient();
     private ProjetoDto projetoCadastro = new ProjetoDto();
     private string erro;
     private async Task CadastrarProjeto()
     {
         try
         {
-            using (HttpClient httpClient = new HttpClient())
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
+            if (!response.IsSuccessStatusCode)
             {
-                var resultado = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
-                if (!resultado.IsSuccessStatusCode)
-                {
-                    erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + resultado.ToString();
-                    AtivarTemporizadorErro();
-                }
+                erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + response.ToString();
+                AtivarTemporizadorErro();
             }
+            else
+            {
+                NavigationManager.NavigateTo("/Projetos/Grid");
+            }
+
+            // using (HttpClient httpClient = new HttpClient())
+            // {
+            //     var resultado = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
+            //     if (!resultado.IsSuccessStatusCode)
+            //     {
+            //         erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + resultado.ToString();
+            //         AtivarTemporizadorErro();
+            //     }
+            //     else
+            //     {
+            //         NavigationManager.NavigateTo("/Projetos/Grid");
+            //     }
+            // }
         }
         catch (Exception ex)
         {

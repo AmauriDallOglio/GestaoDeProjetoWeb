@@ -2,16 +2,19 @@
 @using System.Text.Json
 @using GestaoDeProjetoWeb.Data
 @using System.Text
-@* @inject ProjetoService ProjetoService *@
+@using GestaoDeProjetoWeb.Servico
+
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
 
-
+ 
+ 
 
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <meta charset="UTF-8">
         <title>Página das projetos</title>
@@ -25,7 +28,7 @@
                 padding: 20px; /* Adiciona espaçamento interno */
             }
 
-            .espaco {
+            .adicionaEspaco {
                 margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
             }
 
@@ -42,8 +45,30 @@
     </head>
 
     <body>
-        <h3 class="espaco">Projetos</h3>
+        <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
 
+        <div class="hstack gap-3">
+            <div class="p-2">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
+                    </ol>
+                </nav>
+
+            </div>
+        
+ 
+            <div class="p-2 ms-auto">
+                <p>
+                    <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+                </p>
+      
+            </div>
+        </div>
+ 
+ 
+     
         @if (!string.IsNullOrWhiteSpace(erro))
         {
             <div class="alert alert-danger" role="alert">
@@ -60,15 +85,13 @@
     
         @if (projetos != null && projetos.Any())
         {
-            <div class="row g-3 align-items-center espaco">
+            <div class="row g-3 align-items-center adicionaEspaco">
                 <div class="col-md-auto">
                     <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario">Inserir</button>
-                    <button type="button" class="btn btn-outline-success custom-btn" @onclick="Atualizar">Atualizar</button>
+                    @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
+                    @* <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button> *@
 
-                    <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
-
-                    @* <button class="btn btn-primary" @onclick="SelecionarTodos">Atualizar Grid</button> *@
-
+                    <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button>
 
                 </div>
 
@@ -81,17 +104,12 @@
                 </div>
             </div>
 
-            <table class="table table-striped border border-silver">
-                <thead>
+            <table class="table">
+                <thead class="table-light">
                     <tr>
                         <th class="text-center">
                             <div class="form-check">
-@*                                 <input class="form-check-input" type="checkbox" id="selecionarTodos" onchange="selecionarTodos()">
-                                <label class="form-check-label" for="selecionarTodos"></label> *@
-
                                 <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
-@*                                 <label class="form-check-label" for="selecionarTodos"></label> *@
-
                             </div>
                         </th>
                         <th class="col-1 custom-font">Id</th>
@@ -100,40 +118,42 @@
                         <th class="col-2 custom-font">Data de início</th>
                         <th class="col-2 custom-font">Data de fim</th>
                         <th class="col-1 custom-font">Situacao</th>
- 
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
-                                                            p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                                                            p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                                                            p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
+                        p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                        p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                        p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
                     {
                         <tr>
                             <td class="text-center">
                                 <div class="form-check">
-                                <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
+                                    <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
                                 </div>
                             </td>
-                            <td class="col-1">@projeto.Id</td>
-                            <td class="col-3">@projeto.NomeProjeto</td>
-                            <td class="col-3">@projeto.Descricao</td>
-                        <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                        <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                            <td class="col-1">@projeto.Situacao</td>
+                            <td class="col-1 custom-font">@projeto.Id</td>
+                            <td class="col-3  custom-font">@projeto.NomeProjeto</td>
+                            <td class="col-3  custom-font">@projeto.Descricao</td>
+                            <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                            <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                            <td class="col-1">@projeto.SituacaoDescricao</td>
                         </tr>
                         @if (projetoSelecionado == projeto)
                         {
                             <tr>
                                 <td colspan="8">
                                     <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(projeto)">Alterar</button>
-                                    <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados">Excluir</button>
+                                    @* <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados">Excluir</button> *@
                                 </td>
                             </tr>
                         }
                     }
-                </tbody>
+                  </tbody>
             </table>
+
+
             <div class="col-md-auto">
                 <label>Projetos Selecionados: @contadorSelecionados</label>
             </div>
@@ -143,9 +163,32 @@
             <p>Carregando...</p>
         }
 
-       
+        
+
     </body>
+
 </html>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deseja excluir os registros selecionados?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <button type="button" class="btn btn-primary" @onclick="ExcluirProjetosSelecionados" >Sim</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @code 
@@ -162,13 +205,9 @@
     {
         try
         {
-            // projetos = await ProjetoService.ObterTodosProjetosAsync();
-            // using (HttpClient httpClient = new HttpClient())
-            // {
             var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
             RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             projetos = resultado.Modelos.ToList();
-            // }
         }
         catch (Exception)
         {
@@ -258,6 +297,29 @@
         }
         projetosSelecionados.Clear();
         await CarregaTodosProjetosAsync();
+    }
+
+
+     private string GetSituacaoDescricao(int situacao)
+    {
+        return situacao switch
+        {
+            1 => "Planejado",
+            2 => "Em Andamento",
+            3 => "Concluído",
+            4 => "Atrasado",
+            5 => "Em Revisão",
+            6 => "Em Espera",
+            7 => "Em Andamento (Baixa Prioridade)",
+            8 => "Em Andamento (Média Prioridade)",
+            9 => "Em Andamento (Alta Prioridade)",
+            10 => "Em Teste",
+            11 => "Pendente Aprovação",
+            12 => "Pendente Recursos",
+            13 => "Aguardando Feedback do Cliente",
+            14 => "Aguardando Aprovação Interna",
+            _ => "Desconhecido"
+        };
     }
 
     private async Task AtivarTemporizadorErro()

@@ -4,7 +4,7 @@ namespace GestaoDeProjetoWeb.Servico
 {
     public interface ISistemaService
     {
-        Task<List<ProjetoDto>> ObterTodosProjetosAsync();
+        Task<RetornoPaginadoGenerico<ProjetoDto>> ObterTodosProjetosAsync();
         Task IncluirProjetoAsync(ProjetoDto projeto);
     }
 }

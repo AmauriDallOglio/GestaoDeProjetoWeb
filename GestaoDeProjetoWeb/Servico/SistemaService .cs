@@ -1,22 +1,32 @@
 ﻿using GestaoDeProjetoWeb.Data;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace GestaoDeProjetoWeb.Servico
 {
     public class SistemaService : ISistemaService
     {
         private readonly HttpClient _httpClient;
+        string _url;
 
-        public SistemaService(HttpClient httpClient)
+        public SistemaService()
         {
-            _httpClient = httpClient;
+            _httpClient = new HttpClient();
+            _url = "https://localhost:7006/api/v1/";
         }
 
-        public async Task<List<ProjetoDto>> ObterTodosProjetosAsync()
+        public async Task<RetornoPaginadoGenerico<ProjetoDto>> ObterTodosProjetosAsync()
         {
-            var response = await _httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-            return JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            HttpClient httpClient = new HttpClient();
+            //var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+            //RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //return resultado;
+
+
+            var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
+            RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return resultado;
+
         }
 
         public async Task IncluirProjetoAsync(ProjetoDto projeto)
