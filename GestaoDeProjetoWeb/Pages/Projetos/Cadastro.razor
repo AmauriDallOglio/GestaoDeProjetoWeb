@@ -107,7 +107,7 @@
             var response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
             if (!response.IsSuccessStatusCode)
             {
-                erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + response.ToString();
+                erro = "Ocorreu um erro ao adicionar a projeto. Por favor, tente novamente. " + response.ToString();
                 AtivarTemporizadorErro();
             }
             else
