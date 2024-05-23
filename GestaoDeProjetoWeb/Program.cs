@@ -9,7 +9,7 @@ builder.Services.AddServerSideBlazor();
 //builder.Services.AddSingleton<WeatherForecastService>();
 
 
-//builder.Services.AddScoped<ISistemaService, SistemaService>();
+builder.Services.AddScoped<ISistemaService, SistemaService>();
 
 
 

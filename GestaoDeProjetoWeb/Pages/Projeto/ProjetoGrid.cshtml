@@ -1,0 +1,355 @@
+﻿@page "/Projeto/ProjetoGrid"
+@using System.Text.Json
+@using GestaoDeProjetoWeb.Data
+@using System.Text
+@using GestaoDeProjetoWeb.Servico
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@model GestaoDeProjetoWeb.Pages.Projeto.ProjetoGridModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Cadastro de Projetos";
+}
+
+
+<style>
+    .container {
+        display: flex; /* Usa o modelo de layout flexível */
+        justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
+        align-items: center; /* Alinha os itens verticalmente */
+        height: 100vh; /* Define a altura como 100% da altura da janela */
+        padding: 20px; /* Adiciona espaçamento interno */
+    }
+
+    .adicionaEspaco {
+        margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+    }
+
+    .custom-font {
+        font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
+    }
+
+    .custom-btn {
+        height: 40px; /* Altura desejada */
+        width: 120px; /* Largura desejada */
+    }
+</style>
+
+
+<h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
+
+<div class="hstack gap-3">
+    <div class="p-2">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="p-2 ms-auto">
+        <p>
+            <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+        </p>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.erro))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.erro
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.sucesso))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.sucesso
+    </div>
+}
+
+@if (Model.projetos != null && Model.projetos.Any())
+{
+    <div class="row g-3 align-items-center adicionaEspaco">
+        <div class="col-md-auto">
+            <button type="button" class="btn btn-outline-success custom-btn" Model.onclick="AbrirFormulario">Inserir</button>
+            <button type="button" class="btn btn-outline-danger custom-btn" Model.onclick="ExcluirProjetosSelecionados" disabled="@(Model.botaoExcluirHabilitado ? null : "disabled")">Excluir</button>
+        </div>
+
+        <div class="col-md-auto">
+            <label for="filtro" class="col-form-label">Filtrar:</label>
+        </div>
+
+        <div class="col-md-auto">
+            <input type="text" class="form-control" id="filtro" Model.bind="Model.filtro">
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="table-light">
+            <tr>
+                <th class="text-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="idSelecionarTodos" Model.onclick="SelecionarTodos" />
+                    </div>
+                </th>
+                <th class="col-1 custom-font">Id</th>
+                <th class="col-3 custom-font">Nome do projeto</th>
+                <th class="col-3 custom-font">Descrição</th>
+                <th class="col-2 custom-font">Data de início</th>
+                <th class="col-2 custom-font">Data de fim</th>
+                <th class="col-1 custom-font">Situação</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var projeto in Model.projetos.Where( p => string.IsNullOrEmpty(Model.filtro) ||
+                                                           p.NomeProjeto.Contains(Model.filtro, StringComparison.OrdinalIgnoreCase) ||
+                                                           p.Descricao.Contains(Model.filtro, StringComparison.OrdinalIgnoreCase) ||
+                                                           p.Situacao.ToString().Contains(Model.filtro, StringComparison.OrdinalIgnoreCase)))
+            {
+                <tr>
+                    <td class="text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" Model.bind="projeto.Selecionado" id="idSelecionado" Model.onclick="() => Selecionado(projeto)" />
+                        </div>
+                    </td>
+                    <td class="col-1 custom-font">@projeto.Id</td>
+                    <td class="col-3 custom-font">@projeto.NomeProjeto</td>
+                    <td class="col-3 custom-font">@projeto.Descricao</td>
+                    <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                    <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                    <td class="col-1">@projeto.SituacaoDescricao</td>
+                </tr>
+                @if (Model.projetoSelecionado == projeto)
+                {
+                    <tr>
+                        <td colspan="8">
+                            <button class="btn btn-outline-primary custom-btn" Model.onclick="() => EditarEmpresa(projeto)">Alterar</button>
+                            <button class="btn btn-outline-danger custom-btn" Model.onclick="ExcluirProjetosSelecionados">Excluir</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="col-md-auto">
+        <label>Projetos Selecionados: @Model.contadorSelecionados</label>
+    </div>
+}
+else
+{
+    <p>Carregando...</p>
+}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deseja excluir os registros selecionados?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <button type="button" class="btn btn-primary" Model.onclick="ExcluirProjetosSelecionados">Sim</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+@* @page "/Projeto/ProjetoGrid"
+@using System.Text.Json
+@using GestaoDeProjetoWeb.Data
+@using System.Text
+@using GestaoDeProjetoWeb.Servico
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@model GestaoDeProjetoWeb.Pages.Projeto.ProjetoGridModel
+
+<body>
+    <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
+
+    <div class="hstack gap-3">
+        <div class="p-2">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="p-2 ms-auto">
+            <p>
+                <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+            </p>
+
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.erro))
+    {
+        <div class="alert alert-danger" role="alert">
+            Model.erro
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.sucesso))
+    {
+        <div class="alert alert-success" role="alert">
+            Model.sucesso
+        </div>
+    }
+
+    @if (Model.projetos != null && Model.projetos.Any())
+    {
+        <div class="row g-3 align-items-center adicionaEspaco">
+            <div class="col-md-auto">
+                <button type="button" class="btn btn-outline-success custom-btn" Model.onclick="AbrirFormulario">Inserir</button>
+
+                <button type="button" class="btn btn-outline-danger custom-btn" Model.onclick="ExcluirProjetosSelecionados" disabled="Model.(!botaoExcluirHabilitado)">Excluir</button>
+ 
+
+            </div>
+
+            <div class="col-md-auto">
+                <label for="filtro" class="col-form-label">Filtrar:</label>
+            </div>
+
+            <div class="col-md-auto">
+                <input type="text" class="form-control" id="filtro" Model.bind="filtro">
+            </div>
+        </div>
+
+        <table class="table">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="idSelecionarTodos" Model.onclick="SelecionarTodos" />
+                        </div>
+                    </th>
+                    <th class="col-1 custom-font">Id</th>
+                    <th class="col-3 custom-font">Nome do projeto</th>
+                    <th class="col-3 custom-font">Descrição</th>
+                    <th class="col-2 custom-font">Data de início</th>
+                    <th class="col-2 custom-font">Data de fim</th>
+                    <th class="col-1 custom-font">Situacao</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var projeto in Model.projetos.Where(p => string.IsNullOrEmpty(Model.filtro) ||
+               p.NomeProjeto.Contains(Model.filtro, StringComparison.OrdinalIgnoreCase) ||
+               p.Descricao.Contains(Model.filtro, StringComparison.OrdinalIgnoreCase) ||
+               p.Situacao.ToString().Contains(Model.filtro, StringComparison.OrdinalIgnoreCase)))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" Model.bind="projeto.Selecionado" id="idSelecionado" Model.onclick="() => Selecionado(projeto)" />
+                            </div>
+                        </td>
+                        <td class="col-1 custom-font">@projeto.Id</td>
+                        <td class="col-3  custom-font">@projeto.NomeProjeto</td>
+                        <td class="col-3  custom-font">@projeto.Descricao</td>
+                        <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                        <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                        <td class="col-1">@projeto.SituacaoDescricao</td>
+                    </tr>
+                    @if (Model.projetoSelecionado == projeto)
+                    {
+                        <tr>
+                            <td colspan="8">
+                                <button class="btn btn-outline-primary custom-btn" Model.onclick="() => EditarEmpresa(projeto)">Alterar</button>
+                                <button class="btn btn-outline-danger custom-btn" Model.onclick="ExcluirProjetosSelecionados">Excluir</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+
+        <div class="col-md-auto">
+            <label>Projetos Selecionados: Model.contadorSelecionados</label>
+        </div>
+    }
+    else
+    {
+        <p>Carregando...</p>
+    }
+</body>
+
+
+<style>
+    .container {
+        display: flex;  
+        justify-content: space-between;  
+        align-items: center; 
+        height: 100vh;  
+        padding: 20px;  
+    }
+
+    .adicionaEspaco {
+        margin-bottom: 20px;  
+    }
+
+    .custom-font {
+        font-family: 'SuaFonte', sans-serif;  
+    }
+
+    .custom-btn {
+        height: 40px;   
+        width: 120px;  
+    }
+</style>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deseja excluir os registros selecionados?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                <button type="button" class="btn btn-primary" Model.onclick="ExcluirProjetosSelecionados">Sim</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ *@
+
+
+
+

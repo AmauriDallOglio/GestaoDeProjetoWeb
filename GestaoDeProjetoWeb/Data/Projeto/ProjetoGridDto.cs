@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestaoDeProjetoWeb.Data
+namespace GestaoDeProjetoWeb.Data.Projeto
 {
-    public class ProjetoDto
+    public class ProjetoGridDto
     {
         public int Id { get; set; }
 
@@ -10,14 +10,11 @@ namespace GestaoDeProjetoWeb.Data
         [MaxLength(30, ErrorMessage = "Nome deve ter no max. 30 caracteres")]
         [MinLength(3, ErrorMessage = "Nome deve ter no min. 3 caracteres")]
         public string NomeProjeto { get; set; } = string.Empty;
+
         public string Descricao { get; set; }
         public DateTime DataHoraInicio { get; set; }
         public DateTime? DataHoraFim { get; set; }
-        //public short Situacao { get; set; }
 
-        //public string SituacaoDescricao => Situacao.ToString();
-
-        // Propriedade Situacao com getter customizado
         private short situacao;
         public short Situacao
         {
@@ -55,29 +52,5 @@ namespace GestaoDeProjetoWeb.Data
                 _ => "Desconhecido"
             };
         }
-
-
     }
-
-
-
-    public enum SituacaoProjeto : short
-    {
-        Planejado = 1,
-        EmAndamento = 2,
-        Atrasado = 3,
-        EmRevisao = 4,
-        EmEspera = 5,
-        EmAndamentoBaixaPrioridade = 6,
-        EmAndamentoMediaPrioridade = 7,
-        EmAndamentoAltaPrioridade = 8,
-        EmTeste = 9,
-        PendenteAprovacao = 10,
-        PendenteRecursos = 11,
-        AguardandoFeedbackCliente = 12,
-        AguardandoAprovacaoInterna = 13,
-        Cancelado = 14,
-        Concluido = 15
-    }
-
 }

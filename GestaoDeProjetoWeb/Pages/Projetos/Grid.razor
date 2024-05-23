@@ -7,152 +7,144 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <title>Página das projetos</title>
-        <style>
-           .container {
-                display: flex; /* Usa o modelo de layout flexível */
-                justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
-                align-items: center; /* Alinha os itens verticalmente */
-                height: 100vh; /* Define a altura como 100% da altura da janela */
-                padding: 20px; /* Adiciona espaçamento interno */
-            }
-
-            .adicionaEspaco {
-                margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
-            }
-
-            .custom-font {
-                font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
-            }
-
-            .custom-btn {
-                height: 40px; /* Altura desejada */
-                width: 120px; /* Largura desejada */
-            }
-        </style>
-    </head>
-    <body>
-        <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
+ 
+<body>
+    <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
   
-        <div class="hstack gap-3">
-            <div class="p-2">
-                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
-                    </ol>
-                </nav>
+    <div class="hstack gap-3">
+        <div class="p-2">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
+                </ol>
+            </nav>
 
-            </div>   
-            <div class="p-2 ms-auto">
-                <p>
-                    <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
-                </p>
+        </div>   
+        <div class="p-2 ms-auto">
+            <p>
+                <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+            </p>
       
-            </div>
         </div>
-        @if (!string.IsNullOrWhiteSpace(erro))
-        {
-            <div class="alert alert-danger" role="alert">
-                @erro
-            </div>
-        }
+    </div>
+    @if (!string.IsNullOrWhiteSpace(erro))
+    {
+        <div class="alert alert-danger" role="alert">
+            @erro
+        </div>
+    }
 
-        @if (!string.IsNullOrWhiteSpace(sucesso))
-        {
-            <div class="alert alert-success" role="alert">
-                @sucesso
-            </div>
-        }
+    @if (!string.IsNullOrWhiteSpace(sucesso))
+    {
+        <div class="alert alert-success" role="alert">
+            @sucesso
+        </div>
+    }
     
-        @if (projetos != null && projetos.Any())
-        {
-            <div class="row g-3 align-items-center adicionaEspaco">
-                <div class="col-md-auto">
-                    <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario" >Inserir</button>
-                    @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
-                    <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
-                    @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
+    @if (projetos != null && projetos.Any())
+    {
+        <div class="row g-3 align-items-center adicionaEspaco">
+            <div class="col-md-auto">
+                <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario" >Inserir</button>
+                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
+                <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
+                @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
        
-                </div>
-
-                <div class="col-md-auto">
-                    <label for="filtro" class="col-form-label">Filtrar:</label>
-                </div>
-                
-                <div class="col-md-auto">
-                    <input type="text" class="form-control" id="filtro" @bind="filtro">
-                </div>
             </div>
-
-            <table class="table">
-                <thead class="table-light">
-                    <tr>
-                        <th class="text-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
-                            </div>
-                        </th>
-                        <th class="col-1 custom-font">Id</th>
-                        <th class="col-3 custom-font">Nome do projeto</th>
-                        <th class="col-3 custom-font">Descrição</th>
-                        <th class="col-2 custom-font">Data de início</th>
-                        <th class="col-2 custom-font">Data de fim</th>
-                        <th class="col-1 custom-font">Situacao</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
-                        p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                        p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                        p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        <tr>
-                            <td class="text-center">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
-                                </div>
-                            </td>
-                            <td class="col-1 custom-font">@projeto.Id</td>
-                            <td class="col-3  custom-font">@projeto.NomeProjeto</td>
-                            <td class="col-3  custom-font">@projeto.Descricao</td>
-                            <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                            <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                            <td class="col-1">@projeto.SituacaoDescricao</td>
-                        </tr>
-                        @if (projetoSelecionado == projeto)
-                        {
-                            <tr>
-                                <td colspan="8">
-                                    <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(projeto)">Alterar</button>
-                                    <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados">Excluir</button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                  </tbody>
-            </table>
-
 
             <div class="col-md-auto">
-                <label>Projetos Selecionados: @contadorSelecionados</label>
+                <label for="filtro" class="col-form-label">Filtrar:</label>
             </div>
-        }
-        else
-        {
-            <p>Carregando...</p>
-        }
+                
+            <div class="col-md-auto">
+                <input type="text" class="form-control" id="filtro" @bind="filtro">
+            </div>
+        </div>
 
- 
- 
-    </body>
+        <table class="table">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                        </div>
+                    </th>
+                    <th class="col-1 custom-font">Id</th>
+                    <th class="col-3 custom-font">Nome do projeto</th>
+                    <th class="col-3 custom-font">Descrição</th>
+                    <th class="col-2 custom-font">Data de início</th>
+                    <th class="col-2 custom-font">Data de fim</th>
+                    <th class="col-1 custom-font">Situacao</th>
 
-</html>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
+                    p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                    p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                    p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
+                {
+                    <tr>
+                        <td class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
+                            </div>
+                        </td>
+                        <td class="col-1 custom-font">@projeto.Id</td>
+                        <td class="col-3  custom-font">@projeto.NomeProjeto</td>
+                        <td class="col-3  custom-font">@projeto.Descricao</td>
+                        <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                        <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                        <td class="col-1">@projeto.SituacaoDescricao</td>
+                    </tr>
+                    @if (projetoSelecionado == projeto)
+                    {
+                        <tr>
+                            <td colspan="8">
+                                <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(projeto)">Alterar</button>
+                                <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados">Excluir</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+        </table>
+
+
+        <div class="col-md-auto">
+            <label>Projetos Selecionados: @contadorSelecionados</label>
+        </div>
+    }
+    else
+    {
+        <p>Carregando...</p>
+    }
+</body>
+ 
+
+<style>
+    .container {
+        display: flex; /* Usa o modelo de layout flexível */
+        justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
+        align-items: center; /* Alinha os itens verticalmente */
+        height: 100vh; /* Define a altura como 100% da altura da janela */
+        padding: 20px; /* Adiciona espaçamento interno */
+    }
+
+    .adicionaEspaco {
+        margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+    }
+
+    .custom-font {
+        font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
+    }
+
+    .custom-btn {
+        height: 40px; /* Altura desejada */
+        width: 120px; /* Largura desejada */
+    }
+</style>
 
 
 <!-- Modal -->
@@ -181,15 +173,22 @@
     private HttpClient httpClient = new HttpClient();
     private string filtro = string.Empty;
     private List<ProjetoDto> projetos;
+ 
+
+
     protected override async Task OnInitializedAsync()
     {
         projetos = await CarregaTodosProjetosAsync();
     }
 
+ 
+
+
     private async Task<List<ProjetoDto>> CarregaTodosProjetosAsync()
     {
         try
         {
+ 
             var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
             RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             projetos = resultado.Modelos.ToList();

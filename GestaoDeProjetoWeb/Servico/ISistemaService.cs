@@ -1,4 +1,5 @@
 ﻿using GestaoDeProjetoWeb.Data;
+using GestaoDeProjetoWeb.Data.Projeto;
 
 namespace GestaoDeProjetoWeb.Servico
 {

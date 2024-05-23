@@ -1,6 +1,7 @@
 ﻿@page "/Projetos/Cadastro"
 @using System.Text.Json
 @using GestaoDeProjetoWeb.Data
+@using GestaoDeProjetoWeb.Servico
 @* @inject ProjetoService ProjetoService *@
 @inject NavigationManager NavigationManager
 
@@ -45,6 +46,18 @@
                 <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" required>
                 <label for="nomeProjeto">Nome do Projeto</label>
             </div>
+
+
+             <div class="form-group row mb-3">
+                <div class="col-2">
+                    <label asp-for="projetoCadastro.NomeProjeto" class="label-weight-bold"></label>
+                </div>
+                <div class="col-5">
+                    <input asp-for="projetoCadastro.NomeProjeto" class="form-control" />
+                    <span asp-validation-for="projetoCadastro.NomeProjeto" class="text-danger"></span>
+                </div>
+            </div>
+
 
             <div class="form-floating col-12">
                 <textarea class="form-control form-control-lg" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva o descrição do projeto" required></textarea>
@@ -100,10 +113,16 @@
     private HttpClient httpClient = new HttpClient();
     private ProjetoDto projetoCadastro = new ProjetoDto();
     private string erro;
+ 
+ 
+
     private async Task CadastrarProjeto()
     {
         try
         {
+ 
+
+
             var response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
             if (!response.IsSuccessStatusCode)
             {

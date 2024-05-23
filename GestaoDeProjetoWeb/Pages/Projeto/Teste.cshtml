@@ -1,0 +1,39 @@
+﻿@page
+@model GestaoDeProjetoWeb.Pages.Projeto.TesteModel
+@{
+    ViewData["Title"] = "Listar";
+}
+
+<h1>Lista de Ativos Locais</h1>
+
+@if (Model.ativosLocais == null)
+{
+    <p><em>Sem informações...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead class="table-light">
+            <tr>
+                <th class="col-1 custom-font">Referência</th>
+                <th>Área</th>
+                <th>Setor</th>
+                <th>Descrição</th>
+                <th>Inativo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ativo in Model.ativosLocais)
+            {
+                <tr>
+                    <td class="col-1 custom-font">@ativo.Referencia</td>
+                    <td>@ativo.Area</td>
+                    <td>@ativo.Setor</td>
+                    <td>@ativo.Descricao</td>
+                    <td>@ativo.Inativo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+ 
