@@ -10,6 +10,7 @@ namespace GestaoDeProjetoWeb.Data
         [MaxLength(30, ErrorMessage = "Nome deve ter no max. 30 caracteres")]
         [MinLength(3, ErrorMessage = "Nome deve ter no min. 3 caracteres")]
         public string NomeProjeto { get; set; } = string.Empty;
+        [Required(ErrorMessage = "A descrição é obrigatória.")]
         public string Descricao { get; set; }
         public DateTime DataHoraInicio { get; set; }
         public DateTime? DataHoraFim { get; set; }

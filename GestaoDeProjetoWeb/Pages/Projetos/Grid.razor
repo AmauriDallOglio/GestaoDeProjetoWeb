@@ -47,6 +47,7 @@
         <div class="row g-3 align-items-center adicionaEspaco">
             <div class="col-md-auto">
                 <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario" >Inserir</button>
+                <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario2">Inserir 2</button>
                 @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
                 <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
                 @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
@@ -340,6 +341,13 @@
     {
         NavigationManager.NavigateTo("Projetos/Cadastro");
     }
+
+    private void AbrirFormulario2()
+    {
+        NavigationManager.NavigateTo("Projetos/Cadastros");
+    }
+
+
 
     private void EditarEmpresa(ProjetoDto empresa)
     {

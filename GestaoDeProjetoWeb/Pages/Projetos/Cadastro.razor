@@ -11,7 +11,7 @@
     <head>
     <title>Projeto</title>
 
-        <h3>Novo Projeto</h3>
+ 
 
         <style>
             .form-custom {
@@ -32,9 +32,69 @@
                 font-weight: bold;
             }
         </style>
+ 
+
     </head>
     <body>
-        <form class="row g-1 form-custom">
+        <h3>Novo Projeto</h3>
+
+        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+            <DataAnnotationsValidator />
+      @*       <ValidationSummary /> *@
+
+            <div class="form-floating col-12">
+                <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
+                <label for="nomeProjeto">Nome do Projeto</label>
+                <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
+            </div>
+
+            <div class="form-floating col-12">
+                <textarea class="form-control form-control-lg" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
+                <label for="descricao">Descrição</label>
+                <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="projetoCadastro.DataHoraInicio" />
+                <label for="dataHoraInicio">Data inicial</label>
+                <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
+            </div>
+
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="projetoCadastro.DataHoraFim" />
+                <label for="dataHoraFim">Data final</label>
+                <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
+            </div>
+
+            <div class="form-floating col-6">
+                <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                    <option value="">Selecione a situação</option>
+                    <option value="1">Planejado</option>
+                    <option value="2">Em Andamento</option>
+                    <option value="3">Atrasado</option>
+                    <option value="4">Em Revisão</option>
+                    <option value="5">Em Espera</option>
+                    <option value="6">Em Andamento (Baixa Prioridade)</option>
+                    <option value="7">Em Andamento (Média Prioridade)</option>
+                    <option value="8">Em Andamento (Alta Prioridade)</option>
+                    <option value="9">Em Teste</option>
+                    <option value="10">Pendente Aprovação</option>
+                    <option value="11">Pendente Recursos</option>
+                    <option value="12">Aguardando Feedback do Cliente</option>
+                    <option value="13">Aguardando Aprovação Interna</option>
+                    <option value="14">Cancelado</option>
+                    <option value="15">Concluído</option>
+                </select>
+                <label for="situacao">Situação:</label>
+                <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </EditForm>
+
+@*         <form class="row g-1 form-custom">
             @if (!string.IsNullOrWhiteSpace(erro))
             {
                 <div class="alert alert-danger" role="alert">
@@ -48,16 +108,7 @@
             </div>
 
 
-             <div class="form-group row mb-3">
-                <div class="col-2">
-                    <label asp-for="projetoCadastro.NomeProjeto" class="label-weight-bold"></label>
-                </div>
-                <div class="col-5">
-                    <input asp-for="projetoCadastro.NomeProjeto" class="form-control" />
-                    <span asp-validation-for="projetoCadastro.NomeProjeto" class="text-danger"></span>
-                </div>
-            </div>
-
+ 
 
             <div class="form-floating col-12">
                 <textarea class="form-control form-control-lg" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva o descrição do projeto" required></textarea>
@@ -100,7 +151,7 @@
             <div class="col-12">
                 <button type="button" class="btn btn-primary" @onclick="CadastrarProjeto">Salvar</button>
             </div>
-        </form>
+        </form> *@
 
     </body>
 </html>
@@ -114,15 +165,10 @@
     private ProjetoDto projetoCadastro = new ProjetoDto();
     private string erro;
  
- 
-
     private async Task CadastrarProjeto()
     {
         try
         {
- 
-
-
             var response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
             if (!response.IsSuccessStatusCode)
             {
