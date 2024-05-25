@@ -1,13 +1,15 @@
-﻿@page "/Projetos/Grid"
-@using System.Text.Json
+﻿@page "/Projeto/Grid"
 @using GestaoDeProjetoWeb.Data
+@using GestaoDeProjetoWeb.Data.Projeto
+@using System.Text.Json
 @using System.Text
-@using GestaoDeProjetoWeb.Servico
+
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
  
+
 <body>
     <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
   
@@ -23,7 +25,7 @@
         </div>   
         <div class="p-2 ms-auto">
             <p>
-                <a href="Projetos/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+                <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
             </p>
       
         </div>
@@ -46,8 +48,8 @@
     {
         <div class="row g-3 align-items-center adicionaEspaco">
             <div class="col-md-auto">
-                <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario" >Inserir</button>
-                <button type="button" class="btn btn-outline-success custom-btn" @onclick="AbrirFormulario2">Inserir 2</button>
+                <button type="button" class="btn btn-outline-success custom-btn" @onclick="Inserir">Inserir</button>
+ 
                 @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
                 <button type="button" class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
                 @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
@@ -72,11 +74,11 @@
                         </div>
                     </th>
                     <th class="col-1 custom-font">Id</th>
-                    <th class="col-3 custom-font">Nome do projeto</th>
+                    <th class="col-3 custom-font">Nome</th>
                     <th class="col-3 custom-font">Descrição</th>
                     <th class="col-2 custom-font">Data de início</th>
-                    <th class="col-2 custom-font">Data de fim</th>
-                    <th class="col-1 custom-font">Situacao</th>
+                    <th class="col-2 custom-font">Data de final</th>
+                    <th class="col-1 custom-font">Situação</th>
 
                 </tr>
             </thead>
@@ -103,7 +105,7 @@
                     {
                         <tr>
                             <td colspan="8">
-                                <button class="btn btn-outline-primary custom-btn" @onclick="() => EditarEmpresa(projeto)">Alterar</button>
+                                <button class="btn btn-outline-primary custom-btn" @onclick="() => Alterar(projeto)">Alterar</button>
                                 <button class="btn btn-outline-danger custom-btn" @onclick="ExcluirProjetosSelecionados">Excluir</button>
                             </td>
                         </tr>
@@ -124,28 +126,7 @@
 </body>
  
 
-<style>
-    .container {
-        display: flex; /* Usa o modelo de layout flexível */
-        justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
-        align-items: center; /* Alinha os itens verticalmente */
-        height: 100vh; /* Define a altura como 100% da altura da janela */
-        padding: 20px; /* Adiciona espaçamento interno */
-    }
 
-    .adicionaEspaco {
-        margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
-    }
-
-    .custom-font {
-        font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
-    }
-
-    .custom-btn {
-        height: 40px; /* Altura desejada */
-        width: 120px; /* Largura desejada */
-    }
-</style>
 
 
 <!-- Modal -->
@@ -161,7 +142,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
-                <button type="button" class="btn btn-primary" @onclick="ExcluirProjetosSelecionados" >Sim</button>
+                <button type="button" class="btn btn-primary" @onclick="ExcluirProjetosSelecionados">Sim</button>
             </div>
         </div>
     </div>
@@ -174,7 +155,7 @@
     private HttpClient httpClient = new HttpClient();
     private string filtro = string.Empty;
     private List<ProjetoDto> projetos;
- 
+
 
 
     protected override async Task OnInitializedAsync()
@@ -182,14 +163,14 @@
         projetos = await CarregaTodosProjetosAsync();
     }
 
- 
+
 
 
     private async Task<List<ProjetoDto>> CarregaTodosProjetosAsync()
     {
         try
         {
- 
+
             var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
             RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             projetos = resultado.Modelos.ToList();
@@ -212,40 +193,27 @@
         return projetos;
     }
 
-    private string erro;
-    private string sucesso;
-    private ProjetoDto novaEmpresa = new ProjetoDto();
+    private void Inserir()
+    {
+        ProjetoDto projeto = new ProjetoDto();
+        var projetoJson = JsonSerializer.Serialize(projeto);
+        var encodedProjeto = Uri.EscapeDataString(projetoJson);
+        NavigationManager.NavigateTo($"Projeto/Cadastro?cadastroJson={encodedProjeto}");
 
-    private async Task Adicionar()
+    }
+
+ 
+
+    private void Alterar(ProjetoDto projeto)
     {
         try
         {
-            if (string.IsNullOrEmpty(novaEmpresa.Descricao))
-            {
-                erro = "Descrição não possui informação!";
-                AtivarTemporizadorErro();
-            }
-            else
-            {
-                // using (HttpClient httpClient = new HttpClient())
-                // {
-                var response = await httpClient.GetStringAsync("https://localhost:7006/api/v1/Projeto/ObterTodos");
-                projetos = JsonSerializer.Deserialize<List<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+       
+            var projetoJson = JsonSerializer.Serialize(projeto); // Converta o objeto para JSON
+            var encodedProjetoJson = Uri.EscapeDataString(projetoJson); // Codifique o JSON para usar na URL
+            NavigationManager.NavigateTo($"/Projeto/Cadastro/{encodedProjetoJson}");
 
-
-                if (projetos.Count() > 0)
-                {
-                    await CarregaTodosProjetosAsync();
-                    sucesso = "Salvo com sucesso!";
-                    AtivarTemporizadorSucesso();
-                }
-                else
-                {
-                    erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente.";
-                    AtivarTemporizadorErro();
-                }
-                // }
-            }
+            // NavigationManager.NavigateTo("Projeto/Cadastro");
         }
         catch (Exception ex)
         {
@@ -254,59 +222,10 @@
         }
     }
 
-    private async Task ExcluirProjetosSelecionados()
-    {
-        foreach (var projeto in projetosSelecionados)
-        {
-            // Cria a requisição de exclusão
-            var request = new ProjetoExcluirRequest { Id = projeto.Id };
-
-            // Serializa a requisição para JSON
-            var requestContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-
-            // Configura a requisição HTTP DELETE com o corpo JSON
-            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, "https://localhost:7006/api/v1/Projeto/Excluir")
-                {
-                    Content = requestContent
-                };
-
-            // Faz a chamada HTTP DELETE
-            var response = await httpClient.SendAsync(requestMessage);
-
-            // Verifica se a resposta foi bem-sucedida
-            if (!response.IsSuccessStatusCode)
-            {
-                // Lidar com erros de exclusão
-                Console.WriteLine($"Erro ao excluir o projeto com Id: {projeto.Id}");
-            }
-        }
-        projetosSelecionados.Clear();
-        await CarregaTodosProjetosAsync();
-    }
 
 
-     private string GetSituacaoDescricao(int situacao)
-    {
-        return situacao switch
-        {
-            1 => "Planejado",
-            2 => "Em Andamento",
-            3 => "Concluído",
-            4 => "Atrasado",
-            5 => "Em Revisão",
-            6 => "Em Espera",
-            7 => "Em Andamento (Baixa Prioridade)",
-            8 => "Em Andamento (Média Prioridade)",
-            9 => "Em Andamento (Alta Prioridade)",
-            10 => "Em Teste",
-            11 => "Pendente Aprovação",
-            12 => "Pendente Recursos",
-            13 => "Aguardando Feedback do Cliente",
-            14 => "Aguardando Aprovação Interna",
-            _ => "Desconhecido"
-        };
-    }
-
+    private string erro;
+    private string sucesso;
     private async Task AtivarTemporizadorErro()
     {
         await Task.Delay(2000); // Aguarda segundos
@@ -323,36 +242,33 @@
         StateHasChanged(); // Notifica o Blazor para atualizar a exibição
     }
 
-    private async Task Atualizar()
+
+
+
+
+
+    private async Task ExcluirProjetosSelecionados()
     {
-        try
+        foreach (var projeto in projetosSelecionados)
         {
-            novaEmpresa = new ProjetoDto();
-            await CarregaTodosProjetosAsync();
+            var request = new ProjetoExcluirRequest { Id = projeto.Id };
+            var requestContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, "https://localhost:7006/api/v1/Projeto/Excluir")
+            {
+                Content = requestContent
+            };
+            var response = await httpClient.SendAsync(requestMessage);
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Erro ao excluir o projeto com Id: {projeto.Id}");
+            }
         }
-        catch (Exception ex)
-        {
-            erro = "Ocorreu um erro inesperado: " + ex.Message;
-            AtivarTemporizadorErro();
-        }
+        projetosSelecionados.Clear();
+        await CarregaTodosProjetosAsync();
     }
 
-    private void AbrirFormulario()
-    {
-        NavigationManager.NavigateTo("Projetos/Cadastro");
-    }
+ 
 
-    private void AbrirFormulario2()
-    {
-        NavigationManager.NavigateTo("Projetos/Cadastros");
-    }
-
-
-
-    private void EditarEmpresa(ProjetoDto empresa)
-    {
-
-    }
 
 
 

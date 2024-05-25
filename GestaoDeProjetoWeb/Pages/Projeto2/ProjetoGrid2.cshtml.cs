@@ -1,4 +1,5 @@
 using GestaoDeProjetoWeb.Data;
+using GestaoDeProjetoWeb.Data.Projeto;
 using GestaoDeProjetoWeb.Servico;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -1,0 +1,67 @@
+﻿
+/*   GRID  */
+
+.container {
+    display: flex; /* Usa o modelo de layout flexível */
+    justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
+    align-items: center; /* Alinha os itens verticalmente */
+    height: 100vh; /* Define a altura como 100% da altura da janela */
+    padding: 20px; /* Adiciona espaçamento interno */
+}
+
+.adicionaEspaco {
+    margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+}
+
+.custom-font {
+    font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
+}
+
+.custom-btn {
+    height: 40px; /* Altura desejada */
+    width: 120px; /* Largura desejada */
+}
+
+
+/*   CADASTRO  */
+
+.form-custom {
+    font-size: 18px; /* Tamanho da fonte */
+    font-family: Arial, sans-serif; /* Tipo da fonte */
+    row-gap: 15px; /* Espaçamento entre os inputs na vertical */
+}
+
+.form-custom .form-outline {
+    margin-bottom: 20px; /* Espaçamento entre os inputs */
+}
+
+.form-control-lg {
+    font-size: 16px; /* Tamanho da fonte dos inputs */
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group .btn {
+    width: 20%; /* Opcional: Ajusta a largura dos botões se necessário */
+}
+
+.button-group .btn:first-child {
+    margin-left: 0;
+}
+
+.button-group .btn:last-child {
+    margin-right: 0;
+}
+
+.adicionaEspaco {
+    margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+}
+
+
