@@ -23,6 +23,8 @@ namespace GestaoDeProjetoWeb.Data.Projeto
 
 
         private short situacao;
+
+        [Required(ErrorMessage = "Situação é obrigatória!")]
         public short Situacao
         {
             get { return situacao; }
@@ -40,7 +42,6 @@ namespace GestaoDeProjetoWeb.Data.Projeto
 
         private string GetSituacaoDescricao(short situacao)
         {
-            // Tenta converter o valor curto para o enum SituacaoProjeto
             if (Enum.IsDefined(typeof(SituacaoProjeto), situacao))
             {
                 return ((SituacaoProjeto)situacao).ToString();

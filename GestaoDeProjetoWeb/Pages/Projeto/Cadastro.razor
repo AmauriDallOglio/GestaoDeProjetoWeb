@@ -4,12 +4,9 @@
 @using GestaoDeProjetoWeb.Data.Projeto
 @using System.ComponentModel.DataAnnotations;
 @using System.Text.Json
+@using GestaoDeProjetoWeb.Servico
 @inject NavigationManager NavigationManager
-
-
-
- 
-
+@inject IProjetoServico ProjetoServico
 
 <body>
     <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar Projeto" : "Novo Projeto")</h3>
@@ -34,6 +31,13 @@
     </div>
 
     <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+        @if (!string.IsNullOrWhiteSpace(erro))
+        {
+            <div class="alert alert-danger" role="alert">
+                @erro
+            </div>
+        }
+
         <DataAnnotationsValidator />
 
         <div class="form-floating col-12">
@@ -71,14 +75,12 @@
             <label for="situacao">Situação:</label>
             <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
         </div>
+
         <div class="col-12 button-group">
             <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
-    @*     <div class="col-12">
-            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div> *@
+
     </EditForm>
 </body>
 
@@ -86,10 +88,10 @@
 @code {
     [Parameter]
     public string projetoJson { get; set; }
-    private ProjetoDto projetoCadastro; // Declare uma propriedade para armazenar o objeto deserializado
+    private ProjetoDto projetoCadastro = new ProjetoDto();
     private HttpClient httpClient = new HttpClient();
 
-    private string erro;
+    private string erro = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -106,10 +108,6 @@
                 erro = "Erro ao desserializar o projeto: " + ex.Message;
             }
         }
-        else
-        {
-            projetoCadastro = new ProjetoDto();
-        }
     }
 
 
@@ -120,20 +118,23 @@
         {
             HttpResponseMessage response = new HttpResponseMessage();
 
-            if (projetoCadastro.Id == 0)
-            {
-                response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
-            }
-            else
-            {
-                response = await httpClient.PutAsJsonAsync("https://localhost:7006/api/v1/Projeto/Alterar", projetoCadastro);
-            }
+
+            response = await ProjetoServico.CadastroAsync(projetoCadastro);
+
+            // if (projetoCadastro.Id == 0)
+            // {
+            //     response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
+            // }
+            // else
+            // {
+            //     response = await httpClient.PutAsJsonAsync("https://localhost:7006/api/v1/Projeto/Alterar", projetoCadastro);
+            // }
 
 
             if (!response.IsSuccessStatusCode)
             {
                 erro = "Ocorreu um erro ao adicionar/atualizar o projeto. Por favor, tente novamente. " + response.ToString();
-                AtivarTemporizadorErro();
+                await AtivarTemporizadorErro();
             }
             else
             {
@@ -143,7 +144,7 @@
         catch (Exception ex)
         {
             erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + ex.Message.ToString();
-            AtivarTemporizadorErro();
+            await AtivarTemporizadorErro();
         }
 
     }
@@ -151,7 +152,7 @@
     private async Task AtivarTemporizadorErro()
     {
         await Task.Delay(10000);
-        erro = null;
+        erro = "";
 
         StateHasChanged();
     }

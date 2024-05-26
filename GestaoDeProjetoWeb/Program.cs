@@ -1,4 +1,3 @@
-using GestaoDeProjetoWeb.Data;
 using GestaoDeProjetoWeb.Servico;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,9 +8,8 @@ builder.Services.AddServerSideBlazor();
 //builder.Services.AddSingleton<WeatherForecastService>();
 
 
-builder.Services.AddScoped<ISistemaService, SistemaService>();
 
-
+builder.Services.AddScoped<IProjetoServico, ProjetoServico>();
 
 
 
