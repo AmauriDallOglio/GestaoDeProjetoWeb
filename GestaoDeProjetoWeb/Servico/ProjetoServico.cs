@@ -1,5 +1,6 @@
 ﻿using GestaoDeProjetoWeb.Data;
 using GestaoDeProjetoWeb.Data.Projeto;
+using GestaoDeProjetoWeb.Data.Util;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -98,5 +99,14 @@ namespace GestaoDeProjetoWeb.Servico
             }
             return retorno;
         }
+
+
+        public async Task<List<ComboItem>> ObterComboAsync()
+        {
+            List<ComboItem> combo = await _httpClient.GetFromJsonAsync<List<ComboItem>>("https://localhost:7006/api/v1/Projeto/ObterCombo");
+            return combo;
+        }
+
+
     }
 }

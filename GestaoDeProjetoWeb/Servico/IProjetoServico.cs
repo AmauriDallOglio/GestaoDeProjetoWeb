@@ -1,5 +1,6 @@
 ﻿using GestaoDeProjetoWeb.Data.Projeto;
 using GestaoDeProjetoWeb.Data;
+using GestaoDeProjetoWeb.Data.Util;
 
 namespace GestaoDeProjetoWeb.Servico
 {
@@ -10,6 +11,7 @@ namespace GestaoDeProjetoWeb.Servico
         Task<List<ProjetoDto>> ObterTodosProjetosAsync();
 
         Task<HttpResponseMessage> CadastroAsync(ProjetoDto projeto);
+        Task<List<ComboItem>> ObterComboAsync();
 
         Task<string> Excluir(int id);
     }

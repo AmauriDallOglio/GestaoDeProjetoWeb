@@ -4,7 +4,7 @@
 @using System.Text.Json
 @using System.Text
 @using GestaoDeProjetoWeb.Servico
-@inject IProjetoServico ProjetoServico
+@inject IProjetoServico _iProjetoServico
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -54,7 +54,11 @@
                 @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
                 <button type="button" class="btn btn-outline-danger custom-btn" @onclick="Excluir" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
                 @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
-       
+                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="MsgSucesso"> Sucesso </button>  *@
+                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="MsgErro"> Erro </button> *@
+
+
+
             </div>
 
             <div class="col-md-auto">
@@ -106,7 +110,7 @@
                     {
                         <tr>
                             <td colspan="8">
-                                <button class="btn btn-outline-primary custom-btn" @onclick="() => Alterar(projeto)">Alterar</button>
+                                <button class="btn btn-outline-primary custom-btn"   @onclick="() => Alterar(projeto)">Alterar</button>
                                 <button class="btn btn-outline-danger custom-btn" @onclick="Excluir">Excluir</button>
                             </td>
                         </tr>
@@ -126,8 +130,6 @@
     }
 </body>
  
-
-
 
 
 <!-- Modal -->
@@ -156,15 +158,13 @@
     private HttpClient httpClient = new HttpClient();
     private string filtro = string.Empty;
     private List<ProjetoDto> projetos = new List<ProjetoDto>();
-    private string erro;
-    private string sucesso;
-
+    private string erro = string.Empty;
+    private string sucesso = string.Empty;
     private List<ProjetoDto> projetosSelecionados = new List<ProjetoDto>();
     private int contadorSelecionados = 0;
     private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
     bool idSelecionarTodos = false;
-
-    private ProjetoDto projetoSelecionado = null;
+    private ProjetoDto projetoSelecionado = new ProjetoDto();
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,89 +173,92 @@
 
     private async Task<List<ProjetoDto>> CarregaGrid()
     {
-        List<ProjetoDto> projetos = await ProjetoServico.ObterTodosProjetosAsync();
+        await AtivarTemporizadorSucesso();
+        projetosSelecionados.Clear();
+        contadorSelecionados = 0;
+        erro = string.Empty;
+        sucesso = string.Empty;
+        List<ProjetoDto> projetos = await _iProjetoServico.ObterTodosProjetosAsync();
         return projetos;
     }
 
-    private void Inserir()
+    // private async Task MsgSucesso()
+    // {
+    //     sucesso = "Projeto cadastrado com sucesso!";
+    //     await AtivarTemporizadorSucesso();
+    // }
+
+    private async Task AtivarTemporizadorSucesso()
+    {
+        Console.WriteLine("AtivarTemporizadorSucesso chamado.");
+        await Task.Delay(2000); // Aguarda 2 segundos
+        sucesso = null;
+        StateHasChanged();
+    }
+
+    // private async Task MsgErro()
+    // {
+    //     erro = "Projeto com erro!";
+    //     await AtivarTemporizadorErro();
+    // }
+
+    private async Task AtivarTemporizadorErro()
+    {
+        Console.WriteLine("AtivarTemporizadorErro chamado.");
+        await Task.Delay(2000); // Aguarda 2 segundos
+        erro = null;
+        StateHasChanged();
+    }
+
+
+
+    private async Task Inserir()
     {
         try
         {
-            // ProjetoDto projeto = new ProjetoDto();
-            var projetoJson = JsonSerializer.Serialize(new ProjetoDto());
-            var encodedProjetoJson = Uri.EscapeDataString(projetoJson);
-            NavigationManager.NavigateTo($"Projeto/Cadastro?cadastroJson={encodedProjetoJson}");
+            NavigationManager.NavigateTo($"Projeto/Cadastro/{null}");
         }
         catch (Exception ex)
         {
             erro = "Ocorreu um erro inesperado: " + ex.Message;
-            AtivarTemporizadorErro();
+            await AtivarTemporizadorErro();
         }
 
     }
 
-    private void Alterar(ProjetoDto projeto)
+    private async Task Alterar(ProjetoDto projeto)
     {
         try
         {
             var projetoJson = JsonSerializer.Serialize(projeto); 
             var encodedProjetoJson = Uri.EscapeDataString(projetoJson);
             NavigationManager.NavigateTo($"/Projeto/Cadastro/{encodedProjetoJson}");
+            sucesso = "Projeto cadastrado com sucesso!";
+            await AtivarTemporizadorSucesso();
         }
         catch (Exception ex)
         {
             erro = "Ocorreu um erro inesperado: " + ex.Message;
-            AtivarTemporizadorErro();
+            await AtivarTemporizadorErro();
         }
     }
 
     private async Task Excluir()
     {
-        contadorSelecionados = 0;
-        string erro = "";
         foreach (var projeto in projetosSelecionados)
         {
             try
             {
-                var aa = await ProjetoServico.Excluir(projeto.Id);
+                await _iProjetoServico.Excluir(projeto.Id);
             }
             catch (Exception ex)
             {
                 erro = "Ocorreu um erro inesperado: " + ex.Message;
+                await AtivarTemporizadorErro();
             }
         }
-        if (!string.IsNullOrEmpty(erro))
-        {
-
-            AtivarTemporizadorErro();
-        }
-        else
-        {
-            projetosSelecionados.Clear();
-            await CarregaGrid();
-        }
+        await CarregaGrid();
     }
-
-
-
-
-
-    private async Task AtivarTemporizadorErro()
-    {
-        await Task.Delay(2000); // Aguarda segundos
-        // erro = null;
-        // sucesso = null;
-        StateHasChanged(); // Notifica o Blazor para atualizar a exibição
-    }
-
-    private async Task AtivarTemporizadorSucesso()
-    {
-        await Task.Delay(2000); // Aguarda segundos
-        // erro = null;
-        // sucesso = null;
-        StateHasChanged(); // Notifica o Blazor para atualizar a exibição
-    }
-
 
     private void SelecionarTodos()
     {

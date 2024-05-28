@@ -4,9 +4,11 @@
 @using GestaoDeProjetoWeb.Data.Projeto
 @using System.ComponentModel.DataAnnotations;
 @using System.Text.Json
+@using GestaoDeProjetoWeb.Data.Util
 @using GestaoDeProjetoWeb.Servico
 @inject NavigationManager NavigationManager
-@inject IProjetoServico ProjetoServico
+@inject IProjetoServico _iProjetoServico
+ 
 
 <body>
     <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar Projeto" : "Novo Projeto")</h3>
@@ -31,6 +33,8 @@
     </div>
 
     <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+        <DataAnnotationsValidator />
+
         @if (!string.IsNullOrWhiteSpace(erro))
         {
             <div class="alert alert-danger" role="alert">
@@ -38,7 +42,6 @@
             </div>
         }
 
-        <DataAnnotationsValidator />
 
         <div class="form-floating col-12">
             <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
@@ -76,6 +79,20 @@
             <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
         </div>
 
+
+        <div class="form-floating col-6">
+            <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                @foreach (var situacao in comboItems)
+                {
+                    <option value="@situacao.Id">@situacao.Descricao</option>
+                }
+            </select>
+            <label for="situacao">Situação:</label>
+            <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+        </div>
+
+
+
         <div class="col-12 button-group">
             <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
@@ -90,12 +107,22 @@
     public string projetoJson { get; set; }
     private ProjetoDto projetoCadastro = new ProjetoDto();
     private HttpClient httpClient = new HttpClient();
+     private List<ComboItem> comboItems = new List<ComboItem>();
 
     private string erro = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        try
+        {
+            comboItems = await _iProjetoServico.ObterComboAsync();
+        }
+        catch (Exception ex)
+        {
+            erro = "Erro ao carregar os dados: " + ex.Message;
+        }
 
         if (!string.IsNullOrEmpty(projetoJson))
         {
@@ -106,30 +133,17 @@
             catch (Exception ex)
             {
                 erro = "Erro ao desserializar o projeto: " + ex.Message;
+                await AtivarTemporizadorErro();
             }
         }
     }
-
-
 
     private async Task CadastrarProjeto()
     {
         try
         {
             HttpResponseMessage response = new HttpResponseMessage();
-
-
-            response = await ProjetoServico.CadastroAsync(projetoCadastro);
-
-            // if (projetoCadastro.Id == 0)
-            // {
-            //     response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
-            // }
-            // else
-            // {
-            //     response = await httpClient.PutAsJsonAsync("https://localhost:7006/api/v1/Projeto/Alterar", projetoCadastro);
-            // }
-
+            response = await _iProjetoServico.CadastroAsync(projetoCadastro);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -143,7 +157,7 @@
         }
         catch (Exception ex)
         {
-            erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + ex.Message.ToString();
+            erro = "Ocorreu um erro ao adicionar o projeto. Por favor, tente novamente. " + ex.Message.ToString();
             await AtivarTemporizadorErro();
         }
 
@@ -151,7 +165,8 @@
 
     private async Task AtivarTemporizadorErro()
     {
-        await Task.Delay(10000);
+        Console.WriteLine("AtivarTemporizadorErro chamado.");
+        await Task.Delay(2000);
         erro = "";
 
         StateHasChanged();
@@ -161,149 +176,4 @@
     {
         NavigationManager.NavigateTo("/Projeto/Grid");
     }
-
 }
-
-
-
-
-
-
-@* 
-
-
-
-@page "/Projeto/Cadastro/{projetoJson}"
-@using GestaoDeProjetoWeb.Data.Projeto
-@inject NavigationManager NavigationManager
-
- 
-<!DOCTYPE html>
-<html lang="pt-BR">
-    <head>
-    <title>Projeto</title>
-        <style>
-            .form-custom {
-                font-size: 18px;
-                font-family: Arial, sans-serif;
-                row-gap: 15px;
-            }
-
-            .form-custom .form-outline {
-                margin-bottom: 20px;
-            }
-
-            .form-control-lg {
-                font-size: 16px;
-            }
-
-            .form-label {
-                font-weight: bold;
-            }
-        </style>
-    </head>
-    <body>
-        <h3>Novo Projeto</h3>
-
-        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
-            <DataAnnotationsValidator />
-
-            <div class="form-floating col-12">
-                <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
-                <label for="nomeProjeto">Nome do Projeto</label>
-                <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
-            </div>
-
-            <div class="form-floating col-12">
-                <textarea class="form-control form-control-lg" id="descricao" @bind="projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
-                <label for="descricao">Descrição</label>
-                <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="projetoCadastro.DataHoraInicio" />
-                <label for="dataHoraInicio">Data inicial</label>
-                <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
-            </div>
-
-            <div class="form-floating col-md-6">
-                <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="projetoCadastro.DataHoraFim" />
-                <label for="dataHoraFim">Data final</label>
-                <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
-            </div>
-
-            <div class="form-floating col-6">
-                <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
-                    <option value="">Selecione a situação</option>
-                    <option value="1">Planejado</option>
-                    <option value="2">Em Andamento</option>
-                    <option value="3">Atrasado</option>
-                    <option value="4">Em Revisão</option>
-                    <option value="5">Em Espera</option>
-                    <option value="6">Em Andamento (Baixa Prioridade)</option>
-                    <option value="7">Em Andamento (Média Prioridade)</option>
-                    <option value="8">Em Andamento (Alta Prioridade)</option>
-                    <option value="9">Em Teste</option>
-                    <option value="10">Pendente Aprovação</option>
-                    <option value="11">Pendente Recursos</option>
-                    <option value="12">Aguardando Feedback do Cliente</option>
-                    <option value="13">Aguardando Aprovação Interna</option>
-                    <option value="14">Cancelado</option>
-                    <option value="15">Concluído</option>
-                </select>
-                <label for="situacao">Situação:</label>
-                <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-            </div>
-
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Salvar</button>
-            </div>
-        </EditForm>
-
-    </body>
-</html>
-
- 
-
-
-@code 
-{
-    private HttpClient httpClient = new HttpClient();
-    private ProjetoDto projetoCadastro = new ProjetoDto();
-    private string erro;
- 
-    private async Task CadastrarProjeto()
-    {
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Projeto/Inserir", projetoCadastro);
-            if (!response.IsSuccessStatusCode)
-            {
-                erro = "Ocorreu um erro ao adicionar a projeto. Por favor, tente novamente. " + response.ToString();
-                AtivarTemporizadorErro();
-            }
-            else
-            {
-                NavigationManager.NavigateTo("/Projetos/Grid");
-            }
-        }
-        catch (Exception ex)
-        {
-            erro = "Ocorreu um erro ao adicionar a empresa. Por favor, tente novamente. " + ex.Message.ToString();
-            AtivarTemporizadorErro();
-        }
-
-    }
-
-    private async Task AtivarTemporizadorErro()
-    {
-        await Task.Delay(10000);
-        erro = null;
-
-        StateHasChanged();
-    }
-
-}
-
-
-  *@
