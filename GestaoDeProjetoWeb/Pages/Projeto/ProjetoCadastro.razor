@@ -1,17 +1,25 @@
-﻿@page "/Projeto/Cadastro"
-@page "/Projeto/Cadastro/{projetoJson}"
+﻿@page "/Projeto/ProjetoCadastro"
+@page "/Projeto/ProjetoCadastro/{projetoJson}"
 
+@using GestaoDeProjetoWeb.Data
 @using GestaoDeProjetoWeb.Data.Projeto
 @using System.ComponentModel.DataAnnotations;
 @using System.Text.Json
+@using GestaoDeProjetoWeb.Data.Squad
 @using GestaoDeProjetoWeb.Data.Util
 @using GestaoDeProjetoWeb.Servico
 @inject NavigationManager NavigationManager
 @inject IProjetoServico _iProjetoServico
  
 
+
+
+ 
+
 <body>
     <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar Projeto" : "Novo Projeto")</h3>
+
+
 
     <div class="hstack gap-3">
         <div class="p-2">
@@ -31,6 +39,7 @@
 
         </div>
     </div>
+
 
     <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
         <DataAnnotationsValidator />
@@ -111,6 +120,11 @@
 
     private string erro = string.Empty;
 
+ 
+ 
+
+
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -152,7 +166,7 @@
             }
             else
             {
-                NavigationManager.NavigateTo("/Projeto/Grid");
+                NavigationManager.NavigateTo("/Projeto/ProjetoGrid");
             }
         }
         catch (Exception ex)
@@ -174,6 +188,11 @@
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/Projeto/Grid");
+        NavigationManager.NavigateTo("/Projeto/ProjetoGrid");
     }
+
+
+   
+
+
 }

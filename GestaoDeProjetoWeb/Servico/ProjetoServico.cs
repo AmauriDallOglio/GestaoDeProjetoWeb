@@ -1,7 +1,6 @@
 ﻿using GestaoDeProjetoWeb.Data;
 using GestaoDeProjetoWeb.Data.Projeto;
 using GestaoDeProjetoWeb.Data.Util;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 
@@ -17,17 +16,6 @@ namespace GestaoDeProjetoWeb.Servico
             _httpClient = new HttpClient();
             _url = new Servidor().ServidorApi();
         }
-
-        //public async Task<RetornoPaginadoGenerico<ProjetoDto>> ObterTodosProjetosAsync()
-        //{
-
-        //    var response = await _httpClient.GetStringAsync(_url + "Projeto/ObterTodos");
-        //    RetornoPaginadoGenerico<ProjetoDto> resultado = JsonSerializer.Deserialize<RetornoPaginadoGenerico<ProjetoDto>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        //    return resultado;
-
-
-        //}
-
 
         public async Task<List<ProjetoDto>> ObterTodosProjetosAsync()
         {

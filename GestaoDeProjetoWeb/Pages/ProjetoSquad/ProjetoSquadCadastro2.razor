@@ -1,0 +1,201 @@
+﻿@page "/ProjetoSquad/ProjetoSquadCadastro2"
+@page "/ProjetoSquad/ProjetoSquadCadastro2/{projetoJson}"
+@using GestaoDeProjetoWeb.Data
+@using GestaoDeProjetoWeb.Data.Projeto
+@using System.Text.Json
+@using System.Text
+@using GestaoDeProjetoWeb.Data.Squad
+@using GestaoDeProjetoWeb.Data.Util
+@using GestaoDeProjetoWeb.Servico
+@inject ISquadServico _iSquadServico
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IProjetoServico _iProjetoServico
+
+
+<body>
+    <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar squad" : "Nova squad")</h3>
+
+
+
+    <div class="hstack gap-3">
+        <div class="p-2">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="#">Home</a> </li>
+                    <li class="breadcrumb-item" <a href="/Projeto/ProjetoGrid">Projeto</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page"> Squad </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="p-2 ms-auto">
+            <p>
+                <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+            </p>
+
+        </div>
+    </div>
+
+
+    <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+        <DataAnnotationsValidator />
+
+        @if (!string.IsNullOrWhiteSpace(erro))
+        {
+            <div class="alert alert-danger" role="alert">
+                @erro
+            </div>
+        }
+
+
+
+        <div class="form-floating col-12">
+            <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
+            <label for="nomeProjeto">Nome do Projeto</label>
+            <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
+        </div>
+
+        <div class="form-floating col-6">
+            <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                @foreach (var situacao in comboItems)
+                {
+                    <option value="@situacao.Id">@situacao.Descricao</option>
+                }
+            </select>
+            <label for="situacao">Situação:</label>
+            <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+        </div>
+
+
+
+        <div class="col-12 button-group">
+            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+
+    </EditForm>
+
+
+
+    @if (squads != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Empresa</th>
+                    <th>Descrição</th>
+                    <th>Inativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var squad in squads)
+                {
+                    <tr>
+                        <td>@squad.Id</td>
+                        <td>@squad.Id_Empresa</td>
+                        <td>@squad.Descricao</td>
+                        <td>@squad.Inativo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Carregando...</p>
+    }
+
+</body>
+
+
+
+
+@code {
+    [Parameter]
+    public string projetoJson { get; set; }
+    private ProjetoDto projetoCadastro = new ProjetoDto();
+    private HttpClient httpClient = new HttpClient();
+    private List<ComboItem> comboItems = new List<ComboItem>();
+    private List<SquadDto> squads = new List<SquadDto>();
+    private string erro = string.Empty;
+
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        try
+        {
+            List<SquadDto> squads = await _iSquadServico.ObterTodasSquadAsync();
+            comboItems = await _iSquadServico.ObterComboAsync();
+        }
+        catch (Exception ex)
+        {
+            erro = "Erro ao carregar os dados: " + ex.Message;
+        }
+
+        if (!string.IsNullOrEmpty(projetoJson))
+        {
+            try
+            {
+                projetoCadastro = JsonSerializer.Deserialize<ProjetoDto>(Uri.UnescapeDataString(projetoJson));
+            }
+            catch (Exception ex)
+            {
+                erro = "Erro ao desserializar o projeto: " + ex.Message;
+                await AtivarTemporizadorErro();
+            }
+        }
+    }
+
+    private async Task CadastrarProjeto()
+    {
+        try
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            //response = await _iSquadServico.CadastroAsync(projetoCadastro);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                erro = "Ocorreu um erro ao adicionar/atualizar o projeto. Por favor, tente novamente. " + response.ToString();
+                await AtivarTemporizadorErro();
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/Projeto/ProjetoGrid");
+            }
+        }
+        catch (Exception ex)
+        {
+            erro = "Ocorreu um erro ao adicionar o projeto. Por favor, tente novamente. " + ex.Message.ToString();
+            await AtivarTemporizadorErro();
+        }
+
+    }
+
+    private async Task AtivarTemporizadorErro()
+    {
+        Console.WriteLine("AtivarTemporizadorErro chamado.");
+        await Task.Delay(2000);
+        erro = "";
+
+        StateHasChanged();
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/Projeto/ProjetoGrid");
+    }
+
+
+
+
+
+}

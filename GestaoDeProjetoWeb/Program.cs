@@ -10,7 +10,7 @@ builder.Services.AddServerSideBlazor();
 
 
 builder.Services.AddScoped<IProjetoServico, ProjetoServico>();
-
+builder.Services.AddScoped<ISquadServico, SquadServico>();
 
 
 var app = builder.Build();
