@@ -1,5 +1,5 @@
 ﻿using GestaoDeProjetoWeb.Data;
-using GestaoDeProjetoWeb.Data.Squad;
+using GestaoDeProjetoWeb.Data.DTOs;
 using GestaoDeProjetoWeb.Data.Util;
 using System.Text.Json;
 

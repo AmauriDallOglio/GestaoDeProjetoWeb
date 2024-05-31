@@ -1,9 +1,8 @@
 ﻿@page "/Projeto/ProjetoGrid"
+@using GestaoDeProjetoWeb.Data.DTOs
 @using GestaoDeProjetoWeb.Data
-@using GestaoDeProjetoWeb.Data.Projeto
 @using System.Text.Json
 @using System.Text
-@using GestaoDeProjetoWeb.Data.Squad
 @using GestaoDeProjetoWeb.Servico
 @inject IProjetoServico _iProjetoServico
 
@@ -14,125 +13,130 @@
  
 
 <body>
-    <h3 class="espaco adicionaEspaco">Cadastro de Projetos</h3>
-  
-    <div class="hstack gap-3">
-        <div class="p-2">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
-                </ol>
-            </nav>
+    <div class=" bordered-div">
+        <h3>Cadastro de Projetos</h3>
 
-        </div>   
-        <div class="p-2 ms-auto">
-            <p>
-                <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
-            </p>
-      
-        </div>
-    </div>
-    @if (!string.IsNullOrWhiteSpace(erro))
-    {
-        <div class="alert alert-danger" role="alert">
-            @erro
-        </div>
-    }
+        <div class="hstack gap-3">
+            <div class="p-2">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> Projeto </li>
+                    </ol>
+                </nav>
 
-    @if (!string.IsNullOrWhiteSpace(sucesso))
-    {
-        <div class="alert alert-success" role="alert">
-            @sucesso
+            </div>
+            <div class="p-2 ms-auto">
+                <p>
+                    <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+                </p>
+
+            </div>
         </div>
-    }
-    
-    @if (projetos != null && projetos.Any())
-    {
-        <div class="row g-3 align-items-center adicionaEspaco">
+
+
+        @if (!string.IsNullOrWhiteSpace(erro))
+        {
+            <div class="alert alert-danger" role="alert">
+                @erro
+            </div>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(sucesso))
+        {
+            <div class="alert alert-success" role="alert">
+                @sucesso
+            </div>
+        }
+
+        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
             <div class="col-md-auto">
                 <button type="button" class="btn btn-outline-success custom-btn" @onclick="Inserir">Inserir</button>
- 
-                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="Atualizar">Alterar</button> *@
                 <button type="button" class="btn btn-outline-danger custom-btn" @onclick="Excluir" disabled="@(!botaoExcluirHabilitado)">Excluir</button>
-                @* <button type="button" class="btn btn-outline-danger custom-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" > Excluir </button> *@
-                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="MsgSucesso"> Sucesso </button>  *@
-                @* <button type="button" class="btn btn-outline-primary custom-btn" @onclick="MsgErro"> Erro </button> *@
-
-
-
             </div>
 
             <div class="col-md-auto">
                 <label for="filtro" class="col-form-label">Filtrar:</label>
             </div>
-                
+
             <div class="col-md-auto">
                 <input type="text" class="form-control" id="filtro" @bind="filtro">
-            </div>
+            </div> 
+ 
+          
+
         </div>
 
-        <table class="table">
-            <thead class="table-light">
-                <tr>
-                    <th class="text-center">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
-                        </div>
-                    </th>
-                    <th class="col-1 custom-font">Id</th>
-                    <th class="col-3 custom-font">Nome</th>
-                    <th class="col-3 custom-font">Descrição</th>
-                    <th class="col-2 custom-font">Data de início</th>
-                    <th class="col-2 custom-font">Data de final</th>
-                    <th class="col-1 custom-font">Situação</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
-                    p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                    p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                    p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
-                {
-                    <tr>
-                        <td class="text-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
-                            </div>
-                        </td>
-                        <td class="col-1 custom-font">@projeto.Id</td>
-                        <td class="col-3  custom-font">@projeto.NomeProjeto</td>
-                        <td class="col-3  custom-font">@projeto.Descricao</td>
-                        <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                        <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                        <td class="col-1">@projeto.SituacaoDescricao</td>
-                    </tr>
-                    @if (projetoSelecionado == projeto)
-                    {
+        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+            @if (projetos != null && projetos.Any())
+            {
+                <table class="table">
+                    <thead class="table-light">
                         <tr>
-                            <td colspan="8">
-                                <button class="btn btn-outline-primary custom-btn"               @onclick="() => Alterar(projeto)">Alterar</button>
-                                <button class="btn btn-outline-danger custom-btn"                @onclick="Excluir">Excluir</button>
-                                <button class="btn btn-primary"                                  @onclick="OpenModal">Pesquisar Squad</button>
-                                <button type="button" class="btn btn-outline-success custom-btn" @onclick="() => ProjetoSquadCadastro(projeto)">ProjetoSquadCadastro</button>
+                            <th class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                                </div>
+                            </th>
+                            <th class="col-1 custom-font">Id</th>
+                            <th class="col-3 custom-font">Nome</th>
+                            <th class="col-3 custom-font">Descrição</th>
+                            <th class="col-2 custom-font">Data de início</th>
+                            <th class="col-2 custom-font">Data de final</th>
+                            <th class="col-1 custom-font">Situação</th>
 
-                            </td>
                         </tr>
-                    }
-                }
-                </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtro) ||
+                        p.NomeProjeto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                        p.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
+                        p.Situacao.ToString().Contains(filtro, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
+                                    </div>
+                                </td>
+                                <td class="col-1 custom-font">@projeto.Id</td>
+                                <td class="col-3  custom-font">@projeto.NomeProjeto</td>
+                                <td class="col-3  custom-font">@projeto.Descricao</td>
+                                <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                                <td class="col-1">@projeto.SituacaoDescricao</td>
+                            </tr>
+                            @if (projetoSelecionado == projeto)
+                            {
+                                <tr>
+                                    <td colspan="8">
+                                        <button class="btn btn-outline-primary custom-btn" @onclick="() => Alterar(projeto)">Alterar</button>
+                                        <button class="btn btn-outline-danger custom-btn" @onclick="Excluir">Excluir</button>
+                                        <button class="btn btn-primary" @onclick="OpenModal">Pesquisar Squad</button>
+                                        <button type="button" class="btn btn-outline-success custom-btn" @onclick="() => ProjetoSquadCadastro(projeto)">Squad</button>
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
 
 
-        <div class="col-md-auto">
-            <label>Projetos Selecionados: @contadorSelecionados</label>
+                <div class="col-md-auto">
+                    <label>Projetos Selecionados: @contadorSelecionados</label>
+                </div>
+            
+            }
+            else
+            {
+                <p>Carregando...</p>
+            }
         </div>
-    }
-    else
-    {
-        <p>Carregando...</p>
-    }
+
+
+    </div>
+
 </body>
  
 
@@ -273,7 +277,7 @@
         {
             var projetoJson = JsonSerializer.Serialize(projetoDto);
             var encodedProjetoJson = Uri.EscapeDataString(projetoJson);
-            NavigationManager.NavigateTo($"ProjetoSquad/ProjetoSquadCadastro2/{encodedProjetoJson}");
+            NavigationManager.NavigateTo($"ProjetoSquad/ProjetoSquadCadastro/{encodedProjetoJson}");
         }
         catch (Exception ex)
         {

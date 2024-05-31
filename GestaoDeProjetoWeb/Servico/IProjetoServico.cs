@@ -1,4 +1,4 @@
-﻿using GestaoDeProjetoWeb.Data.Projeto;
+﻿using GestaoDeProjetoWeb.Data.DTOs;
 using GestaoDeProjetoWeb.Data.Util;
 
 namespace GestaoDeProjetoWeb.Servico

@@ -1,4 +1,4 @@
-﻿namespace GestaoDeProjetoWeb.Data.Squad
+﻿namespace GestaoDeProjetoWeb.Data.DTOs
 {
     public class SquadDto
     {

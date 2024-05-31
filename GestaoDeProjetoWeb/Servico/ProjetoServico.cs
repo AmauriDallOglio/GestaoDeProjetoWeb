@@ -1,5 +1,5 @@
 ﻿using GestaoDeProjetoWeb.Data;
-using GestaoDeProjetoWeb.Data.Projeto;
+using GestaoDeProjetoWeb.Data.DTOs;
 using GestaoDeProjetoWeb.Data.Util;
 using System.Text;
 using System.Text.Json;

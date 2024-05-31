@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestaoDeProjetoWeb.Data.Projeto
+namespace GestaoDeProjetoWeb.Data.DTOs
 {
     public class ProjetoDto
     {

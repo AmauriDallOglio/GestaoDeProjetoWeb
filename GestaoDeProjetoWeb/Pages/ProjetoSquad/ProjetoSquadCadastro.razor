@@ -1,97 +1,153 @@
 ﻿@page "/ProjetoSquad/ProjetoSquadCadastro"
 @page "/ProjetoSquad/ProjetoSquadCadastro/{projetoJson}"
 @using GestaoDeProjetoWeb.Data
-@using GestaoDeProjetoWeb.Data.Projeto
-@using System.ComponentModel.DataAnnotations;
+@using GestaoDeProjetoWeb.Data.DTOs
 @using System.Text.Json
-@using GestaoDeProjetoWeb.Data.Squad
+@using System.Text
 @using GestaoDeProjetoWeb.Data.Util
 @using GestaoDeProjetoWeb.Servico
+@inject ISquadServico _iSquadServico
+
 @inject NavigationManager NavigationManager
-@inject IProjetoServico _iProjetoServico
- 
+@inject IJSRuntime JSRuntime
+@inject IProjetoSquadServico _iProjetoSquadServico
 
-
-
- 
 
 <body>
-    <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar squad" : "Novo squad")</h3>
+    <div class="bordered-div">
+        <h3>@(dadosCadastro != null ? "Cadastro das Squad" : "Cadastro das Squad")</h3>
 
 
+        <div class="hstack gap-3">
+            <div class="p-2">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item" <a href="/Projeto/ProjetoGrid">Projeto</a> </li>
+                        <li class="breadcrumb-item active" aria-current="page"> Squad </li>
+                    </ol>
+                </nav>
 
-    <div class="hstack gap-3">
-        <div class="p-2">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"> <a href="#">Home</a> </li>
-                    <li class="breadcrumb-item" <a href="/Projeto/ProjetoGrid">Projeto</a> </li>
-                    <li class="breadcrumb-item active" aria-current="page"> Squad </li>
-                </ol>
-            </nav>
-
+            </div>
         </div>
-        <div class="p-2 ms-auto">
-            <p>
-                <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
-            </p>
 
+    
+
+        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+            <EditForm Model="@dadosCadastro" OnValidSubmit="@Inserir" class="row g-1 form-custom">
+                <DataAnnotationsValidator />
+
+                @if (!string.IsNullOrWhiteSpace(erro))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @erro
+                    </div>
+                }
+
+
+
+                <div class="form-floating col-12">
+                    <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@dadosCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" disabled />
+                    <label for="nomeProjeto">Nome do Projeto</label>
+                    <ValidationMessage For="@(() => dadosCadastro.NomeProjeto)" />
+                </div>
+
+                <div class="form-floating col-6">
+                    <select class="form-select form-control-lg" id="id_Squad" @bind="@dadosCadastro.Id_Squad">
+                        @foreach (var situacao in comboItems)
+                        {
+                            <option value="@situacao.Id">@situacao.Descricao</option>
+                        }
+                    </select>
+                    <label for="id_Squad">Situação:</label>
+                    <ValidationMessage For="@(() => dadosCadastro.Id_Squad)" />
+                </div>
+
+
+
+                <div class="col-12 button-group">
+                    @* <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button> *@
+                   
+                    <button type="button" class="btn btn-outline-success custom-btn" @onclick="Inserir">Inserir</button>
+                </div>
+
+            </EditForm>
+        </div>
+
+        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+            @if (listaGrid != null && listaGrid.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                                </div>
+                            </th>
+
+                            <th>Id</th>
+                            <th>IdProjeto</th>
+                            <th>Nome Projeto</th>
+                            <th>IdSquad</th>
+                            <th>Nome Squad</th>
+                            <th>Inativo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var squad in listaGrid)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
+                                    </div>
+                                </td>
+                                <td>@squad.Id</td>
+                                <td>@squad.Id_Projeto</td>
+                                <td>@squad.NomeProjeto</td>
+                                <td>@squad.Id_Squad</td>
+                                <td>@squad.NomeSquad</td>
+                                <td>@squad.Inativo</td>
+                            </tr>
+                            @if (projetoSelecionado == squad)
+                            {
+                                <tr>
+                                    <td colspan="8">
+            
+                                        <button class="btn btn-outline-danger custom-btn" @onclick="Excluir">Excluir</button>
+ 
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Carregando...</p>
+            }
         </div>
     </div>
-
-
-    <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto2" class="row g-1 form-custom">
-        <DataAnnotationsValidator />
-
-        @if (!string.IsNullOrWhiteSpace(erro))
-        {
-            <div class="alert alert-danger" role="alert">
-                @erro
-            </div>
-        }
-
-
-        <div class="form-floating col-12">
-            <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
-            <label for="nomeProjeto">Nome do Projeto</label>
-            <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
-        </div>
-
-
-
-        <div class="form-floating col-6">
-            <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
-                @foreach (var situacao in comboItems)
-                {
-                    <option value="@situacao.Id">@situacao.Descricao</option>
-                }
-            </select>
-            <label for="situacao">Situação:</label>
-            <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-        </div>
-
-
-
-        <div class="col-12 button-group">
-            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-
-    </EditForm>
 </body>
+
+
 
 
 @code {
     [Parameter]
     public string projetoJson { get; set; }
-    private ProjetoDto projetoCadastro = new ProjetoDto();
+    private ProjetoSquadDto dadosCadastro = new ProjetoSquadDto();
     private HttpClient httpClient = new HttpClient();
-     private List<ComboItem> comboItems = new List<ComboItem>();
-
+    private List<ComboItem> comboItems = new List<ComboItem>();
+    private List<SquadDto> squads = new List<SquadDto>();
+    private List<ProjetoSquadDto> listaGrid = new List<ProjetoSquadDto>();
     private string erro = string.Empty;
 
- 
- 
+
+
 
 
 
@@ -101,7 +157,8 @@
 
         try
         {
-            comboItems = await _iProjetoServico.ObterComboAsync();
+            List<SquadDto> squads = await _iSquadServico.ObterTodasSquadAsync();
+            comboItems = await _iSquadServico.ObterComboAsync();
         }
         catch (Exception ex)
         {
@@ -112,7 +169,10 @@
         {
             try
             {
-                projetoCadastro = JsonSerializer.Deserialize<ProjetoDto>(Uri.UnescapeDataString(projetoJson));
+                ProjetoDto projetoDto = JsonSerializer.Deserialize<ProjetoDto>(Uri.UnescapeDataString(projetoJson));
+                dadosCadastro.Id_Projeto = projetoDto.Id;
+                dadosCadastro.NomeProjeto = projetoDto.NomeProjeto;
+
             }
             catch (Exception ex)
             {
@@ -120,15 +180,16 @@
                 await AtivarTemporizadorErro();
             }
         }
+        listaGrid = await CarregaGrid();
     }
 
-    private async Task CadastrarProjeto2()
+    private async Task Inserir()
     {
         try
         {
             HttpResponseMessage response = new HttpResponseMessage();
-            response = await _iProjetoServico.CadastroAsync(projetoCadastro);
-
+            response = await _iProjetoSquadServico.InserirAsync(dadosCadastro);
+       
             if (!response.IsSuccessStatusCode)
             {
                 erro = "Ocorreu um erro ao adicionar/atualizar o projeto. Por favor, tente novamente. " + response.ToString();
@@ -136,7 +197,8 @@
             }
             else
             {
-                NavigationManager.NavigateTo("/Projeto/ProjetoGrid");
+                listaGrid = await CarregaGrid();
+            
             }
         }
         catch (Exception ex)
@@ -144,8 +206,34 @@
             erro = "Ocorreu um erro ao adicionar o projeto. Por favor, tente novamente. " + ex.Message.ToString();
             await AtivarTemporizadorErro();
         }
-
     }
+
+    
+    private async Task Excluir()
+    {
+        foreach (var projeto in projetosSelecionados)
+        {
+            try
+            {
+                await _iProjetoSquadServico.Excluir(projeto.Id);
+            }
+            catch (Exception ex)
+            {
+                erro = "Ocorreu um erro inesperado: " + ex.Message;
+                await AtivarTemporizadorErro();
+            }
+        }
+        listaGrid = await CarregaGrid();
+    }
+
+     private async Task<List<ProjetoSquadDto>> CarregaGrid()
+    {
+
+        List<ProjetoSquadDto> projetos = await _iProjetoSquadServico.ObterTodosAsync();
+        return projetos;
+    }
+
+
 
     private async Task AtivarTemporizadorErro()
     {
@@ -162,7 +250,66 @@
     }
 
 
-   
+ 
+    private string filtro = string.Empty;
 
+    private List<ProjetoSquadDto> projetosSelecionados = new List<ProjetoSquadDto>();
+    private int contadorSelecionados = 0;
+    bool idSelecionarTodos = false;
+    private ProjetoSquadDto projetoSelecionado = new ProjetoSquadDto();
+    private void SelecionarTodos()
+    {
+        idSelecionarTodos = !idSelecionarTodos;
+        contadorSelecionados = 0;
+        projetosSelecionados.Clear();
+
+        if (idSelecionarTodos)
+        {
+            foreach (var item in listaGrid)
+            {
+                item.Selecionado = true;
+                if (!projetosSelecionados.Contains(item))
+                {
+                    projetosSelecionados.Add(item);
+                    contadorSelecionados++;
+                    item.Selecionado = true;
+                }
+            }
+            Console.WriteLine("Checkbox selecionado");
+        }
+        else
+        {
+            foreach (var item in listaGrid)
+            {
+                item.Selecionado = true;
+                if (!projetosSelecionados.Contains(item))
+                {
+                    item.Selecionado = false;
+                }
+            }
+            Console.WriteLine("Checkbox não selecionado");
+        }
+
+    }
+
+
+    void Selecionado(ProjetoSquadDto item)
+    {
+
+        if (!item.Selecionado)
+        {
+            projetosSelecionados.Add(item);
+            contadorSelecionados++;
+            item.Selecionado = true;
+            projetoSelecionado = item;
+        }
+        else
+        {
+            projetosSelecionados.Remove(item);
+            contadorSelecionados--;
+            item.Selecionado = false;
+            projetoSelecionado = null;
+        }
+    }
 
 }
