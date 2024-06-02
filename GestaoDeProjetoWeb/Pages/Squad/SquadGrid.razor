@@ -1,28 +1,24 @@
-﻿@page "/Projeto/ProjetoGrid"
+﻿@page "/Squad/SquadGrid"
 @using GestaoDeProjetoWeb.Data.DTOs
 @using GestaoDeProjetoWeb.Data
 @using System.Text.Json
 @using System.Text
 @using GestaoDeProjetoWeb.Pages.Componentes
 @using GestaoDeProjetoWeb.Servico
+
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-@inject IProjetoServico _iProjetoServico
 @inject ISquadServico _iSquadServico
- 
- 
+
 <body>
     <div class=" bordered-div">
 
-
-        <ApresentacaoComponente PaginaAtual="Projeto"
-                                InformacaoPagina="Projeto/ProjetoInfo"
-                                Titulo="Cadastro de Projetos"   />
-
+        <ApresentacaoComponente PaginaAtual="Squad"
+                                InformacaoPagina="Squad/SquadInfo"
+                                Titulo="Cadastro de squad" />
 
         <MensagemResultadoComponente Sucesso=@sucesso
                                      Erro=@erro />
-
 
         <FiltroEControlesComponente Filtro="@filtroGrid"
                                     OnFiltroChanged="AtualizarLista"
@@ -30,12 +26,8 @@
                                     Excluir="BotaoExcluir" 
                                     BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
-
-    
-
-
         <div class="row g-3 align-items-center adicionaEspaco bordered-div">
-            @if (projetos != null && projetos.Any())
+            @if (squad != null && squad.Any())
             {
                 <table class="table">
                     <thead class="table-light">
@@ -45,41 +37,30 @@
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 custom-font">Id</th>
-                            <th class="col-3 custom-font">Nome</th>
-                            <th class="col-3 custom-font">Descrição</th>
-                            <th class="col-2 custom-font">Data de início</th>
-                            <th class="col-2 custom-font">Data de final</th>
-                            <th class="col-1 custom-font">Situação</th>
-
+                            <th class="col-6 custom-font">Id</th>
+                            <th class="col-6 custom-font">Descrição</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var projeto in projetos.Where(p => string.IsNullOrEmpty(filtroGrid) ||
-                                                                p.NomeProjeto.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
-                                                                p.Descricao.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
-                                                                p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
+                        @foreach (var squad in squad.Where(p => string.IsNullOrEmpty(filtroGrid) ||
+                       p.Descricao.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
+                       p.Inativo.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
                         {
                             <tr>
                                 <td class="text-center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
+                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
                                     </div>
                                 </td>
-                                <td class="col-1 custom-font">@projeto.Id</td>
-                                <td class="col-3  custom-font">@projeto.NomeProjeto</td>
-                                <td class="col-3  custom-font">@projeto.Descricao</td>
-                                <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                                <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                                <td class="col-1">@projeto.SituacaoDescricao</td>
+                                <td class="col-6 custom-font">@squad.Id</td>
+                                <td class="col-6 custom-font">@squad.Descricao</td>
                             </tr>
-                            @if (projetoSelecionado == projeto)
+                            @if (squadelecionado == squad)
                             {
                                 <tr>
                                     <td colspan="8">
-                                        <button class="btn btn-outline-primary custom-btn" @onclick="() => BotaoAlterar(projeto)">Alterar</button>
+                                        <button class="btn btn-outline-primary custom-btn" @onclick="() => Alterar(squad)">Alterar</button>
                                         <button class="btn btn-outline-danger custom-btn" @onclick="BotaoExcluir">Excluir</button>
-                                        <button type="button" class="btn btn-outline-success custom-btn" @onclick="() => ProjetoSquadCadastro(projeto)">Squad</button>
                                     </td>
                                 </tr>
                             }
@@ -87,7 +68,7 @@
                     </tbody>
                 </table>
                 <div class="col-md-auto">
-                    <label>Projetos Selecionados: @contadorSelecionados</label>
+                    <label>squad Selecionados: @contadorSelecionados</label>
                 </div>
             }
             else
@@ -97,22 +78,19 @@
         </div>
     </div>
 </body>
- 
 
-
-@code 
+@code
 {
     private HttpClient httpClient = new HttpClient();
     private string filtroGrid = string.Empty;
-    private List<ProjetoDto> projetos = new List<ProjetoDto>();
     private string erro = string.Empty;
     private string sucesso = string.Empty;
-    private List<ProjetoDto> projetosSelecionados = new List<ProjetoDto>();
     private int contadorSelecionados = 0;
-    private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
+    private bool botaoExcluirHabilitado => squadSelecionados.Count >= 2;
     bool idSelecionarTodos = false;
-    private ProjetoDto projetoSelecionado = new ProjetoDto();
-
+    private SquadDto squadelecionado = new SquadDto();
+    private List<SquadDto> squadSelecionados = new List<SquadDto>();
+    private List<SquadDto> squad = new List<SquadDto>();
 
 
     private async Task AtualizarLista(string novoFiltro)
@@ -121,25 +99,26 @@
     }
 
 
+
     protected override async Task OnInitializedAsync()
     {
-        projetos = await CarregaGrid();
+        squad = await CarregaGrid();
     }
 
-    private async Task<List<ProjetoDto>> CarregaGrid()
+    private async Task<List<SquadDto>> CarregaGrid()
     {
         await AtivarTemporizadorSucesso();
-        projetosSelecionados.Clear();
+        squadSelecionados.Clear();
         contadorSelecionados = 0;
         erro = string.Empty;
         sucesso = string.Empty;
-        List<ProjetoDto> projetos = await _iProjetoServico.ObterTodosProjetosAsync();
-        return projetos;
+        List<SquadDto> squad = await _iSquadServico.ObterTodasSquadAsync();
+        return squad;
     }
 
     // private async Task MsgSucesso()
     // {
-    //     sucesso = "Projeto cadastrado com sucesso!";
+    //     sucesso = "squad cadastrado com sucesso!";
     //     await AtivarTemporizadorSucesso();
     // }
 
@@ -153,41 +132,44 @@
 
     // private async Task MsgErro()
     // {
-    //     erro = "Projeto com erro!";
+    //     erro = "squad com erro!";
     //     await AtivarTemporizadorErro();
     // }
 
     private async Task AtivarTemporizadorErro()
     {
         Console.WriteLine("AtivarTemporizadorErro chamado.");
+        erro = "squad com erro!";
         await Task.Delay(2000); // Aguarda 2 segundos
         erro = null;
         StateHasChanged();
     }
 
 
-    private async Task ProjetoSquadCadastro(ProjetoDto projetoDto)
-    {
-        try
-        {
-            var projetoJson = JsonSerializer.Serialize(projetoDto);
-            var encodedProjetoJson = Uri.EscapeDataString(projetoJson);
-            NavigationManager.NavigateTo($"ProjetoSquad/ProjetoSquadCadastro/{encodedProjetoJson}");
-        }
-        catch (Exception ex)
-        {
-            erro = "Ocorreu um erro inesperado: " + ex.Message;
-            await AtivarTemporizadorErro();
-        }
+    // private async Task SquadCadastro(SquadDto SquadDto)
+    // {
+    //     try
+    //     {
+    //         var squadJson = JsonSerializer.Serialize(SquadDto);
+    //         var encodedsquadJson = Uri.EscapeDataString(squadJson);
+    //         NavigationManager.NavigateTo($"Squad/SquadCadastro/{encodedsquadJson}");
+    //         sucesso = "squad cadastrado com sucesso!";
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         erro = "Ocorreu um erro inesperado: " + ex.Message;
+    //         await AtivarTemporizadorErro();
+    //     }
 
-    }
+    // }
 
 
     private async Task BotaoInserir()
     {
         try
         {
-            NavigationManager.NavigateTo($"Projeto/ProjetoCadastro/{null}");
+            NavigationManager.NavigateTo($"Squad/SquadCadastro/{null}");
+            sucesso = "squad cadastrado com sucesso!";
         }
         catch (Exception ex)
         {
@@ -197,14 +179,14 @@
 
     }
 
-    private async Task BotaoAlterar(ProjetoDto projeto)
+    private async Task Alterar(SquadDto squad)
     {
         try
         {
-            var projetoJson = JsonSerializer.Serialize(projeto); 
-            var encodedProjetoJson = Uri.EscapeDataString(projetoJson);
-            NavigationManager.NavigateTo($"/Projeto/ProjetoCadastro/{encodedProjetoJson}");
-            sucesso = "Projeto cadastrado com sucesso!";
+            var squadJson = JsonSerializer.Serialize(squad);
+            var encodedsquadJson = Uri.EscapeDataString(squadJson);
+            NavigationManager.NavigateTo($"/Squad/SquadCadastro/{encodedsquadJson}");
+            sucesso = "squad cadastrado com sucesso!";
             await AtivarTemporizadorSucesso();
         }
         catch (Exception ex)
@@ -216,11 +198,12 @@
 
     private async Task BotaoExcluir()
     {
-        foreach (var projeto in projetosSelecionados)
+        foreach (var squad in squadSelecionados)
         {
             try
             {
-                await _iProjetoServico.Excluir(projeto.Id);
+                await _iSquadServico.ExcluirAsync(squad.Id);
+                sucesso = "squad excluido com sucesso!";
             }
             catch (Exception ex)
             {
@@ -235,62 +218,88 @@
     {
         idSelecionarTodos = !idSelecionarTodos;
         contadorSelecionados = 0;
-        projetosSelecionados.Clear();
+        squadSelecionados.Clear();
 
         if (idSelecionarTodos)
         {
-            foreach (var projeto in projetos)
+            foreach (var squad in squad)
             {
-                projeto.Selecionado = true;
-                if (!projetosSelecionados.Contains(projeto))
+                squad.Selecionado = true;
+                if (!squadSelecionados.Contains(squad))
                 {
-                    projetosSelecionados.Add(projeto);
+                    squadSelecionados.Add(squad);
                     contadorSelecionados++;
-                    projeto.Selecionado = true;
+                    squad.Selecionado = true;
                 }
             }
             Console.WriteLine("Checkbox selecionado");
         }
         else
         {
-            foreach (var projeto in projetos)
+            foreach (var squad in squad)
             {
-                projeto.Selecionado = true;
-                if (!projetosSelecionados.Contains(projeto))
+                squad.Selecionado = true;
+                if (!squadSelecionados.Contains(squad))
                 {
-                    projeto.Selecionado = false;
+                    squad.Selecionado = false;
                 }
             }
             Console.WriteLine("Checkbox não selecionado");
         }
+
     }
 
 
-    void Selecionado(ProjetoDto projeto)
+    void Selecionado(SquadDto squad)
     {
 
-        if (!projeto.Selecionado)
+        if (!squad.Selecionado)
         {
-            projetosSelecionados.Add(projeto);
+            squadSelecionados.Add(squad);
             contadorSelecionados++;
-            projeto.Selecionado = true;
-            projetoSelecionado = projeto;
+            squad.Selecionado = true;
+            squadelecionado = squad;
         }
         else
         {
-            projetosSelecionados.Remove(projeto);
+            squadSelecionados.Remove(squad);
             contadorSelecionados--;
-            projeto.Selecionado = false;
-            projetoSelecionado = null;
+            squad.Selecionado = false;
+            squadelecionado = null;
         }
     }
 
 
- 
- 
+    private List<SquadDto> squads = new List<SquadDto>();
 
+    private bool showModal = false;
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task OpenModal()
+    {
+        try
+        {
+            squads = await _iSquadServico.ObterTodasSquadAsync();
+            if (squads.Count <= 0)
+            {
+                SquadDto squadOff = new SquadDto
+                    {
+                        Id = 1,
+                        Descricao = "Exemplo OFF",
+                        Inativo = false
+                    };
+                squads.Add(squadOff);
+            }
+
+            showModal = true;
+        }
+        catch (Exception ex)
+        {
+            erro = "Erro ao carregar os squads: " + ex.Message;
+        }
+    }
+ 
 }
-
-
-
-

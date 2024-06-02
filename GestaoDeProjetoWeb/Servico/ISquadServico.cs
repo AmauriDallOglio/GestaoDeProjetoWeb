@@ -8,5 +8,8 @@ namespace GestaoDeProjetoWeb.Servico
 
         Task<List<SquadDto>> ObterTodasSquadAsync();
         Task<List<ComboItem>> ObterComboAsync();
+        Task<string> ExcluirAsync(int id);
+
+        Task<HttpResponseMessage> CadastroAsync(SquadDto squadDto);
     }
 }

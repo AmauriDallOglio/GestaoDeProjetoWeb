@@ -6,6 +6,13 @@
         public int Id_Empresa { get; set; }
         public string Descricao { get; set; }
         public bool Inativo { get; set; }
+
+        public bool Selecionado { get; set; }
+
     }
 
+    public class SquadExcluirRequest
+    {
+        public int Id { get; set; }
+    }
 }

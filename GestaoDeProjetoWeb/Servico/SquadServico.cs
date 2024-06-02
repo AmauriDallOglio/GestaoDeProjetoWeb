@@ -1,9 +1,11 @@
 ﻿using GestaoDeProjetoWeb.Data;
 using GestaoDeProjetoWeb.Data.DTOs;
 using GestaoDeProjetoWeb.Data.Util;
+using GestaoDeProjetoWeb.Servico;
+using System.Text;
 using System.Text.Json;
 
-namespace GestaoDeProjetoWeb.Servico
+namespace GestaoDeSquadWeb.Servico
 {
     public class SquadServico : ISquadServico
     {
@@ -46,6 +48,47 @@ namespace GestaoDeProjetoWeb.Servico
         {
             List<ComboItem> combo = await _httpClient.GetFromJsonAsync<List<ComboItem>>("https://localhost:7006/api/v1/Squad/ObterCombo");
             return combo;
+        }
+
+
+        public async Task<string> ExcluirAsync(int id)
+        {
+            SquadExcluirRequest request = new SquadExcluirRequest { Id = id };
+            StringContent requestContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Delete, "https://localhost:7006/api/v1/Squad/Excluir")
+            {
+                Content = requestContent
+            };
+
+            string retorno = "";
+            var response = await _httpClient.SendAsync(requestMessage);
+            if (!response.IsSuccessStatusCode)
+            {
+                retorno = ($"Erro ao excluir o Squad com Id: {id}");
+            }
+            return retorno;
+        }
+
+        public async Task<HttpResponseMessage> CadastroAsync(SquadDto squad)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            //var jsonContent = new StringContent(JsonSerializer.Serialize(Squad), Encoding.UTF8, "application/json");
+            if (squad.Id == 0)
+            {
+                response = await _httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/Squad/Inserir", squad);
+            }
+            else
+            {
+                response = await _httpClient.PutAsJsonAsync("https://localhost:7006/api/v1/Squad/Alterar", squad);
+            }
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Erro ao incluir Squad. Status code: {response.StatusCode}");
+            }
+
+            return response;
         }
 
     }

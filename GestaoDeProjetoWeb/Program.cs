@@ -1,4 +1,5 @@
 using GestaoDeProjetoWeb.Servico;
+using GestaoDeSquadWeb.Servico;
 
 var builder = WebApplication.CreateBuilder(args);
 

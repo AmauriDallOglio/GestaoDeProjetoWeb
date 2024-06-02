@@ -1,0 +1,156 @@
+﻿@page "/Squad/squadCadastro"
+@page "/Squad/squadCadastro/{squadJson}"
+@using GestaoDeProjetoWeb.Data.DTOs
+@using GestaoDeProjetoWeb.Data.Util
+@using GestaoDeProjetoWeb.Data
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.Json
+@using GestaoDeProjetoWeb.Servico
+@inject NavigationManager NavigationManager
+@inject ISquadServico _iSquadServico
+
+
+
+
+
+
+<body>
+    <h3 class="espaco adicionaEspaco">@(squadCadastro != null ? "Editar Squad" : "Novo Squad")</h3>
+
+
+
+    <div class="hstack gap-3">
+        <div class="p-2">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"> <a href="#">Home</a> </li>
+                    <li class="breadcrumb-item" <a href="/Squad/SquadGrid">Squad</a> </li>
+                    <li class="breadcrumb-item active" aria-current="page"> Cadastro </li>
+                </ol>
+            </nav>
+
+        </div>
+        <div class="p-2 ms-auto">
+            <p>
+                <a href="Squad/SquadInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+            </p>
+
+        </div>
+    </div>
+
+
+    <EditForm Model="@squadCadastro" OnValidSubmit="@CadastrarSquad" class="row g-1 form-custom">
+        <DataAnnotationsValidator />
+
+        @if (!string.IsNullOrWhiteSpace(erro))
+        {
+            <div class="alert alert-danger" role="alert">
+                @erro
+            </div>
+        }
+
+
+        <div class="form-floating col-12">
+            <input type="text" class="form-control form-control-lg" id="nomeSquad" @bind="@squadCadastro.Descricao" placeholder="Descreva o nome do Squad" />
+            <label for="nomeSquad">Nome do Squad</label>
+            <ValidationMessage For="@(() => squadCadastro.Descricao)" />
+        </div>
+
+ 
+         
+ 
+
+        <div class="col-12 button-group">
+            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+
+    </EditForm>
+</body>
+
+
+@code {
+    [Parameter]
+    public string squadJson { get; set; }
+    private SquadDto squadCadastro = new SquadDto();
+    private HttpClient httpClient = new HttpClient();
+    private List<ComboItem> comboItems = new List<ComboItem>();
+
+    private string erro = string.Empty;
+
+
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        try
+        {
+            comboItems = await _iSquadServico.ObterComboAsync();
+        }
+        catch (Exception ex)
+        {
+            erro = "Erro ao carregar os dados: " + ex.Message;
+        }
+
+        if (!string.IsNullOrEmpty(squadJson))
+        {
+            try
+            {
+                squadCadastro = JsonSerializer.Deserialize<SquadDto>(Uri.UnescapeDataString(squadJson));
+            }
+            catch (Exception ex)
+            {
+                erro = "Erro ao desserializar o Squad: " + ex.Message;
+                await AtivarTemporizadorErro();
+            }
+        }
+    }
+
+    private async Task CadastrarSquad()
+    {
+        try
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            response = await _iSquadServico.CadastroAsync(squadCadastro);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                erro = "Ocorreu um erro ao adicionar/atualizar o Squad. Por favor, tente novamente. " + response.ToString();
+                await AtivarTemporizadorErro();
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/Squad/SquadGrid");
+            }
+        }
+        catch (Exception ex)
+        {
+            erro = "Ocorreu um erro ao adicionar o Squad. Por favor, tente novamente. " + ex.Message.ToString();
+            await AtivarTemporizadorErro();
+        }
+
+    }
+
+    private async Task AtivarTemporizadorErro()
+    {
+        Console.WriteLine("AtivarTemporizadorErro chamado.");
+        await Task.Delay(2000);
+        erro = "";
+
+        StateHasChanged();
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/Squad/SquadGrid");
+    }
+
+
+
+
+
+}
