@@ -1,0 +1,50 @@
+﻿<div class="row g-1  adicionaEspaco bordered-div">
+    @if (!string.IsNullOrEmpty(Titulo))
+    {
+        <h3> @Titulo </h3>
+    }
+
+    <div class="hstack gap-3">
+        <div class="p-2">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+
+                    @if (!string.IsNullOrEmpty(PaginaAnterior))
+                    {
+                        @if (!string.IsNullOrEmpty(PaginaAnteriorLink))
+                        {
+                            <li class="breadcrumb-item"><a href=@PaginaAnteriorLink> Projeto </a> </li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item active" aria-current="page"> @PaginaAnterior </li>
+                        }
+                    }
+
+
+                    @if (!string.IsNullOrEmpty(PaginaAtual))
+                    {
+                        <li class="breadcrumb-item active" aria-current="page"> @PaginaAtual </li>
+                    }
+                </ol>
+            </nav>
+        </div>
+        @if (!string.IsNullOrEmpty(InformacaoPagina))
+        {
+            <div class="p-2 ms-auto">
+                <p>
+                    <a href="@InformacaoPagina" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+                </p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string PaginaAnterior { get; set; }
+    [Parameter] public string PaginaAnteriorLink { get; set; }
+    [Parameter] public string PaginaAtual { get; set; }
+    [Parameter] public string InformacaoPagina { get; set; }
+    [Parameter] public string Titulo { get; set; }
+}

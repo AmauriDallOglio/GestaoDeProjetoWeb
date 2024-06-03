@@ -11,25 +11,76 @@
 @inject ISquadServico _iSquadServico
 
 <body>
-    <div class=" bordered-div">
+    <div class="">
 
-        <ApresentacaoComponente PaginaAtual="Squad"
+        <GridApresentacaoComponente PaginaAtual="Squad"
                                 InformacaoPagina="Squad/SquadInfo"
-                                Titulo="Cadastro de squad" />
+                                Titulo="Cadastro de Squads" />
 
-        <MensagemResultadoComponente Sucesso=@sucesso
-                                     Erro=@erro />
 
-        <FiltroEControlesComponente Filtro="@filtroGrid"
-                                    OnFiltroChanged="AtualizarLista"
-                                    Inserir="BotaoInserir" 
-                                    Excluir="BotaoExcluir" 
-                                    BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
+        <GridMensagemResultadoComponente Sucesso=@sucesso
+                                         Erro=@erro />
 
-        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+        <GridFiltroComponente Filtro="@filtroGrid"
+                              OnFiltroChanged="AtualizarLista" />
+
+        <GridBotoesComponente Inserir="BotaoInserir"
+                              Excluir="BotaoExcluir"
+                              BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
+
+
+        <div class="row g-1 align-items-center adicionaEspaco bordered-div">
             @if (squad != null && squad.Any())
             {
+
+
                 <table class="table">
+                    <thead class="EstiloFundoCabecalho">
+                        <tr>
+                            <th class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                                </div>
+                            </th>
+                            <th class="col-6 EstiloCabecalhoColunas">Id</th>
+                            <th class="col-6 EstiloCabecalhoColunas">Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var squad in squad.Where(p => string.IsNullOrEmpty(filtroGrid) ||
+                       p.Descricao.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
+                       p.Inativo.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
+                                    </div>
+                                </td>
+                                <td class="col-6 EstiloCamposColunas">@squad.Id</td>
+                                <td class="col-6 EstiloCamposColunas">@squad.Descricao</td>
+                            </tr>
+                            @if (squadelecionado == squad)
+                            {
+                                <tr>
+                                    <td colspan="8">
+                                        <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
+                                                                         OnAlterar="() => BotaoAlterar(squad)"
+                                                                         HabilitaBotaoExcluir="true"
+                                                                         OnExcluir="BotaoExcluir"
+                                                                         HabilitaBotaoFormulario="false"
+                                                                         OnSquad="() => (null)" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+
+
+@*                 <table class="table">
                     <thead class="table-light">
                         <tr>
                             <th class="text-center">
@@ -59,17 +110,19 @@
                             {
                                 <tr>
                                     <td colspan="8">
-                                        <button class="btn btn-outline-primary custom-btn" @onclick="() => Alterar(squad)">Alterar</button>
-                                        <button class="btn btn-outline-danger custom-btn" @onclick="BotaoExcluir">Excluir</button>
+                                        <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
+                                                                         OnAlterar="() => BotaoAlterar(squad)"
+                                                                         HabilitaBotaoExcluir="true"
+                                                                         OnExcluir="BotaoExcluir"
+                                                                         HabilitaBotaoFormulario="false"
+                                                                         OnSquad="() => (null)" />
                                     </td>
                                 </tr>
                             }
                         }
                     </tbody>
-                </table>
-                <div class="col-md-auto">
-                    <label>squad Selecionados: @contadorSelecionados</label>
-                </div>
+                </table> *@
+                <GridSelecionadosComponente Count="@contadorSelecionados" />
             }
             else
             {
@@ -179,7 +232,7 @@
 
     }
 
-    private async Task Alterar(SquadDto squad)
+    private async Task BotaoAlterar(SquadDto squad)
     {
         try
         {

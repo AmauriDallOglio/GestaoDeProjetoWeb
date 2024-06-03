@@ -1,0 +1,27 @@
+﻿<div class="espaco-entre-botao">
+    @if (HabilitaBotaoAlterar)
+    {
+        <button class="btn customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
+    }
+
+    @if (HabilitaBotaoExcluir)
+    {
+        <button class="btn customizado-btn customizado-btn-excluir" @onclick="OnExcluir">Excluir</button>
+    }
+
+    @if (HabilitaBotaoFormulario)
+    {
+        <button class="btn customizado-btn customizado-btn-pagina" @onclick="OnSquad">Squad</button>
+    }
+
+</div>
+
+
+@code {
+    [Parameter] public bool HabilitaBotaoAlterar { get; set; }
+    [Parameter] public EventCallback OnAlterar { get; set; }
+    [Parameter] public bool HabilitaBotaoExcluir { get; set; }
+    [Parameter] public EventCallback OnExcluir { get; set; }
+    [Parameter] public bool HabilitaBotaoFormulario { get; set; }
+    [Parameter] public EventCallback OnSquad { get; set; }
+}

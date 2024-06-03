@@ -1,4 +1,89 @@
 ﻿
+:root {
+    --cor-padrao: #e0f2f1;
+    /* verde */
+    --teal-100: #e0f2f1;
+    --teal-200: #b2dfdb;
+    --teal-300: #80cbc4;
+    --teal-400: #4db6ac;
+    --teal-500: #26a69a;
+    --teal-600: #009688;
+    --teal-700: #00897b;
+    --teal-800: #00796b;
+    --teal-900: #004d40;
+    /* azul fraco */
+    --cyan-100: #e0f7fa;
+    --cyan-200: #b2ebf2;
+    --cyan-300: #80deea;
+    --cyan-400: #4dd0e1;
+    --cyan-500: #26c6da;
+    --cyan-600: #00bcd4;
+    --cyan-700: #00acc1;
+    --cyan-800: #0097a7;
+    --cyan-900: #006064;
+    /* vermelho */
+    --red-100: #ffcccb;
+    --red-200: #ff9999;
+    --red-300: #ff6666;
+    --red-400: #ff3333;
+    --red-500: #ff0000;
+    --red-600: #cc0000;
+    --red-700: #990000;
+    --red-800: #660000;
+    --red-900: #330000;
+    /* cinza */
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    /* laranja */
+    --orange-100: #fff3e0;
+    --orange-200: #ffe0b2;
+    --orange-300: #ffcc80;
+    --orange-400: #ffb74d;
+    --orange-500: #ffa726;
+    --orange-600: #fb8c00;
+    --orange-700: #f57c00;
+    --orange-800: #ef6c00;
+    --orange-900: #e65100;
+    /* azul forte */
+    --blue-100: #bbdefb;
+    --blue-200: #90caf9;
+    --blue-300: #64b5f6;
+    --blue-400: #42a5f5;
+    --blue-500: #2196f3;
+    --blue-600: #1e88e5;
+    --blue-700: #1976d2;
+    --blue-800: #1565c0;
+    --blue-900: #0d47a1;
+    /* amarelo */
+    --yellow-100: #fff9c4;
+    --yellow-200: #fff59d;
+    --yellow-300: #fff176;
+    --yellow-400: #ffee58;
+    --yellow-500: #ffeb3b;
+    --yellow-600: #fdd835;
+    --yellow-700: #fbc02d;
+    --yellow-800: #f9a825;
+    --yellow-900: #f57f17;
+    /* roxo */
+    --purple-100: #EAE6FF;
+    --purple-200: #C4B5FD;
+    --purple-300: #A78BFA;
+    --purple-400: #8B5CF6;
+    --purple-500: #7C3AED;
+    --purple-600: #6D28D9;
+    --purple-700: #5B21B6;
+    --purple-800: #4C1D95;
+    --purple-900: #3C096C;
+}
+
+
 /*   GRID  */
 
 .container {
@@ -13,13 +98,31 @@
     margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
 }
 
-.custom-font {
-    font-family: 'SuaFonte', sans-serif; /* Substitua 'SuaFonte' pela fonte desejada */
+ 
+
+/* Estilo para o cabeçalho das colunas */
+.EstiloCabecalhoColunas {
+    font-family: 'Palatino', sans-serif; /* Altere para Century Gothic */
+    font-size: 16px; /* Tamanho da fonte */
+    /*font-weight: bold;*/ /* Negrito */
+    color: #000000; /* Cor do texto */
+    text-transform: uppercase; /* Texto em maiúsculas */
 }
 
-.custom-btn {
-    height: 40px; /* Altura desejada */
-    width: 120px; /* Largura desejada */
+/* Estilo para os campos das colunas */
+.EstiloCamposColunas {
+    font-family: 'Palatino', sans-serif; /* Altere para Century Gothic */
+    font-size: 16px; /* Tamanho da fonte */
+    color: #000000; /* Cor do texto */
+    padding: 10px; /* Espaçamento interno */
+}
+
+ 
+
+/* Exemplo adicional para a tabela */
+.EstiloFundoCabecalho {
+    background-color: var(--cor-padrao); /* Cor de fundo das linhas do cabeçalho */
+    background-color: var(--cor-padrao);
 }
 
 
@@ -66,8 +169,85 @@
 
 
 .bordered-div {
-    border: 2px solid #eaf4f4;
+    border: 2px solid var(--cor-padrao);
     padding: 10px;
     border-radius: 5px; /* Opcional: arredondar os cantos */
 }
 
+
+
+/* Botões */
+
+.customizado-btn {
+    border-width: 2px;
+    height: 40px; /* Altura desejada */
+    width: 120px; /* Largura desejada */
+}
+
+
+.customizado-btn-inserir {
+    color: white;
+    background-color: var(--teal-300); /* Verde */
+    border-color: var(--teal-300); /* Verde */
+}
+    .customizado-btn-inserir:hover {
+        color: white;
+        background-color: var(--teal-500); /* Verde */
+        border-color: var(--teal-500); /* Verde  */
+    }
+
+.customizado-btn-excluir {
+    color: white;
+    background-color: var(--red-300); /* Vermelho */
+    border-color: var(--red-300); /* Vermelho */
+}
+    .customizado-btn-excluir:hover {
+        color: white;
+        background-color: var(--red-500); /* Vermelho */
+        border-color: var(--red-500); /* Vermelho */
+    }
+
+.customizado-btn-alterar {
+    color: white;
+    background-color: var(--blue-300); /* Azul */
+    border-color: var(--blue-300); /* Azul */
+}
+    .customizado-btn-alterar:hover {
+        color: white;
+        background-color: var(--blue-500); /* Azul */
+        border-color: var(--blue-500); /* Azul */
+    }
+
+.customizado-btn-pagina {
+    color: white;
+    background-color: var(--orange-300); /* amarelo */
+    border-color: var(--orange-300); /* amarelo */
+}
+    .customizado-btn-pagina:hover {
+        color: white;
+        background-color: var(--orange-500); /* amarelo */
+        border-color: var(--orange-500); /* amarelo */
+    }
+
+
+.customizado-btn-pesquisar {
+    color: white;
+    background-color: var(--gray-300); /* amarelo */
+    border-color: var(--gray-300); /* amarelo */
+}
+
+    .customizado-btn-pesquisar:hover {
+        color: white;
+        background-color: var(--gray-500); /* amarelo */
+        border-color: var(--gray-500); /* amarelo */
+    }
+
+
+
+.espaco-entre-botao .btn {
+    margin-right: 5px; /* Espaço de 10px entre os botões */
+}
+
+.espaco-entre-botao .btn:last-child {
+    margin-right: 0; /* Remove o espaço após o último botão */
+}

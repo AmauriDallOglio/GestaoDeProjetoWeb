@@ -1,0 +1,25 @@
+﻿
+<div class="row g-1 align-items-center adicionaEspaco bordered-div">
+
+    <div class="col-md-auto">
+        <label for="filtro" class="col-form-label">Filtrar:</label>
+    </div>
+    <div class="col-md-auto">
+        <input type="text" class="form-control" id="filtro" @bind="@Filtro" />
+    </div>
+    <div class="col-md-auto">
+        <button class="btn customizado-btn customizado-btn-pesquisar" @onclick="AplicarFiltro">Aplicar</button>
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string Filtro { get; set; }
+    [Parameter] public EventCallback<string> OnFiltroChanged { get; set; }
+
+
+    private async Task AplicarFiltro()
+    {
+        await OnFiltroChanged.InvokeAsync(Filtro);
+    }
+}

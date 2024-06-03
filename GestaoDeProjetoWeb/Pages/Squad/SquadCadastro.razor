@@ -5,20 +5,21 @@
 @using GestaoDeProjetoWeb.Data
 @using System.ComponentModel.DataAnnotations;
 @using System.Text.Json
+@using GestaoDeProjetoWeb.Pages.Componentes
 @using GestaoDeProjetoWeb.Servico
 @inject NavigationManager NavigationManager
 @inject ISquadServico _iSquadServico
 
 
-
-
-
-
 <body>
-    <h3 class="espaco adicionaEspaco">@(squadCadastro != null ? "Editar Squad" : "Novo Squad")</h3>
 
+    <GridApresentacaoComponente PaginaAnterior="Squad"
+                        PaginaAnteriorLink="/Squad/SquadGrid"
+                        PaginaAtual=@(squadCadastro.Id > 0 ? "Editar" : "Inserir")
+                        InformacaoPagina=""
+                        Titulo=@(squadCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
-
+@* 
     <div class="hstack gap-3">
         <div class="p-2">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -36,36 +37,38 @@
             </p>
 
         </div>
-    </div>
+    </div> *@
+
+    <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+        <EditForm Model="@squadCadastro" OnValidSubmit="@CadastrarSquad" class="row g-1 form-custom">
+            <DataAnnotationsValidator />
+
+            @if (!string.IsNullOrWhiteSpace(erro))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @erro
+                </div>
+            }
 
 
-    <EditForm Model="@squadCadastro" OnValidSubmit="@CadastrarSquad" class="row g-1 form-custom">
-        <DataAnnotationsValidator />
-
-        @if (!string.IsNullOrWhiteSpace(erro))
-        {
-            <div class="alert alert-danger" role="alert">
-                @erro
+            <div class="form-floating col-12">
+                <input type="text" class="form-control form-control-lg" id="nomeSquad" @bind="@squadCadastro.Descricao" placeholder="Descreva o nome do Squad" />
+                <label for="nomeSquad">Nome do Squad</label>
+                <ValidationMessage For="@(() => squadCadastro.Descricao)" />
             </div>
-        }
 
 
-        <div class="form-floating col-12">
-            <input type="text" class="form-control form-control-lg" id="nomeSquad" @bind="@squadCadastro.Descricao" placeholder="Descreva o nome do Squad" />
-            <label for="nomeSquad">Nome do Squad</label>
-            <ValidationMessage For="@(() => squadCadastro.Descricao)" />
-        </div>
 
- 
-         
- 
 
-        <div class="col-12 button-group">
-            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
+            <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarSquad" />
 
-    </EditForm>
+@*             <div class="col-12 button-group">
+                <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div> *@
+
+        </EditForm>
+    </div>
 </body>
 
 

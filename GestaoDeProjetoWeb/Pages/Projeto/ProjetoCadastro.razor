@@ -2,112 +2,88 @@
 @page "/Projeto/ProjetoCadastro/{projetoJson}"
 @using GestaoDeProjetoWeb.Data.DTOs
 @using GestaoDeProjetoWeb.Data.Util
-
 @using GestaoDeProjetoWeb.Data
 @using System.ComponentModel.DataAnnotations;
 @using System.Text.Json
-@using GestaoDeProjetoWeb.Data.Util
+@using GestaoDeProjetoWeb.Pages.Componentes
 @using GestaoDeProjetoWeb.Servico
 @inject NavigationManager NavigationManager
 @inject IProjetoServico _iProjetoServico
  
 
-
-
- 
-
 <body>
-    <h3 class="espaco adicionaEspaco">@(projetoCadastro != null ? "Editar Projeto" : "Novo Projeto")</h3>
+    @* <div class=" bordered-div"> *@
+        <GridApresentacaoComponente PaginaAnterior="Projeto"
+                                PaginaAnteriorLink="/Projeto/ProjetoGrid"
+                                PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
+                                InformacaoPagina=""
+                                Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
 
+        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+            <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+                <DataAnnotationsValidator />
 
-    <div class="hstack gap-3">
-        <div class="p-2">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"> <a href="#">Home</a> </li>
-                    <li class="breadcrumb-item" <a href="/Projeto/Grid">Projeto</a> </li>
-                    <li class="breadcrumb-item active" aria-current="page"> Cadastro </li>
-                </ol>
-            </nav>
-
-        </div>
-        <div class="p-2 ms-auto">
-            <p>
-                <a href="Projeto/ProjetoInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
-            </p>
-
-        </div>
-    </div>
-
-
-    <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
-        <DataAnnotationsValidator />
-
-        @if (!string.IsNullOrWhiteSpace(erro))
-        {
-            <div class="alert alert-danger" role="alert">
-                @erro
-            </div>
-        }
-
-
-        <div class="form-floating col-12">
-            <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
-            <label for="nomeProjeto">Nome do Projeto</label>
-            <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
-        </div>
-
-        <div class="form-floating col-12">
-            <textarea class="form-control form-control-lg" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
-            <label for="descricao">Descrição</label>
-            <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
-        </div>
-
-        <div class="form-floating col-md-6">
-            <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
-            <label for="dataHoraInicio">Data inicial</label>
-            <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
-        </div>
-
-        <div class="form-floating col-md-6">
-            <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
-            <label for="dataHoraFim">Data final</label>
-            <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
-        </div>
-
-        <div class="form-floating col-6">
-            <select class="form-select form-control-lg" id="situacao" @bind="@projetoCadastro.Situacao">
-                <option value="">Selecione a situação</option>
-                @foreach (SituacaoProjeto situacao in Enum.GetValues(typeof(SituacaoProjeto)))
+                @if (!string.IsNullOrWhiteSpace(erro))
                 {
-                    <option value="@((short)situacao)">@situacao</option>
+                    <div class="alert alert-danger" role="alert">
+                        @erro
+                    </div>
                 }
-            </select>
-            <label for="situacao">Situação:</label>
-            <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+
+                <div class="form-floating col-12">
+                    <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
+                    <label for="nomeProjeto">Nome do Projeto</label>
+                    <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
+                </div>
+
+          
+                <div class="form-floating col-12">
+                    <textarea class="form-control form-control-lg" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
+                    <label for="descricao">Descrição</label>
+                    <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
+                    <label for="dataHoraInicio">Data inicial</label>
+                    <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
+                </div>
+
+                <div class="form-floating col-md-6">
+                    <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
+                    <label for="dataHoraFim">Data final</label>
+                    <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
+                </div>
+
+                <div class="form-floating col-6">
+                    <select class="form-select form-control-lg" id="situacao" @bind="@projetoCadastro.Situacao">
+                        <option value="">Selecione a situação</option>
+                        @foreach (SituacaoProjeto situacao in Enum.GetValues(typeof(SituacaoProjeto)))
+                        {
+                            <option value="@((short)situacao)">@situacao</option>
+                        }
+                    </select>
+                    <label for="situacao">Situação:</label>
+                    <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+                </div>
+
+             @*    <div class="form-floating col-6">
+                    <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                        @foreach (var situacao in comboItems)
+                        {
+                            <option value="@situacao.Id">@situacao.Descricao</option>
+                        }
+                    </select>
+                    <label for="situacao">Situação:</label>
+                    <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+                </div> *@
+
+                <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarProjeto" />
+
+            </EditForm>
         </div>
-
-
-        <div class="form-floating col-6">
-            <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
-                @foreach (var situacao in comboItems)
-                {
-                    <option value="@situacao.Id">@situacao.Descricao</option>
-                }
-            </select>
-            <label for="situacao">Situação:</label>
-            <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-        </div>
-
-
-
-        <div class="col-12 button-group">
-            <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-
-    </EditForm>
+  @*   </div> *@
 </body>
 
 
@@ -116,15 +92,16 @@
     public string projetoJson { get; set; }
     private ProjetoDto projetoCadastro = new ProjetoDto();
     private HttpClient httpClient = new HttpClient();
-     private List<ComboItem> comboItems = new List<ComboItem>();
-
+    private List<ComboItem> comboItems = new List<ComboItem>();
     private string erro = string.Empty;
 
+
+    private async Task OnNomeProjetoChanged(string newValue)
+    {
+        projetoCadastro.NomeProjeto = newValue;
+    }
+
  
- 
-
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();

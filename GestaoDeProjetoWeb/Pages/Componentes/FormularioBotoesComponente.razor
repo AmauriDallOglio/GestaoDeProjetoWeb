@@ -1,0 +1,25 @@
+﻿<div class="col-12 button-group">
+    <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancelar</button>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnCancel { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+
+    private async Task HandleCancel()
+    {
+        if (OnCancel.HasDelegate)
+        {
+            await OnCancel.InvokeAsync();
+        }
+    }
+
+    private async Task HandleSave()
+    {
+        if (OnSave.HasDelegate)
+        {
+            await OnSave.InvokeAsync();
+        }
+    }
+}

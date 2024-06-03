@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Linq.Expressions
+
+<div class="form-floating col-12">
+    <input type="text" class="form-control form-control-lg" id="@InputId" @bind="@Value" placeholder=@DescricaoCampo />
+    <label for="@InputId">@DescricaoLabel</label>
+    <ValidationMessage For="@ValueExpression" />
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string DescricaoCampo { get; set; }
+    [Parameter] public string DescricaoLabel { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<string>> ValueExpression { get; set; }
+
+    private string InputId { get; set; } = $"input_{Guid.NewGuid()}";
+
+    private async Task OnValueChanged(ChangeEventArgs e)
+    {
+        Value = e.Value.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

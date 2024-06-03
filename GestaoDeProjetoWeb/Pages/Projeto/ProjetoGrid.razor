@@ -12,45 +12,41 @@
  
  
 <body>
-    <div class=" bordered-div">
+    <div class=" ">
 
-
-        <ApresentacaoComponente PaginaAtual="Projeto"
+        <GridApresentacaoComponente PaginaAnterior=""
+                                PaginaAtual="Projeto"
                                 InformacaoPagina="Projeto/ProjetoInfo"
                                 Titulo="Cadastro de Projetos"   />
 
-
-        <MensagemResultadoComponente Sucesso=@sucesso
+        <GridMensagemResultadoComponente Sucesso=@sucesso
                                      Erro=@erro />
 
+        <GridFiltroComponente Filtro="@filtroGrid"
+                                        OnFiltroChanged="AtualizarLista"/>
 
-        <FiltroEControlesComponente Filtro="@filtroGrid"
-                                    OnFiltroChanged="AtualizarLista"
-                                    Inserir="BotaoInserir" 
-                                    Excluir="BotaoExcluir" 
-                                    BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
-
-
-    
+        <GridBotoesComponente Inserir="BotaoInserir"
+                                        Excluir="BotaoExcluir"
+                                        BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
+        <div class="row g-1 align-items-center adicionaEspaco bordered-div">
             @if (projetos != null && projetos.Any())
             {
                 <table class="table">
-                    <thead class="table-light">
+                    <thead class="EstiloFundoCabecalho">
                         <tr>
                             <th class="text-center">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 custom-font">Id</th>
-                            <th class="col-3 custom-font">Nome</th>
-                            <th class="col-3 custom-font">Descrição</th>
-                            <th class="col-2 custom-font">Data de início</th>
-                            <th class="col-2 custom-font">Data de final</th>
-                            <th class="col-1 custom-font">Situação</th>
+                            <th class="col-1 EstiloCabecalhoColunas">Id</th>
+                            <th class="col-3 EstiloCabecalhoColunas">Nome</th>
+                            <th class="col-3 EstiloCabecalhoColunas">Descrição</th>
+                            <th class="col-2 EstiloCabecalhoColunas">Data de início</th>
+                            <th class="col-2 EstiloCabecalhoColunas">Data de final</th>
+                            <th class="col-1 EstiloCabecalhoColunas">Situação</th>
 
                         </tr>
                     </thead>
@@ -66,29 +62,30 @@
                                         <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
                                     </div>
                                 </td>
-                                <td class="col-1 custom-font">@projeto.Id</td>
-                                <td class="col-3  custom-font">@projeto.NomeProjeto</td>
-                                <td class="col-3  custom-font">@projeto.Descricao</td>
-                                <td class="col-2">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                                <td class="col-2">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                                <td class="col-1">@projeto.SituacaoDescricao</td>
+                                <td class="col-1 EstiloCamposColunas">@projeto.Id</td>
+                                <td class="col-3 EstiloCamposColunas">@projeto.NomeProjeto</td>
+                                <td class="col-3 EstiloCamposColunas">@projeto.Descricao</td>
+                                <td class="col-2 EstiloCamposColunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="col-2 EstiloCamposColunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                                <td class="col-1 EstiloCamposColunas">@projeto.SituacaoDescricao</td>
                             </tr>
                             @if (projetoSelecionado == projeto)
                             {
                                 <tr>
                                     <td colspan="8">
-                                        <button class="btn btn-outline-primary custom-btn" @onclick="() => BotaoAlterar(projeto)">Alterar</button>
-                                        <button class="btn btn-outline-danger custom-btn" @onclick="BotaoExcluir">Excluir</button>
-                                        <button type="button" class="btn btn-outline-success custom-btn" @onclick="() => ProjetoSquadCadastro(projeto)">Squad</button>
+                                        <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
+                                                                         OnAlterar="() => BotaoAlterar(projeto)"
+                                                                         HabilitaBotaoExcluir="true"
+                                                                         OnExcluir="BotaoExcluir"
+                                                                         HabilitaBotaoFormulario="true"
+                                                                         OnSquad="() => ProjetoSquadCadastro(projeto)" />
                                     </td>
                                 </tr>
                             }
                         }
                     </tbody>
                 </table>
-                <div class="col-md-auto">
-                    <label>Projetos Selecionados: @contadorSelecionados</label>
-                </div>
+                <GridSelecionadosComponente Count="@contadorSelecionados" />
             }
             else
             {
