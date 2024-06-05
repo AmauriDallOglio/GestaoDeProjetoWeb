@@ -1,21 +1,26 @@
-﻿<div class="espaco-entre-botao">
-    @if (HabilitaBotaoAlterar)
-    {
-        <button class="btn customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
-    }
+﻿<div class="col-md-auto">
+    <div class=" ">
+@*         @if (HabilitaBotaoAlterar)
+        {
+            <button class="customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
+        }
 
-    @if (HabilitaBotaoExcluir)
-    {
-        <button class="btn customizado-btn customizado-btn-excluir" @onclick="OnExcluir">Excluir</button>
-    }
+        @if (HabilitaBotaoExcluir)
+        {
+            <button class="customizado-btn customizado-btn-excluir" @onclick="OnExcluir">Excluir</button>
+        }
 
-    @if (HabilitaBotaoFormulario)
-    {
-        <button class="btn customizado-btn customizado-btn-pagina" @onclick="OnSquad">Squad</button>
-    }
+        @if (HabilitaBotaoFormulario)
+        {
+            <button class="btn customizado-btn customizado-btn-pagina" @onclick="OnSquad">Squad</button>
+        } *@
 
+    
+        <button class="customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
+        <button class="customizado-btn customizado-btn-excluir" @onclick="OnExcluir" >Excluir</button>
+        <button class="customizado-btn customizado-btn-pagina @(!HabilitaBotaoFormulario ? "btn-escondido" : "")" @onclick="OnSquad">Squad</button>
+    </div>
 </div>
-
 
 @code {
     [Parameter] public bool HabilitaBotaoAlterar { get; set; }

@@ -12,7 +12,7 @@
  
 
 <body>
-    @* <div class=" bordered-div"> *@
+    @* <div class=" borda-divisao"> *@
         <GridApresentacaoComponente PaginaAnterior="Projeto"
                                 PaginaAnteriorLink="/Projeto/ProjetoGrid"
                                 PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
@@ -20,8 +20,8 @@
                                 Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
 
-        <div class="row g-3 align-items-center adicionaEspaco bordered-div">
-            <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 form-custom">
+        <div class="row g-2 align-items-center adicionaEspaco borda-divisao">
+            <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 formulario-input">
                 <DataAnnotationsValidator />
 
                 @if (!string.IsNullOrWhiteSpace(erro))
@@ -32,32 +32,32 @@
                 }
 
                 <div class="form-floating col-12">
-                    <input type="text" class="form-control form-control-lg" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
+                    <input type="text" class="form-control tamanho-fonte-input" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
                     <label for="nomeProjeto">Nome do Projeto</label>
                     <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
                 </div>
 
           
                 <div class="form-floating col-12">
-                    <textarea class="form-control form-control-lg" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
+                    <textarea class="form-control tamanho-fonte-input" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
                     <label for="descricao">Descrição</label>
                     <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
                 </div>
 
                 <div class="form-floating col-md-6">
-                    <input type="date" class="form-control form-control-lg" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
+                    <input type="date" class="form-control tamanho-fonte-input" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
                     <label for="dataHoraInicio">Data inicial</label>
                     <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
                 </div>
 
                 <div class="form-floating col-md-6">
-                    <input type="date" class="form-control form-control-lg" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
+                    <input type="date" class="form-control tamanho-fonte-input" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
                     <label for="dataHoraFim">Data final</label>
                     <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
                 </div>
 
                 <div class="form-floating col-6">
-                    <select class="form-select form-control-lg" id="situacao" @bind="@projetoCadastro.Situacao">
+                    <select class="form-select tamanho-fonte-input" id="situacao" @bind="@projetoCadastro.Situacao">
                         <option value="">Selecione a situação</option>
                         @foreach (SituacaoProjeto situacao in Enum.GetValues(typeof(SituacaoProjeto)))
                         {
@@ -69,7 +69,7 @@
                 </div>
 
              @*    <div class="form-floating col-6">
-                    <select class="form-select form-control-lg" id="situacao" @bind="projetoCadastro.Situacao">
+                    <select class="form-select tamanho-fonte-input" id="situacao" @bind="projetoCadastro.Situacao">
                         @foreach (var situacao in comboItems)
                         {
                             <option value="@situacao.Id">@situacao.Descricao</option>

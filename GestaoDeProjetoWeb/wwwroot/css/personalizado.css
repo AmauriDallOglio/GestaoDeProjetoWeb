@@ -1,6 +1,7 @@
 ﻿
 :root {
     --cor-padrao: #e0f2f1;
+    --bs-border-radius-lg: 0.5rem;
     /* verde */
     --teal-100: #e0f2f1;
     --teal-200: #b2dfdb;
@@ -83,8 +84,9 @@
     --purple-900: #3C096C;
 }
 
-
+/*****************/
 /*   GRID  */
+/*****************/
 
 .container {
     display: flex; /* Usa o modelo de layout flexível */
@@ -125,63 +127,84 @@
     background-color: var(--cor-padrao);
 }
 
-
+/*****************/
 /*   CADASTRO  */
+/*****************/
 
-.form-custom {
-    font-size: 18px; /* Tamanho da fonte */
+
+.formulario-input {
+    font-size: 14px; /* Tamanho da fonte */
     font-family: Arial, sans-serif; /* Tipo da fonte */
-    row-gap: 15px; /* Espaçamento entre os inputs na vertical */
+    row-gap: 10px; /* Espaçamento entre os inputs na vertical */
+    margin-bottom: 5px; /* Espaçamento entre os inputs */
+    font-size: 15px; /* Tamanho da fonte dos inputs */
+    width: 100%; /* Largura do formulário */
+    /*max-width: 600px;*/ /* Largura máxima do formulário */
 }
+ 
 
-.form-custom .form-outline {
-    margin-bottom: 20px; /* Espaçamento entre os inputs */
-}
 
-.form-control-lg {
-    font-size: 16px; /* Tamanho da fonte dos inputs */
-}
-
-.form-label {
+/*.form-label {
     font-weight: bold;
-}
+}*/
 
-.button-group {
+.grupo-botoes {
     display: flex;
     justify-content: space-between;
+    /*   margin-left: 20;
+    margin-right: 20;*/
 }
 
-.button-group .btn {
-    width: 20%; /* Opcional: Ajusta a largura dos botões se necessário */
-}
+/*    .button-group .customizado-btn {
+        width: 100%;
+    }*/
 
-.button-group .btn:first-child {
+/*.button-group .btn:first-child {
     margin-left: 0;
 }
 
 .button-group .btn:last-child {
     margin-right: 0;
-}
+}*/
 
 .adicionaEspaco {
-    margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+    margin-bottom: 15px; /* Adiciona espaço entre grupos de formulários */
 }
 
 
-.bordered-div {
+.borda-divisao {
     border: 2px solid var(--cor-padrao);
     padding: 10px;
     border-radius: 5px; /* Opcional: arredondar os cantos */
 }
 
 
-
+/*****************/
 /* Botões */
+/*****************/
+
 
 .customizado-btn {
     border-width: 2px;
     height: 40px; /* Altura desejada */
     width: 120px; /* Largura desejada */
+    font-family: Arial, sans-serif; /* Tipo da fonte */
+
+    display: inline-block; /* Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
+    font-weight: 0; /* Define a espessura da fonte como normal (400) */
+    line-height: 1.5; /* Define a altura da linha do texto para 1.5 vezes o tamanho da fonte */
+    color: white; /* Define a cor do texto como um tom escuro de cinza */
+    text-align: center; /* Alinha o texto ao centro do botão */
+    text-decoration: none; /* Remove qualquer decoração de texto, como sublinhado */
+    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
+    cursor: pointer; /* Altera o cursor para uma mãozinha, indicando que é clicável */
+    user-select: none; /* Impede que o texto dentro do botão seja selecionado pelo usuário */
+    background-color: transparent; /* Define a cor de fundo como transparente */
+    border: 1px solid transparent; /* Define uma borda de 1px com cor transparente */
+    /*padding: 0.375rem 0.75rem;*/ /* Define o espaçamento interno (padding) do botão (0.375rem em cima e embaixo, 0.75rem nos lados) */
+    font-size: 20px; /* Define o tamanho da fonte para 1rem (1 rem = tamanho da fonte raiz do documento) */
+    border-radius: 0.375rem; /* Define os cantos arredondados do botão com raio de 0.375rem */
+    /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;*/
 }
 
 
@@ -243,11 +266,26 @@
     }
 
 
+/*.espaco-entre-botao .customizado-btn {
+    margin-right: 5px;*/ /* Espaço de 10px entre os botões */
+/*}*/
 
-.espaco-entre-botao .btn {
-    margin-right: 5px; /* Espaço de 10px entre os botões */
+/*.espaco-entre-botao .btn:last-child {
+    margin-right: 0;*/ /* Remove o espaço após o último botão */
+/*}*/
+
+.btn-escondido {
+    display: none;
 }
 
-.espaco-entre-botao .btn:last-child {
-    margin-right: 0; /* Remove o espaço após o último botão */
-}
+/*****************/
+
+/*****************/
+
+
+
+
+/*****************/
+
+
+/*****************/

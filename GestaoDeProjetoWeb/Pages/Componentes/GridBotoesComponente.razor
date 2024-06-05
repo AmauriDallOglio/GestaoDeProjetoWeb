@@ -1,15 +1,9 @@
-﻿<!-- FiltroEControlesComponent.razor -->
-<div class="row g-1  adicionaEspaco bordered-div">
-
+﻿
+<div class="row g-1  adicionaEspaco borda-divisao">
     <div class="col-md-auto">
-        <div class="espaco-entre-botao">
-            <button type="button" class="btn customizado-btn customizado-btn-inserir" @onclick="Inserir">Inserir</button>
-            <button type="button" class="btn customizado-btn customizado-btn-excluir" @onclick="Excluir" disabled="@(!BotaoExcluirHabilitado)">Excluir</button>
-        </div>
-
+        <button type="button" class="customizado-btn customizado-btn-inserir" @onclick="Inserir">Inserir</button>
+        <button type="button" class="customizado-btn customizado-btn-excluir" @onclick="Excluir" disabled>Excluir</button>
     </div>
-
-
 </div>
 
 @code {
