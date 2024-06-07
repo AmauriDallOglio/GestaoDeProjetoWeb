@@ -2,6 +2,8 @@
 :root {
     --cor-padrao: #e0f2f1;
     --bs-border-radius-lg: 0.5rem;
+    --fonte-padrao: 'Comic Sans MS';
+    /*--fonte-padrao: Verdana, Geneva, Tahoma, sans-serif;*/
     /* verde */
     --teal-100: #e0f2f1;
     --teal-200: #b2dfdb;
@@ -84,6 +86,8 @@
     --purple-900: #3C096C;
 }
 
+
+
 /*****************/
 /*   GRID  */
 /*****************/
@@ -100,11 +104,14 @@
     margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
 }
 
- 
+.fontePersonalizada {
+    font-family: var(--fonte-padrao);
+}
+
 
 /* Estilo para o cabeçalho das colunas */
 .EstiloCabecalhoColunas {
-    font-family: 'Palatino', sans-serif; /* Altere para Century Gothic */
+    font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     /*font-weight: bold;*/ /* Negrito */
     color: #000000; /* Cor do texto */
@@ -113,9 +120,9 @@
 
 /* Estilo para os campos das colunas */
 .EstiloCamposColunas {
-    font-family: 'Palatino', sans-serif; /* Altere para Century Gothic */
+    font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
-    color: #000000; /* Cor do texto */
+    color: #009688; /* Cor do texto */
     padding: 10px; /* Espaçamento interno */
 }
 
@@ -124,7 +131,7 @@
 /* Exemplo adicional para a tabela */
 .EstiloFundoCabecalho {
     background-color: var(--cor-padrao); /* Cor de fundo das linhas do cabeçalho */
-    background-color: var(--cor-padrao);
+
 }
 
 /*****************/
@@ -133,8 +140,8 @@
 
 
 .formulario-input {
+    font-family: var(--fonte-padrao);
     font-size: 14px; /* Tamanho da fonte */
-    font-family: Arial, sans-serif; /* Tipo da fonte */
     row-gap: 10px; /* Espaçamento entre os inputs na vertical */
     margin-bottom: 5px; /* Espaçamento entre os inputs */
     font-size: 15px; /* Tamanho da fonte dos inputs */
@@ -188,8 +195,7 @@
     border-width: 2px;
     height: 40px; /* Altura desejada */
     width: 120px; /* Largura desejada */
-    font-family: Arial, sans-serif; /* Tipo da fonte */
-
+    font-family: var(--fonte-padrao);
     display: inline-block; /* Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
     font-weight: 0; /* Define a espessura da fonte como normal (400) */
     line-height: 1.5; /* Define a altura da linha do texto para 1.5 vezes o tamanho da fonte */
