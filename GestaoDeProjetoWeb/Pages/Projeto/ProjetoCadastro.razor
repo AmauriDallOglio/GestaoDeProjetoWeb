@@ -12,7 +12,7 @@
  
 
 <body>
-    @* <div class=" borda-divisao"> *@
+    @* <div class=" borda"> *@
         <GridApresentacaoComponente PaginaAnterior="Projeto"
                                 PaginaAnteriorLink="/Projeto/ProjetoGrid"
                                 PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
@@ -20,7 +20,7 @@
                                 Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
 
-        <div class="row g-2 align-items-center adicionaEspaco borda-divisao">
+        <div class="row g-2 align-items-center adicionaEspaco borda">
             <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 formulario-input">
                 <DataAnnotationsValidator />
 

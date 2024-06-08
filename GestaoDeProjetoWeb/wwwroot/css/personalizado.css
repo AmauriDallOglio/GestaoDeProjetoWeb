@@ -2,8 +2,9 @@
 :root {
     --cor-padrao: #e0f2f1;
     --bs-border-radius-lg: 0.5rem;
-    --fonte-padrao: 'Comic Sans MS';
-    /*--fonte-padrao: Verdana, Geneva, Tahoma, sans-serif;*/
+    /*--fonte-padrao: 'Comic Sans MS';*/
+    --fonte-padrao: 'Roboto','Comic Sans MS';
+
     /* verde */
     --teal-100: #e0f2f1;
     --teal-200: #b2dfdb;
@@ -86,7 +87,104 @@
     --purple-900: #3C096C;
 }
 
+/*****************/
+/*   FONTE  */
+/*****************/
 
+.roboto-thin {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.roboto-light {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-medium {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.roboto-black {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.roboto-thin-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.roboto-light-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.roboto-regular-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.roboto-medium-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.roboto-bold-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.roboto-black-italic {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+/*****************/
+/*   Geral  */
+/*****************/
+
+
+
+
+
+.borda {
+    border: 2px solid var(--cor-padrao);
+    padding: 10px;
+    white-space: normal; /* Posição do texto */
+    border-radius: 5px; /* Arredondar os cantos */
+    height: 100%;
+    box-sizing: border-box; /* Inclui padding e borda no cálculo de altura */
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: var(--fonte-padrao);
+}
 
 /*****************/
 /*   GRID  */
@@ -98,6 +196,7 @@
     align-items: center; /* Alinha os itens verticalmente */
     height: 100vh; /* Define a altura como 100% da altura da janela */
     padding: 20px; /* Adiciona espaçamento interno */
+    white-space: pre-line;
 }
 
 .adicionaEspaco {
@@ -107,7 +206,6 @@
 .fontePersonalizada {
     font-family: var(--fonte-padrao);
 }
-
 
 /* Estilo para o cabeçalho das colunas */
 .EstiloCabecalhoColunas {
@@ -122,17 +220,21 @@
 .EstiloCamposColunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
-    color: #009688; /* Cor do texto */
+    color: #000000; /* Cor do texto */
     padding: 10px; /* Espaçamento interno */
 }
-
- 
 
 /* Exemplo adicional para a tabela */
 .EstiloFundoCabecalho {
     background-color: var(--cor-padrao); /* Cor de fundo das linhas do cabeçalho */
 
 }
+
+.tabelaLargura {
+    flex: 1;
+    overflow: auto; /* Permite rolagem se o conteúdo exceder a altura disponível */
+}
+
 
 /*****************/
 /*   CADASTRO  */
@@ -179,11 +281,6 @@
 }
 
 
-.borda-divisao {
-    border: 2px solid var(--cor-padrao);
-    padding: 10px;
-    border-radius: 5px; /* Opcional: arredondar os cantos */
-}
 
 
 /*****************/
