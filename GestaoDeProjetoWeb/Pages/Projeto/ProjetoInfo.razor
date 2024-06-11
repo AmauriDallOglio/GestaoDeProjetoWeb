@@ -1,4 +1,112 @@
 ﻿@page "/Projeto/ProjetoInfo"
+@inject NavigationManager Navigation
+
+<body>
+    <div class="adicionaEspaco tabelaLargura DivCorInterna">
+        <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sobre </h5>
+                        <button type="button" class="btn-close" aria-label="Close" @onclick="GoBack"></button>
+                    </div>
+                    <div class="modal-body CorFundoPagina TextoEspacoLinhas">
+                        <div class="adicionaEspaco TextoJustificado">
+                            <h2 class="section-title">O que é um Projeto na Gestão de Projetos</h2>
+                            
+                            <p class="TextoTab">Na gestão de projetos, um projeto é uma iniciativa temporária com um objetivo específico, que resulta em um produto, serviço ou resultado único. A definição de um projeto inclui várias características que o distinguem de operações rotineiras ou tarefas contínuas.</p>
+
+                            <h2 class="section-title">Características de um Projeto</h2>
+                            <ul>
+                                <li>
+                                    <strong>Temporalidade:</strong>
+                                    <ul>
+                                        <li><strong>Início e Fim:</strong> Um projeto tem um início e um fim definidos. O início é marcado pela decisão de começar o trabalho no projeto, e o fim ocorre quando os objetivos do projeto são alcançados ou quando o projeto é encerrado por qualquer outro motivo (por exemplo, inviabilidade, mudança de prioridades).</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Objetivo Único:</strong>
+                                    <ul>
+                                        <li><strong>Resultados Específicos:</strong> O projeto é empreendido para atingir objetivos específicos que levam à criação de um produto, serviço ou resultado exclusivo. Esses objetivos devem ser claramente definidos e mensuráveis.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Elaboração Progressiva:</strong>
+                                    <ul>
+                                        <li><strong>Desenvolvimento Incremental:</strong> O projeto é desenvolvido de maneira incremental, refinando e detalhando as especificações conforme mais informações se tornam disponíveis.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Recursos:</strong>
+                                    <ul>
+                                        <li><strong>Alocação de Recursos:</strong> O projeto utiliza recursos que podem incluir pessoas, tempo, dinheiro, equipamentos e materiais. A gestão eficiente desses recursos é crucial para o sucesso do projeto.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Plano:</strong>
+                                    <ul>
+                                        <li><strong>Planejamento e Controle:</strong> Projetos exigem um planejamento detalhado e um controle rigoroso para garantir que os objetivos sejam alcançados dentro dos prazos e orçamentos estabelecidos.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Riscos e Incertezas:</strong>
+                                    <ul>
+                                        <li><strong>Gerenciamento de Riscos:</strong> Todo projeto tem incertezas e riscos que precisam ser identificados, analisados e mitigados para evitar impactos negativos no seu andamento e sucesso.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <h2 class="section-title">Exemplos de Projetos</h2>
+                            <ul>
+                                <li><strong>Construção de um Edifício:</strong> Desde o planejamento arquitetônico até a construção final e a entrega.</li>
+                                <li><strong>Desenvolvimento de um Software:</strong> Desde a concepção inicial, passando pelo desenvolvimento, testes e lançamento do produto.</li>
+                                <li><strong>Lançamento de um Novo Produto:</strong> Desde a pesquisa e desenvolvimento até a produção e marketing.</li>
+                                <li><strong>Evento Corporativo:</strong> Planejamento e execução de uma conferência, incluindo logística, palestras e networking.</li>
+                                <li><strong>Implementação de um Sistema de Gestão:</strong> Instalação e configuração de um novo sistema de TI ou ERP em uma organização.</li>
+                            </ul>
+
+                            <h2 class="section-title">Ciclo de Vida de um Projeto</h2>
+                            <ul>
+                                <li><strong>Iniciação:</strong> Definição do projeto, identificação dos stakeholders e criação de um documento de visão ou termo de abertura do projeto.</li>
+                                <li><strong>Planejamento:</strong> Desenvolvimento do plano de projeto detalhado, definição de escopo, cronograma, orçamento, qualidade, recursos, comunicação, riscos e aquisições.</li>
+                                <li><strong>Execução:</strong> Coordenação de pessoas e recursos para implementar o plano de projeto, gerenciamento da equipe e comunicação com stakeholders.</li>
+                                <li><strong>Monitoramento e Controle:</strong> Acompanhamento do progresso do projeto, identificação de variações em relação ao plano e implementação de ações corretivas, relatórios de desempenho e gerenciamento de mudanças.</li>
+                                <li><strong>Encerramento:</strong> Finalização de todas as atividades do projeto, entrega dos resultados finais e liberação dos recursos, avaliação pós-projeto e documentação das lições aprendidas.</li>
+                            </ul>
+
+                            <h2 class="section-title">Importância de um Projeto</h2>
+                            <ul>
+                                <li><strong>Inovação e Melhoria:</strong> Projetos permitem a inovação e a implementação de melhorias dentro de uma organização.</li>
+                                <li><strong>Alinhamento Estratégico:</strong> Eles são frequentemente alinhados com a estratégia organizacional e contribuem para alcançar objetivos de longo prazo.</li>
+                                <li><strong>Flexibilidade:</strong> Permitem respostas rápidas a mudanças no mercado ou na tecnologia.</li>
+                                <li><strong>Valor:</strong> Proporcionam valor agregado para os stakeholders através da entrega de resultados específicos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="customizado-btn customizado-btn-pesquisar" @onclick="GoBack">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@code {
+    private void GoBack()
+    {
+        Navigation.NavigateTo("https://localhost:7133/Projeto/ProjetoGrid");
+    }
+
+}
+
+
+
+
+
+
+
+@* @page "/Projeto/ProjetoInfo"
 
 
 <body>
@@ -86,3 +194,4 @@
 @code {
 
 }
+ *@

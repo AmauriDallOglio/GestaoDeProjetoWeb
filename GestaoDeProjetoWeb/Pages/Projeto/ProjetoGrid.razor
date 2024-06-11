@@ -12,7 +12,7 @@
  
  
 <body>
-    <div class="">
+    <div class="DivCorFundoPagina">
 
         <GridApresentacaoComponente PaginaAnterior=""
                                 PaginaAtual="Projeto"
@@ -30,13 +30,13 @@
                                         BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class=" adicionaEspaco borda tabelaLargura">
+        <div class="adicionaEspaco borda tabelaLargura DivCorInterna">
             @if (projetos != null && projetos.Any())
             {
                 <table class="table">
-                    <thead class="EstiloFundoCabecalho">
+                    <thead class="DivCorInterna">
                         <tr>
-                            <th class="text-center">
+                            <th class="col-1 EstiloCabecalhoColunas">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
                                 </div>
@@ -57,7 +57,7 @@
                                                                 p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
                         {
                             <tr>
-                                <td class="text-center">
+                                <td class="col-1 EstiloCamposColunas text-center">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
                                     </div>

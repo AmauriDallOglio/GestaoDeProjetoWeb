@@ -167,17 +167,79 @@
 /*   Geral  */
 /*****************/
 
+.TextoJustificado {
+    text-align: justify;
+    text-indent: 0px; /* Espaço tab no texto */
+    letter-spacing: 0px; /* Espaço entre as letras do texto */
+}
 
+.TextoTab {
+    text-indent: 50px; /* Espaço tab no texto */
+}
 
-.CorFundoPagina {
+.TextoEsquerda {
+    text-align: right;
+}
+
+.TextoDireita {
+    text-align: left;
+}
+
+.TextoCentralizado {
+    text-align: center;
+}
+
+.TextoMinisculo {
+    text-transform: lowercase;
+}
+
+.TextoMaiusculo {
+    text-transform: uppercase;
+}
+
+.TextoPrimeiraLetraMaiuscula {
+    text-transform: capitalize;
+}
+
+.TextoMarcado {
+    text-decoration: line-through;
+}
+
+.TextoEspacoLinhas {
+    line-height: 1.5;
+}
+
+.TextoSublinhado{
+    text-decoration: underline;
+}
+
+.DivCorInterna {
+    background: linear-gradient(0.9turn, #F0F1F5, #DDDFE9, #F0F1F5 );
+    /*padding: 20px;*/ /* Opcional: para adicionar um pouco de espaçamento interno */
+    /*border: 1px solid #ccc;*/ /* Opcional: para adicionar uma borda */
+}
+
+.DivCorFundoPagina {
     /*background: linear-gradient(0.9turn, #E5F1FE, #D0D3D7, #E5F1FE);*/
-    background: linear-gradient(0.9turn, #98C7FB, #D0D3D7, #E5F1FE);
+    background: linear-gradient(0.9turn, #DDDFE9, #DDDFE9, #DDDFE9 );
     /*border: 2px, solid, red;*/
     /*    background: linear-gradient(0.5turn, rgb(4,23,61), blue, rgb(4,23,61));*/
     /*    background-image: linear-gradient(0.5turn, rgb(4,23,61), rgb(4,23,61), rgb(4,23,61));*/
     /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
 }
 
+.CorFundoPagina {
+    /*background: linear-gradient(0.9turn, #E5F1FE, #D0D3D7, #E5F1FE);*/
+    background: linear-gradient(0.9turn, #DDDFE9, #DDDFE9, #DDDFE9 );
+    /*border: 2px, solid, red;*/
+    /*    background: linear-gradient(0.5turn, rgb(4,23,61), blue, rgb(4,23,61));*/
+    /*    background-image: linear-gradient(0.5turn, rgb(4,23,61), rgb(4,23,61), rgb(4,23,61));*/
+    /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
+}
+
+.BotaoFiltrar {
+    padding: 4px;
+}
 
 .borda {
     border: 2px solid var(--cor-padrao);
@@ -366,8 +428,8 @@ html, body {
 
 .customizado-btn-pesquisar {
     color: white;
-    background-color: var(--gray-300); /* amarelo */
-    border-color: var(--gray-300); /* amarelo */
+    background-color: var(--gray-400); /* amarelo */
+    border-color: var(--gray-400); /* amarelo */
 }
 
     .customizado-btn-pesquisar:hover {
