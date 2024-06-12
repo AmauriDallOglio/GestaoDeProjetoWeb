@@ -1,24 +1,43 @@
-﻿<div class="col-md-auto">
-    <div class=" ">
+﻿<div class="AdicionaEspaco  TabelaLargura AdicionarCorInterna">
+    <div class="col-md-auto ">
+ 
 @*         @if (HabilitaBotaoAlterar)
         {
-            <button class="customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
+            <button class="AdicionarAjusteBotaoFiltro BotaoCustomizado BotaoCustomizado-alterar" @onclick="OnAlterar">
+                <ion-icon name="create-outline"></ion-icon>
+                Alterar
+            </button>
         }
 
         @if (HabilitaBotaoExcluir)
         {
-            <button class="customizado-btn customizado-btn-excluir" @onclick="OnExcluir">Excluir</button>
+            <button class="AdicionarAjusteBotaoFiltro BotaoCustomizado BotaoCustomizado-excluir" @onclick="OnExcluir">
+                <ion-icon name="trash-outline"></ion-icon>
+                Excluir
+            </button>
         }
 
         @if (HabilitaBotaoFormulario)
         {
-            <button class="btn customizado-btn customizado-btn-pagina" @onclick="OnSquad">Squad</button>
+            <button class="AdicionarAjusteBotaoFiltro BotaoCustomizado BotaoCustomizado-pagina @(!HabilitaBotaoFormulario ? "btn-escondido" : "")" @onclick="OnSquad">
+                <ion-icon name="browsers-outline"></ion-icon>
+                Squad
+            </button>
         } *@
 
     
-        <button class="customizado-btn customizado-btn-alterar" @onclick="OnAlterar">Alterar</button>
-        <button class="customizado-btn customizado-btn-excluir" @onclick="OnExcluir" >Excluir</button>
-        <button class="customizado-btn customizado-btn-pagina @(!HabilitaBotaoFormulario ? "btn-escondido" : "")" @onclick="OnSquad">Squad</button>
+        <button class="BotaoCustomizado BotaoCustomizado-alterar" @onclick="OnAlterar">
+            <ion-icon name="create-outline"></ion-icon>
+            Alterar
+        </button>
+        <button class="BotaoCustomizado BotaoCustomizado-excluir" @onclick="OnExcluir">
+            <ion-icon name="trash-outline"></ion-icon>
+            Excluir
+        </button>
+        <button class="BotaoCustomizado BotaoCustomizado-pagina @(!HabilitaBotaoFormulario ? "btn-escondido" : "")" @onclick="OnSquad">
+            <ion-icon name="browsers-outline"></ion-icon>
+            Squad
+        </button>
     </div>
 </div>
 

@@ -11,8 +11,8 @@
 @inject IProjetoServico _iProjetoServico
  
 
-<body class="DivCorFundoPagina">
-    @* <div class=" borda"> *@
+<body class="AdicionarCorFundoPagina">
+    @* <div class=" AdicionarBorda"> *@
         <GridApresentacaoComponente PaginaAnterior="Projeto"
                                 PaginaAnteriorLink="/Projeto/ProjetoGrid"
                                 PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
@@ -20,69 +20,69 @@
                                 Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
 
-        <div class=" align-items-center adicionaEspaco borda DivCorInterna">
-            <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 formulario-input">
-                <DataAnnotationsValidator />
+    <div class=" align-items-center AdicionaEspaco AdicionarBorda AdicionarCorInterna">
+        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 FormularioInput">
+            <DataAnnotationsValidator />
 
-                @if (!string.IsNullOrWhiteSpace(erro))
-                {
-                    <div class="alert alert-danger" role="alert">
-                        @erro
-                    </div>
-                }
-
-                <div class="form-floating col-12">
-                    <input type="text" class="form-control tamanho-fonte-input" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
-                    <label for="nomeProjeto">Nome do Projeto</label>
-                    <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
+            @if (!string.IsNullOrWhiteSpace(erro))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @erro
                 </div>
+            }
+
+            <div class="form-floating col-12">
+                <input type="text" class="form-control tamanho-fonte-input" id="nomeProjeto" @bind="@projetoCadastro.NomeProjeto" placeholder="Descreva o nome do projeto" />
+                <label for="nomeProjeto">Nome do Projeto</label>
+                <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
+            </div>
 
           
-                <div class="form-floating col-12">
-                    <textarea class="form-control tamanho-fonte-input" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
-                    <label for="descricao">Descrição</label>
-                    <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
-                </div>
+            <div class="form-floating col-12">
+                <textarea class="form-control tamanho-fonte-input" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
+                <label for="descricao">Descrição</label>
+                <ValidationMessage For="@(() => projetoCadastro.Descricao)" />
+            </div>
 
-                <div class="form-floating col-md-6">
-                    <input type="date" class="form-control tamanho-fonte-input" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
-                    <label for="dataHoraInicio">Data inicial</label>
-                    <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
-                </div>
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control tamanho-fonte-input" id="dataHoraInicio" @bind="@projetoCadastro.DataHoraInicio" />
+                <label for="dataHoraInicio">Data inicial</label>
+                <ValidationMessage For="@(() => projetoCadastro.DataHoraInicio)" />
+            </div>
 
-                <div class="form-floating col-md-6">
-                    <input type="date" class="form-control tamanho-fonte-input" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
-                    <label for="dataHoraFim">Data final</label>
-                    <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
-                </div>
+            <div class="form-floating col-md-6">
+                <input type="date" class="form-control tamanho-fonte-input" id="dataHoraFim" @bind="@projetoCadastro.DataHoraFim" />
+                <label for="dataHoraFim">Data final</label>
+                <ValidationMessage For="@(() => projetoCadastro.DataHoraFim)" />
+            </div>
 
-                <div class="form-floating col-6">
-                    <select class="form-select tamanho-fonte-input" id="situacao" @bind="@projetoCadastro.Situacao">
-                        <option value="">Selecione a situação</option>
-                        @foreach (SituacaoProjeto situacao in Enum.GetValues(typeof(SituacaoProjeto)))
-                        {
-                            <option value="@((short)situacao)">@situacao</option>
-                        }
-                    </select>
-                    <label for="situacao">Situação:</label>
-                    <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-                </div>
+            <div class="form-floating col-6">
+                <select class="form-select tamanho-fonte-input" id="situacao" @bind="@projetoCadastro.Situacao">
+                    <option value="">Selecione a situação</option>
+                    @foreach (SituacaoProjeto situacao in Enum.GetValues(typeof(SituacaoProjeto)))
+                    {
+                        <option value="@((short)situacao)">@situacao</option>
+                    }
+                </select>
+                <label for="situacao">Situação:</label>
+                <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+            </div>
 
-             @*    <div class="form-floating col-6">
-                    <select class="form-select tamanho-fonte-input" id="situacao" @bind="projetoCadastro.Situacao">
-                        @foreach (var situacao in comboItems)
-                        {
-                            <option value="@situacao.Id">@situacao.Descricao</option>
-                        }
-                    </select>
-                    <label for="situacao">Situação:</label>
-                    <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-                </div> *@
+            @*    <div class="form-floating col-6">
+                <select class="form-select tamanho-fonte-input" id="situacao" @bind="projetoCadastro.Situacao">
+                    @foreach (var situacao in comboItems)
+                    {
+                        <option value="@situacao.Id">@situacao.Descricao</option>
+                    }
+                </select>
+                <label for="situacao">Situação:</label>
+                <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
+            </div> *@
 
-                <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarProjeto" />
+            <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarProjeto" />
 
-            </EditForm>
-        </div>
+        </EditForm>
+    </div>
   @*   </div> *@
 </body>
 

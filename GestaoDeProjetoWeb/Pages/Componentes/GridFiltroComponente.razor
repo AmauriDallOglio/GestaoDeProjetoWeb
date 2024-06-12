@@ -1,6 +1,6 @@
 ﻿
 
-<div class="adicionaEspaco borda tabelaLargura DivCorInterna">
+<div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
 @*     <div class="col-md-auto">
         <label for="filtro" class="col-form-label">Filtrar:</label>
     </div>
@@ -8,16 +8,22 @@
         <input type="text" class="form-control" id="filtro" @bind="@Filtro" />
     </div> *@
 
-
+ 
     <div class="form-floating col-6">
-        <input type="text" class="form-control tamanho-fonte-input" id="filtro" @bind="@Filtro" placeholder="Descreva o nome do projeto" />
+        <input type="text" class="form-control tamanho-fonte-input" id="filtro" @bind="@FiltroNome" placeholder="Descreva o nome do projeto" />
         <label for="nomeProjeto">Nome ou descrição</label>
-    
-    </div>
 
-    <div class="adicionaEspaco  tabelaLargura DivCorInterna BotaoFiltrar">
+    </div>
+    
+
+ 
+
+    <div class="AdicionaEspaco  TabelaLargura AdicionarCorInterna BotaoFiltrar">
         <div class="col-md-auto">
-            <button class="customizado-btn customizado-btn-pesquisar" @onclick="AplicarFiltro">Filtrar</button>
+            <button class="BotaoCustomizado BotaoCustomizado-pesquisar" @onclick="AplicarFiltro">
+                <ion-icon name="funnel-outline"></ion-icon>
+                Filtrar
+                </button>
         </div>
     </div>
 
@@ -25,12 +31,12 @@
 </div>
 
 @code {
-    [Parameter] public string Filtro { get; set; }
+    [Parameter] public string FiltroNome { get; set; }
     [Parameter] public EventCallback<string> OnFiltroChanged { get; set; }
 
 
     private async Task AplicarFiltro()
     {
-        await OnFiltroChanged.InvokeAsync(Filtro);
+        await OnFiltroChanged.InvokeAsync(FiltroNome);
     }
 }

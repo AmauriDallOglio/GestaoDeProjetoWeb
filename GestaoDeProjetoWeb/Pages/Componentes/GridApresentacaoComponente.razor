@@ -1,10 +1,14 @@
-﻿<div class="adicionaEspaco borda tabelaLargura DivCorInterna">
+﻿<div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
     @if (!string.IsNullOrEmpty(Titulo))
     {
-        <h3> @Titulo </h3>
+
+        <h3> 
+            <ion-icon name="browsers-outline"></ion-icon> 
+            @Titulo 
+        </h3>
     }
 
-    <div class="hstack gap-3 fontePersonalizada">
+    <div class="hstack gap-3 FontePersonalizada">
         <div class="p-2">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -34,7 +38,10 @@
         {
             <div class="p-2 ms-auto">
                 <p>
-                    <a href="@InformacaoPagina" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
+                    <a href="@InformacaoPagina">
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                  
+                    </a>
                 </p>
             </div>
         }

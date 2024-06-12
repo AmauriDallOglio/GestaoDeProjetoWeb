@@ -213,13 +213,13 @@
     text-decoration: underline;
 }
 
-.DivCorInterna {
+.AdicionarCorInterna {
     background: linear-gradient(0.9turn, #F0F1F5, #DDDFE9, #F0F1F5 );
     /*padding: 20px;*/ /* Opcional: para adicionar um pouco de espaçamento interno */
-    /*border: 1px solid #ccc;*/ /* Opcional: para adicionar uma borda */
+    /*border: 1px solid #ccc;*/ /* Opcional: para adicionar uma AdicionarBorda */
 }
 
-.DivCorFundoPagina {
+.AdicionarCorFundoPagina {
     /*background: linear-gradient(0.9turn, #E5F1FE, #D0D3D7, #E5F1FE);*/
     background: linear-gradient(0.9turn, #DDDFE9, #DDDFE9, #DDDFE9 );
     /*border: 2px, solid, red;*/
@@ -241,13 +241,17 @@
     padding: 4px;
 }
 
-.borda {
+.AdicionarBorda {
     border: 2px solid var(--cor-padrao);
     padding: 10px;
     white-space: normal; /* Posição do texto */
     border-radius: 5px; /* Arredondar os cantos */
     height: 100%;
-    box-sizing: border-box; /* Inclui padding e borda no cálculo de altura */
+    box-sizing: border-box; /* Inclui padding e AdicionarBorda no cálculo de altura */
+}
+
+.AdicionarAjusteBotaoFiltro {
+    padding: 10px 1px 1px 1px; /* Adiciona 10px em cima, 1px à direita, 1px embaixo e 1px à esquerda */
 }
 
 html, body {
@@ -269,11 +273,11 @@ html, body {
     white-space: pre-line;
 }
 
-.adicionaEspaco {
+.AdicionaEspaco {
     margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
 }
 
-.fontePersonalizada {
+.FontePersonalizada {
     font-family: var(--fonte-padrao);
 }
 
@@ -300,18 +304,21 @@ html, body {
 
 }
 
-.tabelaLargura {
+.TabelaLargura {
     flex: 1;
     overflow: auto; /* Permite rolagem se o conteúdo exceder a altura disponível */
 }
+
+ 
+
+ 
+
 
 
 /*****************/
 /*   CADASTRO  */
 /*****************/
-
-
-.formulario-input {
+.FormularioInput {
     font-family: var(--fonte-padrao);
     font-size: 14px; /* Tamanho da fonte */
     row-gap: 10px; /* Espaçamento entre os inputs na vertical */
@@ -327,14 +334,14 @@ html, body {
     font-weight: bold;
 }*/
 
-.grupo-botoes {
+.GrupoBotoes {
     display: flex;
     justify-content: space-between;
     /*   margin-left: 20;
     margin-right: 20;*/
 }
 
-/*    .button-group .customizado-btn {
+/*    .button-group .BotaoCustomizado {
         width: 100%;
     }*/
 
@@ -346,7 +353,7 @@ html, body {
     margin-right: 0;
 }*/
 
-.adicionaEspaco {
+.AdicionaEspaco {
     margin-bottom: 15px; /* Adiciona espaço entre grupos de formulários */
 }
 
@@ -358,7 +365,7 @@ html, body {
 /*****************/
 
 
-.customizado-btn {
+.BotaoCustomizado {
     border-width: 2px;
     height: 40px; /* Altura desejada */
     width: 120px; /* Largura desejada */
@@ -373,7 +380,7 @@ html, body {
     cursor: pointer; /* Altera o cursor para uma mãozinha, indicando que é clicável */
     user-select: none; /* Impede que o texto dentro do botão seja selecionado pelo usuário */
     background-color: transparent; /* Define a cor de fundo como transparente */
-    border: 1px solid transparent; /* Define uma borda de 1px com cor transparente */
+    border: 1px solid transparent; /* Define uma AdicionarBorda de 1px com cor transparente */
     /*padding: 0.375rem 0.75rem;*/ /* Define o espaçamento interno (padding) do botão (0.375rem em cima e embaixo, 0.75rem nos lados) */
     font-size: 20px; /* Define o tamanho da fonte para 1rem (1 rem = tamanho da fonte raiz do documento) */
     border-radius: 0.375rem; /* Define os cantos arredondados do botão com raio de 0.375rem */
@@ -381,65 +388,65 @@ html, body {
 }
 
 
-.customizado-btn-inserir {
+.BotaoCustomizado-inserir {
     color: white;
     background-color: var(--teal-300); /* Verde */
     border-color: var(--teal-300); /* Verde */
 }
-    .customizado-btn-inserir:hover {
+    .BotaoCustomizado-inserir:hover {
         color: white;
         background-color: var(--teal-500); /* Verde */
         border-color: var(--teal-500); /* Verde  */
     }
 
-.customizado-btn-excluir {
+.BotaoCustomizado-excluir {
     color: white;
     background-color: var(--red-300); /* Vermelho */
     border-color: var(--red-300); /* Vermelho */
 }
-    .customizado-btn-excluir:hover {
+    .BotaoCustomizado-excluir:hover {
         color: white;
         background-color: var(--red-500); /* Vermelho */
         border-color: var(--red-500); /* Vermelho */
     }
 
-.customizado-btn-alterar {
+.BotaoCustomizado-alterar {
     color: white;
     background-color: var(--blue-300); /* Azul */
     border-color: var(--blue-300); /* Azul */
 }
-    .customizado-btn-alterar:hover {
+    .BotaoCustomizado-alterar:hover {
         color: white;
         background-color: var(--blue-500); /* Azul */
         border-color: var(--blue-500); /* Azul */
     }
 
-.customizado-btn-pagina {
+.BotaoCustomizado-pagina {
     color: white;
     background-color: var(--orange-300); /* amarelo */
     border-color: var(--orange-300); /* amarelo */
 }
-    .customizado-btn-pagina:hover {
+    .BotaoCustomizado-pagina:hover {
         color: white;
         background-color: var(--orange-500); /* amarelo */
         border-color: var(--orange-500); /* amarelo */
     }
 
 
-.customizado-btn-pesquisar {
+.BotaoCustomizado-pesquisar {
     color: white;
     background-color: var(--gray-400); /* amarelo */
     border-color: var(--gray-400); /* amarelo */
 }
 
-    .customizado-btn-pesquisar:hover {
+    .BotaoCustomizado-pesquisar:hover {
         color: white;
         background-color: var(--gray-500); /* amarelo */
         border-color: var(--gray-500); /* amarelo */
     }
 
 
-/*.espaco-entre-botao .customizado-btn {
+/*.espaco-entre-botao .BotaoCustomizado {
     margin-right: 5px;*/ /* Espaço de 10px entre os botões */
 /*}*/
 

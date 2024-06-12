@@ -12,7 +12,7 @@
  
  
 <body>
-    <div class="DivCorFundoPagina">
+    <div class="AdicionarCorFundoPagina">
 
         <GridApresentacaoComponente PaginaAnterior=""
                                 PaginaAtual="Projeto"
@@ -21,20 +21,38 @@
 
         <GridMensagemResultadoComponente Sucesso=@sucesso
                                      Erro=@erro />
+@* 
+        <GridFiltroComponente FiltroNome="@filtroGrid"
+                                        OnFiltroChanged="AtualizarLista"/> *@
 
-        <GridFiltroComponente Filtro="@filtroGrid"
-                                        OnFiltroChanged="AtualizarLista"/>
+        <div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
+            <div class="form-floating col-6">
+                <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid" placeholder="Filtrar... " />
+                <label for="nomeProjeto">Nome ou descrição</label>
+            </div>
+
+
+
+            <div class="col-md-auto AdicionarAjusteBotaoFiltro">
+                    <button class="BotaoCustomizado BotaoCustomizado-pesquisar" OnFiltroChanged="AtualizarLista">
+                        <ion-icon name="funnel-outline"></ion-icon>
+                        Filtrar
+                    </button>
+                </div>
+           
+        </div>
+
 
         <GridBotoesComponente Inserir="BotaoInserir"
                                         Excluir="BotaoExcluir"
                                         BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class="adicionaEspaco borda tabelaLargura DivCorInterna">
+        <div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
             @if (projetos != null && projetos.Any())
             {
                 <table class="table">
-                    <thead class="DivCorInterna">
+                    <thead class="AdicionarCorInterna">
                         <tr>
                             <th class="col-1 EstiloCabecalhoColunas">
                                 <div class="form-check">
