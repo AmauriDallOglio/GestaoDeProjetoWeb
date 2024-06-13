@@ -1,55 +1,51 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">GestaoDeProjetoWeb</a>
+        <a class="navbar-brand" href="">Gestão de projeto web</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
+
+
+
+
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi" aria-hidden="true">
+                    <ion-icon class="IconePaginaMenu" name="home-outline"></ion-icon>
+                </span> 
+                Home
             </NavLink>
         </div>
-@*         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div> *@
- @*        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div> *@
+ 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="Projeto/ProjetoGrid">
-                <span class="oi  ">  <ion-icon name="browsers-outline"></ion-icon> </span>
-                 Projetos
+                <span class="oi  ">  
+                    <ion-icon class="IconePaginaMenu" name="browsers-outline"></ion-icon> 
+                </span>
+                Projetos
             </NavLink>
         </div>
-        <div class="nav-item px-3">
+     @*    <div class="nav-item px-3">
             <NavLink class="nav-link" href="Squad/SquadGrid">
                 <span class="oi  ">  <ion-icon name="browsers-outline"></ion-icon> </span>
                 Squads
             </NavLink>
-        </div>
-
-
-     @*    <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Projeto/Teste">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Teste cs
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Projeto/ProjetoGrid">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> ProjetoGrid cs
-            </NavLink>
         </div> *@
+
+
+ 
     </nav>
 </div>
+
+
+
+
+
 
 @code {
     private bool collapseNavMenu = true;

@@ -260,6 +260,71 @@ html, body {
     font-family: var(--fonte-padrao);
 }
 
+
+/*****************/
+/*   Geral  */
+/*****************/
+
+.BloqueiaSelecao {
+    user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
+}
+
+.AdicionaEspaco {
+    margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
+}
+
+.FontePersonalizada {
+    font-family: var(--fonte-padrao);
+}
+
+/*****************/
+/*   Menu  */
+/*****************/
+/* Icones:   https://ionic.io/ionicons  */
+
+.IconePaginaMenu {
+    height: 25px;
+    width: 25px;
+    color: white;
+    padding: 0.0rem 0.0rem 0.0rem;
+    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
+}
+
+.IconePagina {
+    height: 25px;
+    width: 25px;
+    color: black;
+    padding: 0.0rem 0.0rem 0.3rem;
+    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
+
+}
+
+.IconePaginaInformacao {
+    height: 22px;
+    width: 22px;
+    color: black;
+ 
+}
+ 
+
+.FonteTamanhoMenu {
+    font-size: 24px; /* Tamanho da fonte */
+    padding: 0.5rem 0.6rem 0.3rem;
+    color: white; /* Cor do texto */
+ 
+    user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
+}
+
+.FonteTamanhoMenuTopo {
+    font-size: 24px; /* Tamanho da fonte */
+    padding: 1.5rem 0.6rem 0.3rem;
+    color: white; /* Cor do texto */
+    user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
+}
+
+
+
+
 /*****************/
 /*   GRID  */
 /*****************/
@@ -273,13 +338,7 @@ html, body {
     white-space: pre-line;
 }
 
-.AdicionaEspaco {
-    margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
-}
 
-.FontePersonalizada {
-    font-family: var(--fonte-padrao);
-}
 
 /* Estilo para o cabeçalho das colunas */
 .EstiloCabecalhoColunas {
@@ -289,6 +348,8 @@ html, body {
     color: #000000; /* Cor do texto */
     text-transform: uppercase; /* Texto em maiúsculas */
 }
+
+
 
 /* Estilo para os campos das colunas */
 .EstiloCamposColunas {
@@ -364,28 +425,37 @@ html, body {
 /* Botões */
 /*****************/
 
+.BotaoCustomizadoIcone {
+    height: 22px;
+    width: 23px;
+    color: white;
+    padding: 0.1rem 0.0rem 0.5rem;
+    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
+}
 
 .BotaoCustomizado {
+
     border-width: 2px;
-    height: 40px; /* Altura desejada */
-    width: 120px; /* Largura desejada */
+    height: 45px; /* Altura desejada */
+    width: 135px; /* Largura desejada */
     font-family: var(--fonte-padrao);
-    display: inline-block; /* Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
-    font-weight: 0; /* Define a espessura da fonte como normal (400) */
-    line-height: 1.5; /* Define a altura da linha do texto para 1.5 vezes o tamanho da fonte */
-    color: white; /* Define a cor do texto como um tom escuro de cinza */
+    /*display: inline-block;*/ /* Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
+    /*font-weight: 0;*/ /* Define a espessura da fonte como normal (400) */
+    line-height: 0; /* Define a altura da linha do texto para 1.5 vezes o tamanho da fonte */
+    color: black; /* Define a cor do texto como um tom escuro de cinza */
     text-align: center; /* Alinha o texto ao centro do botão */
     text-decoration: none; /* Remove qualquer decoração de texto, como sublinhado */
-    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
+
     cursor: pointer; /* Altera o cursor para uma mãozinha, indicando que é clicável */
     user-select: none; /* Impede que o texto dentro do botão seja selecionado pelo usuário */
     background-color: transparent; /* Define a cor de fundo como transparente */
-    border: 1px solid transparent; /* Define uma AdicionarBorda de 1px com cor transparente */
-    /*padding: 0.375rem 0.75rem;*/ /* Define o espaçamento interno (padding) do botão (0.375rem em cima e embaixo, 0.75rem nos lados) */
+    border: 1px solid; /* Define uma AdicionarBorda de 1px com cor transparente */
+    padding: 0.5rem 0.5rem; /* Define o espaçamento interno (padding) do botão (0.375rem em cima e embaixo, 0.75rem nos lados) */
     font-size: 20px; /* Define o tamanho da fonte para 1rem (1 rem = tamanho da fonte raiz do documento) */
     border-radius: 0.375rem; /* Define os cantos arredondados do botão com raio de 0.375rem */
     /* transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;*/
 }
+
 
 
 .BotaoCustomizado-inserir {
