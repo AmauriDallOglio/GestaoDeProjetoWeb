@@ -283,41 +283,27 @@ html, body {
 /* Icones:   https://ionic.io/ionicons  */
 
 .IconePaginaMenu {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     color: white;
-    padding: 0.0rem 0.0rem 0.0rem;
+    padding: 0.5rem 0.3rem 0.2rem;
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
-.IconePagina {
-    height: 25px;
-    width: 25px;
-    color: black;
-    padding: 0.0rem 0.0rem 0.3rem;
-    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 
-}
-
-.IconePaginaInformacao {
-    height: 22px;
-    width: 22px;
-    color: black;
- 
-}
  
 
 .FonteTamanhoMenu {
-    font-size: 24px; /* Tamanho da fonte */
-    padding: 0.5rem 0.6rem 0.3rem;
+    font-size: 20px; /* Tamanho da fonte */
+    padding: 0.6rem 0.6rem 0.6rem;
     color: white; /* Cor do texto */
  
     user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
 }
 
 .FonteTamanhoMenuTopo {
-    font-size: 24px; /* Tamanho da fonte */
-    padding: 1.5rem 0.6rem 0.3rem;
+    font-size: 20px; /* Tamanho da fonte */
+    padding: 1.5rem 0.6rem 0.5rem;
     color: white; /* Cor do texto */
     user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
 }
@@ -329,14 +315,35 @@ html, body {
 /*   GRID  */
 /*****************/
 
-.container {
-    display: flex; /* Usa o modelo de layout flexível */
-    justify-content: space-between; /* Distribui o espaço entre os elementos filhos */
-    align-items: center; /* Alinha os itens verticalmente */
-    height: 100vh; /* Define a altura como 100% da altura da janela */
-    padding: 20px; /* Adiciona espaçamento interno */
-    white-space: pre-line;
+.IconePagina {
+    height: 40px;
+    width: 40px;
+    color: black;
+    padding: 0.0rem 0.0rem 0.3rem;
+    vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
+
+.TamanhoFonteTitulo {
+    font-size: 28px; /* Tamanho da fonte */
+}
+.TamanhoFonteTituloCaminho {
+    font-size: 20px; /* Tamanho da fonte */
+}
+
+.IconePaginaInformacao {
+    height: 22px;
+    width: 22px;
+    color: black;
+}
+
+/*.container {
+    display: flex;*/ /* Usa o modelo de layout flexível */
+    /*justify-content: space-between;*/ /* Distribui o espaço entre os elementos filhos */
+    /*align-items: center;*/ /* Alinha os itens verticalmente */
+    /*height: 100vh;*/ /* Define a altura como 100% da altura da janela */
+    /*padding: 20px;*/ /* Adiciona espaçamento interno */
+    /*white-space: pre-line;
+}*/
 
 
 
@@ -370,9 +377,13 @@ html, body {
     overflow: auto; /* Permite rolagem se o conteúdo exceder a altura disponível */
 }
 
- 
 
- 
+
+.InformacaoCarregando {
+    color: #000000;
+    text-align: center;
+    margin: 20px 0;
+}
 
 
 

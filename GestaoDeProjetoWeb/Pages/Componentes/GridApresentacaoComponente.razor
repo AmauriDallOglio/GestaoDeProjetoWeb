@@ -1,17 +1,16 @@
-﻿<div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
+﻿<div class="AdicionaEspaco AdicionarBorda  AdicionarCorInterna">
     @if (!string.IsNullOrEmpty(Titulo))
     {
-
-        <h3>
+        <h3 class="TamanhoFonteTitulo">
             <ion-icon class="IconePagina" name="browsers-outline"></ion-icon>
             @Titulo 
         </h3>
     }
 
-    <div class="hstack gap-3 FontePersonalizada">
-        <div class="p-2">
+    <div class="hstack  ">
+        <div class="TamanhoFonteTituloCaminho">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb ">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
 
                     @if (!string.IsNullOrEmpty(PaginaAnterior))

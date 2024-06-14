@@ -11,9 +11,10 @@
 @inject ISquadServico _iSquadServico
  
  
-<body>
-    <div class="AdicionarCorFundoPagina">
-
+<body class="AdicionarCorFundoPagina">
+ @*    <div class="AdicionarCorFundoPagina"> *@
+      
+ 
         <GridApresentacaoComponente PaginaAnterior=""
                                 PaginaAtual="Projeto"
                                 InformacaoPagina="Projeto/ProjetoInfo"
@@ -21,24 +22,24 @@
 
         <GridMensagemResultadoComponente Sucesso=@sucesso
                                      Erro=@erro />
-@* 
-        <GridFiltroComponente FiltroNome="@filtroGrid"
+
+@*         <GridFiltroComponente FiltroNome="@filtroGrid"
                                         OnFiltroChanged="AtualizarLista"/> *@
 
         <div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
             <div class="form-floating col-6">
-                <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid" placeholder="Filtrar... " />
+                <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid"   />
                 <label for="nomeProjeto">Nome ou descrição</label>
             </div>
 
-
+     
 
             <div class="col-md-auto AdicionarAjusteBotaoFiltro">
-                    <button class="BotaoCustomizado BotaoCustomizado-pesquisar" OnFiltroChanged="AtualizarLista">
+                <button class="BotaoCustomizado BotaoCustomizado-pesquisar" OnFiltrar="AtualizarLista">
                     <ion-icon class="BotaoCustomizadoIcone" name="funnel-outline"></ion-icon>
-                        Filtrar
-                    </button>
-                </div>
+                    Filtrar
+                </button>
+            </div>
            
         </div>
 
@@ -107,10 +108,12 @@
             }
             else
             {
-                <p>Carregando...</p>
+               
+                <GridCarregando LoadingMessage="Carregando dados, por favor aguarde..." />
+          
             }
         </div>
-    </div>
+@*     </div> *@
 </body>
  
 
@@ -127,11 +130,12 @@
     private bool botaoExcluirHabilitado => projetosSelecionados.Count >= 2;
     bool idSelecionarTodos = false;
     private ProjetoDto projetoSelecionado = new ProjetoDto();
-
+     
 
 
     private async Task AtualizarLista(string novoFiltro)
     {
+        Console.WriteLine("Filtrar button clicked!");
         filtroGrid = novoFiltro;
     }
 
