@@ -11,17 +11,18 @@
 @inject IProjetoServico _iProjetoServico
  
 
-<body class="AdicionarCorFundoPagina">
-    @* <div class=" AdicionarBorda"> *@
-        <GridApresentacaoComponente PaginaAnterior="Projeto"
-                                PaginaAnteriorLink="/Projeto/ProjetoGrid"
-                                PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
-                                InformacaoPagina="Projeto/ProjetoInfo"
-                                Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
+<body class="adicionarCorFundoPagina">
+
+    <GridApresentacaoComponente PaginaAnterior="Projeto"
+        PaginaAnteriorLink="/Projeto/ProjetoGrid"
+        PaginaAtual=@(projetoCadastro.Id > 0 ? "Editar" : "Inserir")
+        InformacaoPagina="Projeto/ProjetoInfo"
+        Titulo=@(projetoCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
 
-    <div class=" align-items-center AdicionaEspaco AdicionarBorda AdicionarCorInterna">
-        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" class="row g-1 FormularioInput">
+    <div class=" align-items-center adicionaEspaco adicionarBorda adicionarCorInterna">
+        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" 
+            class="row g-1 formulario-Input">
             <DataAnnotationsValidator />
 
             @if (!string.IsNullOrWhiteSpace(erro))
@@ -37,7 +38,6 @@
                 <ValidationMessage For="@(() => projetoCadastro.NomeProjeto)" />
             </div>
 
-          
             <div class="form-floating col-12">
                 <textarea class="form-control tamanho-fonte-input" id="descricao" @bind="@projetoCadastro.Descricao" placeholder="Descreva a descrição do projeto"></textarea>
                 <label for="descricao">Descrição</label>
@@ -68,22 +68,11 @@
                 <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
             </div>
 
-            @*    <div class="form-floating col-6">
-                <select class="form-select tamanho-fonte-input" id="situacao" @bind="projetoCadastro.Situacao">
-                    @foreach (var situacao in comboItems)
-                    {
-                        <option value="@situacao.Id">@situacao.Descricao</option>
-                    }
-                </select>
-                <label for="situacao">Situação:</label>
-                <ValidationMessage For="@(() => projetoCadastro.Situacao)" />
-            </div> *@
 
             <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarProjeto" />
 
         </EditForm>
     </div>
-  @*   </div> *@
 </body>
 
 

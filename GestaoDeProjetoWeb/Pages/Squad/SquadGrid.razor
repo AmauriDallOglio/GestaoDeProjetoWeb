@@ -10,8 +10,8 @@
 @inject IJSRuntime JSRuntime
 @inject ISquadServico _iSquadServico
 
-<body>
-    <div class="">
+<body class="adicionarCorFundoPagina">
+ 
 
         <GridApresentacaoComponente PaginaAtual="Squad"
                                 InformacaoPagina="Squad/SquadInfo"
@@ -20,30 +20,49 @@
 
         <GridMensagemResultadoComponente Sucesso=@sucesso
                                          Erro=@erro />
-
+@* 
         <GridFiltroComponente Filtro="@filtroGrid"
-                              OnFiltroChanged="AtualizarLista" />
+                              OnFiltroChanged="AtualizarLista" /> *@
+
+
+        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
+            <div class="form-floating col-6">
+                <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid" />
+                <label for="nomeProjeto">Nome ou descrição</label>
+            </div>
+
+
+
+            <div class="col-md-auto adicionarAjusteBotaoFiltro">
+                <button class="botao-Customizado botao-Customizado-pesquisar" OnFiltrar="AtualizarLista">
+                    <ion-icon class="botao-Customizado-Icone" name="funnel-outline"></ion-icon>
+                    Filtrar
+                </button>
+            </div>
+
+        </div>
+
 
         <GridBotoesComponente Inserir="BotaoInserir"
                               Excluir="BotaoExcluir"
                               BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class="row g-1 align-items-center AdicionaEspaco AdicionarBorda">
+    <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
             @if (squad != null && squad.Any())
             {
 
 
                 <table class="table">
-                    <thead class="EstiloFundoCabecalho">
+                    <thead class="adicionarCorInterna">
                         <tr>
                             <th class="text-center">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-6 EstiloCabecalhoColunas">Id</th>
-                            <th class="col-6 EstiloCabecalhoColunas">Descrição</th>
+                            <th class="col-1 estilo-Cabecalho-Colunas">Id</th>
+                            <th class="col-11 estilo-Cabecalho-Colunas">Descrição</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,8 +76,8 @@
                                         <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
                                     </div>
                                 </td>
-                                <td class="col-6 EstiloCamposColunas">@squad.Id</td>
-                                <td class="col-6 EstiloCamposColunas">@squad.Descricao</td>
+                                <td class="col-1 estilo-Campos-Colunas">@squad.Id</td>
+                                <td class="col-11 estilo-Campos-Colunas">@squad.Descricao</td>
                             </tr>
                             @if (squadelecionado == squad)
                             {
@@ -77,51 +96,6 @@
                     </tbody>
                 </table>
 
-
-
-
-@*                 <table class="table">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="text-center">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
-                                </div>
-                            </th>
-                            <th class="col-6 custom-font">Id</th>
-                            <th class="col-6 custom-font">Descrição</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var squad in squad.Where(p => string.IsNullOrEmpty(filtroGrid) ||
-                       p.Descricao.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
-                       p.Inativo.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            <tr>
-                                <td class="text-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
-                                    </div>
-                                </td>
-                                <td class="col-6 custom-font">@squad.Id</td>
-                                <td class="col-6 custom-font">@squad.Descricao</td>
-                            </tr>
-                            @if (squadelecionado == squad)
-                            {
-                                <tr>
-                                    <td colspan="8">
-                                        <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
-                                                                         OnAlterar="() => BotaoAlterar(squad)"
-                                                                         HabilitaBotaoExcluir="true"
-                                                                         OnExcluir="BotaoExcluir"
-                                                                         HabilitaBotaoFormulario="false"
-                                                                         OnSquad="() => (null)" />
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table> *@
                 <GridSelecionadosComponente Count="@contadorSelecionados" />
             }
             else
@@ -129,7 +103,7 @@
                 <p>Carregando...</p>
             }
         </div>
-    </div>
+ 
 </body>
 
 @code

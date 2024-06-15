@@ -11,36 +11,18 @@
 @inject ISquadServico _iSquadServico
 
 
-<body>
+<body class="adicionarCorFundoPagina">
 
     <GridApresentacaoComponente PaginaAnterior="Squad"
-                        PaginaAnteriorLink="/Squad/SquadGrid"
-                        PaginaAtual=@(squadCadastro.Id > 0 ? "Editar" : "Inserir")
-                        InformacaoPagina=""
-                        Titulo=@(squadCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
+        PaginaAnteriorLink="/Squad/SquadGrid"
+        PaginaAtual=@(squadCadastro.Id > 0 ? "Editar" : "Inserir")
+        InformacaoPagina=""
+        Titulo=@(squadCadastro.Id > 0 ? "Formulário de alterar" : "Formulário de inserção") />
 
-@* 
-    <div class="hstack gap-3">
-        <div class="p-2">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"> <a href="#">Home</a> </li>
-                    <li class="breadcrumb-item" <a href="/Squad/SquadGrid">Squad</a> </li>
-                    <li class="breadcrumb-item active" aria-current="page"> Cadastro </li>
-                </ol>
-            </nav>
 
-        </div>
-        <div class="p-2 ms-auto">
-            <p>
-                <a href="Squad/SquadInfo" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Info</a>
-            </p>
-
-        </div>
-    </div> *@
-
-    <div class="row g-3 align-items-center AdicionaEspaco AdicionarBorda">
-        <EditForm Model="@squadCadastro" OnValidSubmit="@CadastrarSquad" class="row g-1 form-custom">
+    <div class="align-items-center adicionaEspaco adicionarBorda adicionarCorInterna">
+        <EditForm Model="@squadCadastro" OnValidSubmit="@CadastrarSquad"
+                  class="row g-1 formulario-Input">
             <DataAnnotationsValidator />
 
             @if (!string.IsNullOrWhiteSpace(erro))

@@ -177,49 +177,49 @@
     text-indent: 50px; /* Espaço tab no texto */
 }
 
-.TextoEsquerda {
+.textoEsquerda {
     text-align: right;
 }
 
-.TextoDireita {
+.textoDireita {
     text-align: left;
 }
 
-.TextoCentralizado {
+.textoCentralizado {
     text-align: center;
 }
 
-.TextoMinisculo {
+.textoMinisculo {
     text-transform: lowercase;
 }
 
-.TextoMaiusculo {
+.textoMaiusculo {
     text-transform: uppercase;
 }
 
-.TextoPrimeiraLetraMaiuscula {
+.textoPrimeiraLetraMaiuscula {
     text-transform: capitalize;
 }
 
-.TextoMarcado {
+.textoMarcado {
     text-decoration: line-through;
 }
 
-.TextoEspacoLinhas {
+.textoEspacoLinhas {
     line-height: 1.5;
 }
 
-.TextoSublinhado{
+.textoSublinhado{
     text-decoration: underline;
 }
 
-.AdicionarCorInterna {
+.adicionarCorInterna {
     background: linear-gradient(0.9turn, #F0F1F5, #DDDFE9, #F0F1F5 );
     /*padding: 20px;*/ /* Opcional: para adicionar um pouco de espaçamento interno */
-    /*border: 1px solid #ccc;*/ /* Opcional: para adicionar uma AdicionarBorda */
+    /*border: 1px solid #ccc;*/ /* Opcional: para adicionar uma adicionarBorda */
 }
 
-.AdicionarCorFundoPagina {
+.adicionarCorFundoPagina {
     /*background: linear-gradient(0.9turn, #E5F1FE, #D0D3D7, #E5F1FE);*/
     background: linear-gradient(0.9turn, #DDDFE9, #DDDFE9, #DDDFE9 );
     /*border: 2px, solid, red;*/
@@ -228,7 +228,7 @@
     /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
 }
 
-.CorFundoPagina {
+.corFundoPagina {
     /*background: linear-gradient(0.9turn, #E5F1FE, #D0D3D7, #E5F1FE);*/
     background: linear-gradient(0.9turn, #DDDFE9, #DDDFE9, #DDDFE9 );
     /*border: 2px, solid, red;*/
@@ -237,20 +237,20 @@
     /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
 }
 
-.BotaoFiltrar {
+.botaoFiltrar {
     padding: 4px;
 }
 
-.AdicionarBorda {
+.adicionarBorda {
     border: 2px solid var(--cor-padrao);
     padding: 10px;
     white-space: normal; /* Posição do texto */
     border-radius: 5px; /* Arredondar os cantos */
     height: 100%;
-    box-sizing: border-box; /* Inclui padding e AdicionarBorda no cálculo de altura */
+    box-sizing: border-box; /* Inclui padding e adicionarBorda no cálculo de altura */
 }
 
-.AdicionarAjusteBotaoFiltro {
+.adicionarAjusteBotaoFiltro {
     padding: 10px 1px 1px 1px; /* Adiciona 10px em cima, 1px à direita, 1px embaixo e 1px à esquerda */
 }
 
@@ -265,15 +265,15 @@ html, body {
 /*   Geral  */
 /*****************/
 
-.BloqueiaSelecao {
+.bloqueiaSelecao {
     user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
 }
 
-.AdicionaEspaco {
+.adicionaEspaco {
     margin-bottom: 20px; /* Adiciona espaço entre grupos de formulários */
 }
 
-.FontePersonalizada {
+.fontePersonalizada {
     font-family: var(--fonte-padrao);
 }
 
@@ -282,7 +282,7 @@ html, body {
 /*****************/
 /* Icones:   https://ionic.io/ionicons  */
 
-.IconePaginaMenu {
+.iconePaginaMenu {
     height: 20px;
     width: 20px;
     color: white;
@@ -293,7 +293,7 @@ html, body {
 
  
 
-.FonteTamanhoMenu {
+.fonte-Tamanho-Menu {
     font-size: 20px; /* Tamanho da fonte */
     padding: 0.6rem 0.6rem 0.6rem;
     color: white; /* Cor do texto */
@@ -301,7 +301,7 @@ html, body {
     user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
 }
 
-.FonteTamanhoMenuTopo {
+.fonte-Tamanho-Menu-Topo {
     font-size: 20px; /* Tamanho da fonte */
     padding: 1.5rem 0.6rem 0.5rem;
     color: white; /* Cor do texto */
@@ -315,7 +315,7 @@ html, body {
 /*   GRID  */
 /*****************/
 
-.IconePagina {
+.icone-Pagina {
     height: 40px;
     width: 40px;
     color: black;
@@ -323,14 +323,14 @@ html, body {
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
-.TamanhoFonteTitulo {
+.tamanho-Fonte-Titulo {
     font-size: 28px; /* Tamanho da fonte */
 }
-.TamanhoFonteTituloCaminho {
+.tamanho-Fonte-TituloCaminho {
     font-size: 20px; /* Tamanho da fonte */
 }
 
-.IconePaginaInformacao {
+.icone-PaginaInformacao {
     height: 22px;
     width: 22px;
     color: black;
@@ -348,7 +348,7 @@ html, body {
 
 
 /* Estilo para o cabeçalho das colunas */
-.EstiloCabecalhoColunas {
+.estilo-Cabecalho-Colunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     /*font-weight: bold;*/ /* Negrito */
@@ -359,7 +359,7 @@ html, body {
 
 
 /* Estilo para os campos das colunas */
-.EstiloCamposColunas {
+.estilo-Campos-Colunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     color: #000000; /* Cor do texto */
@@ -367,19 +367,19 @@ html, body {
 }
 
 /* Exemplo adicional para a tabela */
-.EstiloFundoCabecalho {
+.estilo-Fundo-Cabecalho {
     background-color: var(--cor-padrao); /* Cor de fundo das linhas do cabeçalho */
 
 }
 
-.TabelaLargura {
+.tabela-Largura {
     flex: 1;
     overflow: auto; /* Permite rolagem se o conteúdo exceder a altura disponível */
 }
 
 
 
-.InformacaoCarregando {
+.informacao-Carregando {
     color: #000000;
     text-align: center;
     margin: 20px 0;
@@ -390,7 +390,7 @@ html, body {
 /*****************/
 /*   CADASTRO  */
 /*****************/
-.FormularioInput {
+.formulario-Input {
     font-family: var(--fonte-padrao);
     font-size: 14px; /* Tamanho da fonte */
     row-gap: 10px; /* Espaçamento entre os inputs na vertical */
@@ -406,14 +406,14 @@ html, body {
     font-weight: bold;
 }*/
 
-.GrupoBotoes {
+.grupo-Botoes {
     display: flex;
     justify-content: space-between;
     /*   margin-left: 20;
     margin-right: 20;*/
 }
 
-/*    .button-group .BotaoCustomizado {
+/*    .button-group .botao-Customizado {
         width: 100%;
     }*/
 
@@ -425,7 +425,7 @@ html, body {
     margin-right: 0;
 }*/
 
-.AdicionaEspaco {
+.adicionaEspaco {
     margin-bottom: 15px; /* Adiciona espaço entre grupos de formulários */
 }
 
@@ -436,7 +436,7 @@ html, body {
 /* Botões */
 /*****************/
 
-.BotaoCustomizadoIcone {
+.botao-Customizado-Icone {
     height: 22px;
     width: 23px;
     color: white;
@@ -444,13 +444,14 @@ html, body {
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
-.BotaoCustomizado {
-
+.botao-Customizado {
     border-width: 2px;
     height: 45px; /* Altura desejada */
+    max-width: 135px; /* Largura maxima desejada */
     width: 135px; /* Largura desejada */
     font-family: var(--fonte-padrao);
-    /*display: inline-block;*/ /* Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
+    display: inline-block; /*Exibe o botão como um bloco inline, permitindo margens e paddings aplicáveis */
+    gap: 10px 20px;
     /*font-weight: 0;*/ /* Define a espessura da fonte como normal (400) */
     line-height: 0; /* Define a altura da linha do texto para 1.5 vezes o tamanho da fonte */
     color: black; /* Define a cor do texto como um tom escuro de cinza */
@@ -460,7 +461,7 @@ html, body {
     cursor: pointer; /* Altera o cursor para uma mãozinha, indicando que é clicável */
     user-select: none; /* Impede que o texto dentro do botão seja selecionado pelo usuário */
     background-color: transparent; /* Define a cor de fundo como transparente */
-    border: 1px solid; /* Define uma AdicionarBorda de 1px com cor transparente */
+    border: 1px solid; /* Define uma adicionarBorda de 1px com cor transparente */
     padding: 0.5rem 0.5rem; /* Define o espaçamento interno (padding) do botão (0.375rem em cima e embaixo, 0.75rem nos lados) */
     font-size: 20px; /* Define o tamanho da fonte para 1rem (1 rem = tamanho da fonte raiz do documento) */
     border-radius: 0.375rem; /* Define os cantos arredondados do botão com raio de 0.375rem */
@@ -469,65 +470,65 @@ html, body {
 
 
 
-.BotaoCustomizado-inserir {
+.botao-Customizado-inserir {
     color: white;
     background-color: var(--teal-300); /* Verde */
     border-color: var(--teal-300); /* Verde */
 }
-    .BotaoCustomizado-inserir:hover {
+    .botao-Customizado-inserir:hover {
         color: white;
         background-color: var(--teal-500); /* Verde */
         border-color: var(--teal-500); /* Verde  */
     }
 
-.BotaoCustomizado-excluir {
+.botao-Customizado-excluir {
     color: white;
     background-color: var(--red-300); /* Vermelho */
     border-color: var(--red-300); /* Vermelho */
 }
-    .BotaoCustomizado-excluir:hover {
+    .botao-Customizado-excluir:hover {
         color: white;
         background-color: var(--red-500); /* Vermelho */
         border-color: var(--red-500); /* Vermelho */
     }
 
-.BotaoCustomizado-alterar {
+.botao-Customizado-alterar {
     color: white;
     background-color: var(--blue-300); /* Azul */
     border-color: var(--blue-300); /* Azul */
 }
-    .BotaoCustomizado-alterar:hover {
+    .botao-Customizado-alterar:hover {
         color: white;
         background-color: var(--blue-500); /* Azul */
         border-color: var(--blue-500); /* Azul */
     }
 
-.BotaoCustomizado-pagina {
+.botao-Customizado-pagina {
     color: white;
     background-color: var(--orange-300); /* amarelo */
     border-color: var(--orange-300); /* amarelo */
 }
-    .BotaoCustomizado-pagina:hover {
+    .botao-Customizado-pagina:hover {
         color: white;
         background-color: var(--orange-500); /* amarelo */
         border-color: var(--orange-500); /* amarelo */
     }
 
 
-.BotaoCustomizado-pesquisar {
+.botao-Customizado-pesquisar {
     color: white;
     background-color: var(--gray-400); /* amarelo */
     border-color: var(--gray-400); /* amarelo */
 }
 
-    .BotaoCustomizado-pesquisar:hover {
+    .botao-Customizado-pesquisar:hover {
         color: white;
         background-color: var(--gray-500); /* amarelo */
         border-color: var(--gray-500); /* amarelo */
     }
 
 
-/*.espaco-entre-botao .BotaoCustomizado {
+/*.espaco-entre-botao .botao-Customizado {
     margin-right: 5px;*/ /* Espaço de 10px entre os botões */
 /*}*/
 

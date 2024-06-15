@@ -11,8 +11,8 @@
 @inject ISquadServico _iSquadServico
  
  
-<body class="AdicionarCorFundoPagina">
- @*    <div class="AdicionarCorFundoPagina"> *@
+<body class="adicionarCorFundoPagina">
+ @*    <div class="adicionarCorFundoPagina"> *@
       
  
         <GridApresentacaoComponente PaginaAnterior=""
@@ -26,7 +26,7 @@
 @*         <GridFiltroComponente FiltroNome="@filtroGrid"
                                         OnFiltroChanged="AtualizarLista"/> *@
 
-        <div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
+        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
             <div class="form-floating col-6">
                 <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid"   />
                 <label for="nomeProjeto">Nome ou descrição</label>
@@ -34,9 +34,9 @@
 
      
 
-            <div class="col-md-auto AdicionarAjusteBotaoFiltro">
-                <button class="BotaoCustomizado BotaoCustomizado-pesquisar" OnFiltrar="AtualizarLista">
-                    <ion-icon class="BotaoCustomizadoIcone" name="funnel-outline"></ion-icon>
+            <div class="col-md-auto adicionarAjusteBotaoFiltro">
+                <button class="botao-Customizado botao-Customizado-pesquisar" OnFiltrar="AtualizarLista">
+                    <ion-icon class="botao-Customizado-Icone" name="funnel-outline"></ion-icon>
                     Filtrar
                 </button>
             </div>
@@ -49,23 +49,23 @@
                                         BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class="AdicionaEspaco AdicionarBorda TabelaLargura AdicionarCorInterna">
+        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
             @if (projetos != null && projetos.Any())
             {
                 <table class="table">
-                    <thead class="AdicionarCorInterna">
+                    <thead class="adicionarCorInterna">
                         <tr>
-                            <th class="col-1 EstiloCabecalhoColunas">
+                            <th class="col-1 estilo-Cabecalho-Colunas">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 EstiloCabecalhoColunas">Id</th>
-                            <th class="col-3 EstiloCabecalhoColunas">Nome</th>
-                            <th class="col-3 EstiloCabecalhoColunas">Descrição</th>
-                            <th class="col-2 EstiloCabecalhoColunas">Data de início</th>
-                            <th class="col-2 EstiloCabecalhoColunas">Data de final</th>
-                            <th class="col-1 EstiloCabecalhoColunas">Situação</th>
+                            <th class="col-1 estilo-Cabecalho-Colunas">Id</th>
+                            <th class="col-3 estilo-Cabecalho-Colunas">Nome</th>
+                            <th class="col-3 estilo-Cabecalho-Colunas">Descrição</th>
+                            <th class="col-2 estilo-Cabecalho-Colunas">Data de início</th>
+                            <th class="col-2 estilo-Cabecalho-Colunas">Data de final</th>
+                            <th class="col-1 estilo-Cabecalho-Colunas">Situação</th>
 
                         </tr>
                     </thead>
@@ -76,17 +76,17 @@
                                                                 p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
                         {
                             <tr>
-                                <td class="col-1 EstiloCamposColunas text-center">
+                                <td class="col-1 estilo-Campos-Colunas text-center">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
                                     </div>
                                 </td>
-                                <td class="col-1 EstiloCamposColunas">@projeto.Id</td>
-                                <td class="col-3 EstiloCamposColunas">@projeto.NomeProjeto</td>
-                                <td class="col-3 EstiloCamposColunas">@projeto.Descricao</td>
-                                <td class="col-2 EstiloCamposColunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                                <td class="col-2 EstiloCamposColunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                                <td class="col-1 EstiloCamposColunas">@projeto.SituacaoDescricao</td>
+                                <td class="col-1 estilo-Campos-Colunas">@projeto.Id</td>
+                                <td class="col-3 estilo-Campos-Colunas">@projeto.NomeProjeto</td>
+                                <td class="col-3 estilo-Campos-Colunas">@projeto.Descricao</td>
+                                <td class="col-2 estilo-Campos-Colunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="col-2 estilo-Campos-Colunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                                <td class="col-1 estilo-Campos-Colunas">@projeto.SituacaoDescricao</td>
                             </tr>
                             @if (projetoSelecionado == projeto)
                             {
