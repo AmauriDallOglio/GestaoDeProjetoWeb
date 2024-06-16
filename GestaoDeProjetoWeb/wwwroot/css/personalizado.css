@@ -293,7 +293,7 @@ html, body {
 
  
 
-.fonte-Tamanho-Menu {
+.fonteTamanhoMenu {
     font-size: 20px; /* Tamanho da fonte */
     padding: 0.6rem 0.6rem 0.6rem;
     color: white; /* Cor do texto */
@@ -301,7 +301,7 @@ html, body {
     user-select: none; /* Impede que o texto dentro seja selecionado pelo usuário */
 }
 
-.fonte-Tamanho-Menu-Topo {
+.fonteTamanhoMenuTopo {
     font-size: 20px; /* Tamanho da fonte */
     padding: 1.5rem 0.6rem 0.5rem;
     color: white; /* Cor do texto */
@@ -315,7 +315,7 @@ html, body {
 /*   GRID  */
 /*****************/
 
-.icone-Pagina {
+.iconePagina {
     height: 40px;
     width: 40px;
     color: black;
@@ -323,14 +323,14 @@ html, body {
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
-.tamanho-Fonte-Titulo {
+.tamanhoFonteTitulo {
     font-size: 28px; /* Tamanho da fonte */
 }
-.tamanho-Fonte-TituloCaminho {
+.tamanhoFonteTituloCaminho {
     font-size: 20px; /* Tamanho da fonte */
 }
 
-.icone-PaginaInformacao {
+.iconePaginaInformacao {
     height: 22px;
     width: 22px;
     color: black;
@@ -348,7 +348,7 @@ html, body {
 
 
 /* Estilo para o cabeçalho das colunas */
-.estilo-Cabecalho-Colunas {
+.estiloCabecalhoColunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     /*font-weight: bold;*/ /* Negrito */
@@ -359,7 +359,7 @@ html, body {
 
 
 /* Estilo para os campos das colunas */
-.estilo-Campos-Colunas {
+.estiloCamposColunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     color: #000000; /* Cor do texto */
@@ -367,19 +367,19 @@ html, body {
 }
 
 /* Exemplo adicional para a tabela */
-.estilo-Fundo-Cabecalho {
-    background-color: var(--cor-padrao); /* Cor de fundo das linhas do cabeçalho */
+/*.estiloFundoCabecalho {
+    background-color: var(--cor-padrao);*/ /* Cor de fundo das linhas do cabeçalho */
 
-}
+/*}*/
 
-.tabela-Largura {
+.tabelaLargura {
     flex: 1;
     overflow: auto; /* Permite rolagem se o conteúdo exceder a altura disponível */
 }
 
 
 
-.informacao-Carregando {
+.informacaoCarregando {
     color: #000000;
     text-align: center;
     margin: 20px 0;
@@ -390,7 +390,7 @@ html, body {
 /*****************/
 /*   CADASTRO  */
 /*****************/
-.formulario-Input {
+.formularioInput {
     font-family: var(--fonte-padrao);
     font-size: 14px; /* Tamanho da fonte */
     row-gap: 10px; /* Espaçamento entre os inputs na vertical */
@@ -406,14 +406,14 @@ html, body {
     font-weight: bold;
 }*/
 
-.grupo-Botoes {
+.grupoBotoes {
     display: flex;
     justify-content: space-between;
     /*   margin-left: 20;
     margin-right: 20;*/
 }
 
-/*    .button-group .botao-Customizado {
+/*    .button-group .botaoCustomizado {
         width: 100%;
     }*/
 
@@ -436,7 +436,7 @@ html, body {
 /* Botões */
 /*****************/
 
-.botao-Customizado-Icone {
+.botaoCustomizadoIcone {
     height: 22px;
     width: 23px;
     color: white;
@@ -444,7 +444,7 @@ html, body {
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
-.botao-Customizado {
+.botaoCustomizado {
     border-width: 2px;
     height: 45px; /* Altura desejada */
     max-width: 135px; /* Largura maxima desejada */
@@ -470,65 +470,65 @@ html, body {
 
 
 
-.botao-Customizado-inserir {
+.botaoCustomizadoInserir {
     color: white;
     background-color: var(--teal-300); /* Verde */
     border-color: var(--teal-300); /* Verde */
 }
-    .botao-Customizado-inserir:hover {
+    .botaoCustomizadoInserir:hover {
         color: white;
         background-color: var(--teal-500); /* Verde */
         border-color: var(--teal-500); /* Verde  */
     }
 
-.botao-Customizado-excluir {
+.botaoCustomizadoExcluir {
     color: white;
     background-color: var(--red-300); /* Vermelho */
     border-color: var(--red-300); /* Vermelho */
 }
-    .botao-Customizado-excluir:hover {
+    .botaoCustomizadoExcluir:hover {
         color: white;
         background-color: var(--red-500); /* Vermelho */
         border-color: var(--red-500); /* Vermelho */
     }
 
-.botao-Customizado-alterar {
+.botaoCustomizadoAlterar {
     color: white;
     background-color: var(--blue-300); /* Azul */
     border-color: var(--blue-300); /* Azul */
 }
-    .botao-Customizado-alterar:hover {
+    .botaoCustomizadoAlterar:hover {
         color: white;
         background-color: var(--blue-500); /* Azul */
         border-color: var(--blue-500); /* Azul */
     }
 
-.botao-Customizado-pagina {
+.botaoCustomizadoPagina {
     color: white;
     background-color: var(--orange-300); /* amarelo */
     border-color: var(--orange-300); /* amarelo */
 }
-    .botao-Customizado-pagina:hover {
+    .botaoCustomizadoPagina:hover {
         color: white;
         background-color: var(--orange-500); /* amarelo */
         border-color: var(--orange-500); /* amarelo */
     }
 
 
-.botao-Customizado-pesquisar {
+.botaoCustomizadoPesquisar {
     color: white;
     background-color: var(--gray-400); /* amarelo */
     border-color: var(--gray-400); /* amarelo */
 }
 
-    .botao-Customizado-pesquisar:hover {
+    .botaoCustomizadoPesquisar:hover {
         color: white;
         background-color: var(--gray-500); /* amarelo */
         border-color: var(--gray-500); /* amarelo */
     }
 
 
-/*.espaco-entre-botao .botao-Customizado {
+/*.espaco-entre-botao .botaoCustomizado {
     margin-right: 5px;*/ /* Espaço de 10px entre os botões */
 /*}*/
 
@@ -536,7 +536,7 @@ html, body {
     margin-right: 0;*/ /* Remove o espaço após o último botão */
 /*}*/
 
-.btn-escondido {
+.botaoEscondido {
     display: none;
 }
 

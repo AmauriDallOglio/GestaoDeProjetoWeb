@@ -20,16 +20,23 @@ namespace GestaoDeProjetoWeb.Servico
         {
             HttpResponseMessage response = new HttpResponseMessage();
             //var jsonContent = new StringContent(JsonSerializer.Serialize(projeto), Encoding.UTF8, "application/json");
-           
             response = await _httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/ProjetoSquad/Inserir", projetoSquadDto);
-             
-
-
             if (!response.IsSuccessStatusCode)
             {
                 throw new Exception($"Erro ao incluir a squad no projeto. Status code: {response.StatusCode}");
             }
+            return response;
+        }
 
+        public async Task<HttpResponseMessage> AlterarAsync(ProjetoSquadDto projetoSquadDto)
+        {
+            HttpResponseMessage response = new HttpResponseMessage();
+            //var jsonContent = new StringContent(JsonSerializer.Serialize(projeto), Encoding.UTF8, "application/json");
+            response = await _httpClient.PostAsJsonAsync("https://localhost:7006/api/v1/ProjetoSquad/Alterar", projetoSquadDto);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Erro ao alterar a squad no projeto. Status code: {response.StatusCode}");
+            }
             return response;
         }
 

@@ -24,9 +24,9 @@
                                      Erro=@erro />
 
 @*         <GridFiltroComponente FiltroNome="@filtroGrid"
-                                        OnFiltroChanged="AtualizarLista"/> *@
+    OnFiltroChanged="EventoCarregaLista"/> *@
 
-        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
+        <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
             <div class="form-floating col-6">
                 <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid"   />
                 <label for="nomeProjeto">Nome ou descrição</label>
@@ -35,8 +35,8 @@
      
 
             <div class="col-md-auto adicionarAjusteBotaoFiltro">
-                <button class="botao-Customizado botao-Customizado-pesquisar" OnFiltrar="AtualizarLista">
-                    <ion-icon class="botao-Customizado-Icone" name="funnel-outline"></ion-icon>
+                <button class="botaoCustomizado botaoCustomizadoPesquisar" OnFiltrar="EventoCarregaLista">
+                    <ion-icon class="botaoCustomizadoIcone" name="funnel-outline"></ion-icon>
                     Filtrar
                 </button>
             </div>
@@ -44,28 +44,28 @@
         </div>
 
 
-        <GridBotoesComponente Inserir="BotaoInserir"
-                                        Excluir="BotaoExcluir"
+        <GridBotoesComponente Inserir="EventoBotaoInserir"
+                                        Excluir="EventoBotaoExcluir"
                                         BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
+        <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
             @if (projetos != null && projetos.Any())
             {
                 <table class="table">
                     <thead class="adicionarCorInterna">
                         <tr>
-                            <th class="col-1 estilo-Cabecalho-Colunas">
+                            <th class="col-1 estiloCabecalhoColunas">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="EventoSelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 estilo-Cabecalho-Colunas">Id</th>
-                            <th class="col-3 estilo-Cabecalho-Colunas">Nome</th>
-                            <th class="col-3 estilo-Cabecalho-Colunas">Descrição</th>
-                            <th class="col-2 estilo-Cabecalho-Colunas">Data de início</th>
-                            <th class="col-2 estilo-Cabecalho-Colunas">Data de final</th>
-                            <th class="col-1 estilo-Cabecalho-Colunas">Situação</th>
+                            <th class="col-1 estiloCabecalhoColunas">Id</th>
+                            <th class="col-3 estiloCabecalhoColunas">Nome</th>
+                            <th class="col-3 estiloCabecalhoColunas">Descrição</th>
+                            <th class="col-2 estiloCabecalhoColunas">Data de início</th>
+                            <th class="col-2 estiloCabecalhoColunas">Data de final</th>
+                            <th class="col-1 estiloCabecalhoColunas">Situação</th>
 
                         </tr>
                     </thead>
@@ -76,28 +76,28 @@
                                                                 p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
                         {
                             <tr>
-                                <td class="col-1 estilo-Campos-Colunas text-center">
+                                <td class="col-1 estiloCamposColunas text-center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => Selecionado(projeto)" />
+                                        <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => EventoSelecionado(projeto)" />
                                     </div>
                                 </td>
-                                <td class="col-1 estilo-Campos-Colunas">@projeto.Id</td>
-                                <td class="col-3 estilo-Campos-Colunas">@projeto.NomeProjeto</td>
-                                <td class="col-3 estilo-Campos-Colunas">@projeto.Descricao</td>
-                                <td class="col-2 estilo-Campos-Colunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                                <td class="col-2 estilo-Campos-Colunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                                <td class="col-1 estilo-Campos-Colunas">@projeto.SituacaoDescricao</td>
+                                <td class="col-1 estiloCamposColunas">@projeto.Id</td>
+                                <td class="col-3 estiloCamposColunas">@projeto.NomeProjeto</td>
+                                <td class="col-3 estiloCamposColunas">@projeto.Descricao</td>
+                                <td class="col-2 estiloCamposColunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="col-2 estiloCamposColunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                                <td class="col-1 estiloCamposColunas">@projeto.SituacaoDescricao</td>
                             </tr>
                             @if (projetoSelecionado == projeto)
                             {
                                 <tr>
                                     <td colspan="8">
                                         <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
-                                                                         OnAlterar="() => BotaoAlterar(projeto)"
+                                                                         OnAlterar="() => EventoBotaoAlterar(projeto)"
                                                                          HabilitaBotaoExcluir="true"
-                                                                         OnExcluir="BotaoExcluir"
+                                                                         OnExcluir="EventoBotaoExcluir"
                                                                          HabilitaBotaoFormulario="true"
-                                                                         OnSquad="() => ProjetoSquadCadastro(projeto)" />
+                                                                         OnSquad="() => EventoProjetoSquadCadastro(projeto)" />
                                     </td>
                                 </tr>
                             }
@@ -109,7 +109,7 @@
             else
             {
                
-                <GridCarregando LoadingMessage="Carregando dados, por favor aguarde..." />
+                <GridCarregando />
           
             }
         </div>
@@ -133,7 +133,7 @@
      
 
 
-    private async Task AtualizarLista(string novoFiltro)
+    private async Task EventoCarregaLista(string novoFiltro)
     {
         Console.WriteLine("Filtrar button clicked!");
         filtroGrid = novoFiltro;
@@ -186,7 +186,7 @@
     }
 
 
-    private async Task ProjetoSquadCadastro(ProjetoDto projetoDto)
+    private async Task EventoProjetoSquadCadastro(ProjetoDto projetoDto)
     {
         try
         {
@@ -203,7 +203,7 @@
     }
 
 
-    private async Task BotaoInserir()
+    private async Task EventoBotaoInserir()
     {
         try
         {
@@ -217,7 +217,7 @@
 
     }
 
-    private async Task BotaoAlterar(ProjetoDto projeto)
+    private async Task EventoBotaoAlterar(ProjetoDto projeto)
     {
         try
         {
@@ -234,7 +234,7 @@
         }
     }
 
-    private async Task BotaoExcluir()
+    private async Task EventoBotaoExcluir()
     {
         foreach (var projeto in projetosSelecionados)
         {
@@ -251,7 +251,7 @@
         await CarregaGrid();
     }
 
-    private void SelecionarTodos()
+    private void EventoSelecionarTodos()
     {
         idSelecionarTodos = !idSelecionarTodos;
         contadorSelecionados = 0;
@@ -286,7 +286,7 @@
     }
 
 
-    void Selecionado(ProjetoDto projeto)
+    void EventoSelecionado(ProjetoDto projeto)
     {
 
         if (!projeto.Selecionado)

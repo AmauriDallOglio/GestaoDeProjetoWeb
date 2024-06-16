@@ -21,8 +21,7 @@
 
 
     <div class=" align-items-center adicionaEspaco adicionarBorda adicionarCorInterna">
-        <EditForm Model="@projetoCadastro" OnValidSubmit="@CadastrarProjeto" 
-            class="row g-1 formulario-Input">
+        <EditForm Model="@projetoCadastro" OnValidSubmit="@EventoCadastrarProjeto" class="row g-1 formularioInput">
             <DataAnnotationsValidator />
 
             @if (!string.IsNullOrWhiteSpace(erro))
@@ -69,7 +68,7 @@
             </div>
 
 
-            <FormularioBotoesComponente OnCancel="Cancelar" OnSave="CadastrarProjeto" />
+            <FormularioBotoesComponente OnCancel="Cancelar" OnSave="EventoCadastrarProjeto" />
 
         </EditForm>
     </div>
@@ -118,7 +117,7 @@
         }
     }
 
-    private async Task CadastrarProjeto()
+    private async Task EventoCadastrarProjeto()
     {
         try
         {

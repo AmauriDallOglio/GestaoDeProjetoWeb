@@ -5,7 +5,7 @@ namespace GestaoDeProjetoWeb.Servico
     public interface IProjetoSquadServico
     {
         Task<HttpResponseMessage> InserirAsync(ProjetoSquadDto projetoSquadDto);
-
+        Task<HttpResponseMessage> AlterarAsync(ProjetoSquadDto projetoSquadDto);
         Task<List<ProjetoSquadDto>> ObterTodosAsync();
         Task<string> Excluir(int id);
     }

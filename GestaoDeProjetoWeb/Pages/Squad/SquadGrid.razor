@@ -25,7 +25,7 @@
                               OnFiltroChanged="AtualizarLista" /> *@
 
 
-        <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
+        <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
             <div class="form-floating col-6">
                 <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid" />
                 <label for="nomeProjeto">Nome ou descrição</label>
@@ -34,8 +34,8 @@
 
 
             <div class="col-md-auto adicionarAjusteBotaoFiltro">
-                <button class="botao-Customizado botao-Customizado-pesquisar" OnFiltrar="AtualizarLista">
-                    <ion-icon class="botao-Customizado-Icone" name="funnel-outline"></ion-icon>
+                <button class="botaoCustomizado botaoCustomizadoPesquisar" OnFiltrar="EventoAtualizarLista">
+                    <ion-icon class="botaoCustomizadoIcone" name="funnel-outline"></ion-icon>
                     Filtrar
                 </button>
             </div>
@@ -43,12 +43,12 @@
         </div>
 
 
-        <GridBotoesComponente Inserir="BotaoInserir"
-                              Excluir="BotaoExcluir"
+        <GridBotoesComponente Inserir="EventoBotaoInserir"
+                              Excluir="EventoBotaoExcluir"
                               BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
 
 
-    <div class="adicionaEspaco adicionarBorda tabela-Largura adicionarCorInterna">
+    <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
             @if (squad != null && squad.Any())
             {
 
@@ -58,11 +58,11 @@
                         <tr>
                             <th class="text-center">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="SelecionarTodos" />
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="EventoSelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 estilo-Cabecalho-Colunas">Id</th>
-                            <th class="col-11 estilo-Cabecalho-Colunas">Descrição</th>
+                            <th class="col-1 estiloCabecalhoColunas">Id</th>
+                            <th class="col-11 estiloCabecalhoColunas">Descrição</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,22 +73,22 @@
                             <tr>
                                 <td class="text-center">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => Selecionado(squad)" />
+                                        <input class="form-check-input" type="checkbox" @bind="squad.Selecionado" id="idSelecionado" @onclick="() => EventoSelecionado(squad)" />
                                     </div>
                                 </td>
-                                <td class="col-1 estilo-Campos-Colunas">@squad.Id</td>
-                                <td class="col-11 estilo-Campos-Colunas">@squad.Descricao</td>
+                                <td class="col-1 estiloCamposColunas">@squad.Id</td>
+                                <td class="col-11 estiloCamposColunas">@squad.Descricao</td>
                             </tr>
                             @if (squadelecionado == squad)
                             {
                                 <tr>
                                     <td colspan="8">
                                         <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
-                                                                         OnAlterar="() => BotaoAlterar(squad)"
+                                                                         OnAlterar="() => EventoBotaoAlterar(squad)"
                                                                          HabilitaBotaoExcluir="true"
-                                                                         OnExcluir="BotaoExcluir"
+                                                                         OnExcluir="EventoBotaoExcluir"
                                                                          HabilitaBotaoFormulario="false"
-                                                                         OnSquad="() => (null)" />
+                                                                         OnSquad="() => null" />
                                     </td>
                                 </tr>
                             }
@@ -100,7 +100,7 @@
             }
             else
             {
-                <p>Carregando...</p>
+                <GridCarregando />  
             }
         </div>
  
@@ -120,7 +120,7 @@
     private List<SquadDto> squad = new List<SquadDto>();
 
 
-    private async Task AtualizarLista(string novoFiltro)
+    private async Task EventoAtualizarLista(string novoFiltro)
     {
         filtroGrid = novoFiltro;
     }
@@ -153,7 +153,7 @@
     {
         Console.WriteLine("AtivarTemporizadorSucesso chamado.");
         await Task.Delay(2000); // Aguarda 2 segundos
-        sucesso = null;
+        sucesso = "";
         StateHasChanged();
     }
 
@@ -168,7 +168,7 @@
         Console.WriteLine("AtivarTemporizadorErro chamado.");
         erro = "squad com erro!";
         await Task.Delay(2000); // Aguarda 2 segundos
-        erro = null;
+        erro = "";
         StateHasChanged();
     }
 
@@ -191,7 +191,7 @@
     // }
 
 
-    private async Task BotaoInserir()
+    private async Task EventoBotaoInserir()
     {
         try
         {
@@ -206,7 +206,7 @@
 
     }
 
-    private async Task BotaoAlterar(SquadDto squad)
+    private async Task EventoBotaoAlterar(SquadDto squad)
     {
         try
         {
@@ -223,7 +223,7 @@
         }
     }
 
-    private async Task BotaoExcluir()
+    private async Task EventoBotaoExcluir()
     {
         foreach (var squad in squadSelecionados)
         {
@@ -241,7 +241,7 @@
         await CarregaGrid();
     }
 
-    private void SelecionarTodos()
+    private void EventoSelecionarTodos()
     {
         idSelecionarTodos = !idSelecionarTodos;
         contadorSelecionados = 0;
@@ -277,7 +277,7 @@
     }
 
 
-    void Selecionado(SquadDto squad)
+    void EventoSelecionado(SquadDto squad)
     {
 
         if (!squad.Selecionado)
@@ -292,41 +292,41 @@
             squadSelecionados.Remove(squad);
             contadorSelecionados--;
             squad.Selecionado = false;
-            squadelecionado = null;
+            squadelecionado = new SquadDto();
         }
     }
 
 
-    private List<SquadDto> squads = new List<SquadDto>();
+    // private List<SquadDto> squads = new List<SquadDto>();
 
-    private bool showModal = false;
-    private void CloseModal()
-    {
-        showModal = false;
-    }
+    // private bool showModal = false;
+    // private void CloseModal()
+    // {
+    //     showModal = false;
+    // }
 
-    private async Task OpenModal()
-    {
-        try
-        {
-            squads = await _iSquadServico.ObterTodasSquadAsync();
-            if (squads.Count <= 0)
-            {
-                SquadDto squadOff = new SquadDto
-                    {
-                        Id = 1,
-                        Descricao = "Exemplo OFF",
-                        Inativo = false
-                    };
-                squads.Add(squadOff);
-            }
+    // private async Task OpenModal()
+    // {
+    //     try
+    //     {
+    //         squads = await _iSquadServico.ObterTodasSquadAsync();
+    //         if (squads.Count <= 0)
+    //         {
+    //             SquadDto squadOff = new SquadDto
+    //                 {
+    //                     Id = 1,
+    //                     Descricao = "Exemplo OFF",
+    //                     Inativo = false
+    //                 };
+    //             squads.Add(squadOff);
+    //         }
 
-            showModal = true;
-        }
-        catch (Exception ex)
-        {
-            erro = "Erro ao carregar os squads: " + ex.Message;
-        }
-    }
+    //         showModal = true;
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         erro = "Erro ao carregar os squads: " + ex.Message;
+    //     }
+    // }
  
 }
