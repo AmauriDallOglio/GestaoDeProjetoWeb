@@ -55,17 +55,17 @@
                 <table class="table">
                     <thead class="adicionarCorInterna">
                         <tr>
-                            <th class="col-1 estiloCabecalhoColunas">
+                            <th class="col estiloCabecalhoGrid">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="EventoSelecionarTodos" />
                                 </div>
                             </th>
-                            <th class="col-1 estiloCabecalhoColunas">Id</th>
-                            <th class="col-3 estiloCabecalhoColunas">Nome</th>
-                            <th class="col-3 estiloCabecalhoColunas">Descrição</th>
-                            <th class="col-2 estiloCabecalhoColunas">Data de início</th>
-                            <th class="col-2 estiloCabecalhoColunas">Data de final</th>
-                            <th class="col-1 estiloCabecalhoColunas">Situação</th>
+                            <th class="col estiloCabecalhoGrid">Id</th>
+                            <th class="col estiloCabecalhoGrid">Nome</th>
+                            <th class="col estiloCabecalhoGrid">Descrição</th>
+                            <th class="col estiloCabecalhoGrid">Data de início</th>
+                            <th class="col estiloCabecalhoGrid">Data de final</th>
+                            <th class="col estiloCabecalhoGrid">Situação</th>
 
                         </tr>
                     </thead>
@@ -76,17 +76,17 @@
                                                                 p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
                         {
                             <tr>
-                                <td class="col-1 estiloCamposColunas text-center">
+                                <td class="col estiloCamposColunas text-center">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" @bind="projeto.Selecionado" id="idSelecionado" @onclick="() => EventoSelecionado(projeto)" />
                                     </div>
                                 </td>
-                                <td class="col-1 estiloCamposColunas">@projeto.Id</td>
-                                <td class="col-3 estiloCamposColunas">@projeto.NomeProjeto</td>
-                                <td class="col-3 estiloCamposColunas">@projeto.Descricao</td>
-                                <td class="col-2 estiloCamposColunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
-                                <td class="col-2 estiloCamposColunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
-                                <td class="col-1 estiloCamposColunas">@projeto.SituacaoDescricao</td>
+                                <td class="col estiloCamposColunas">@projeto.Id</td>
+                                <td class="col estiloCamposColunas">@projeto.NomeProjeto</td>
+                                <td class="col estiloCamposColunas">@projeto.Descricao</td>
+                                <td class="col estiloCamposColunas">@projeto.DataHoraInicio.ToString("dd/MM/yyyy")</td>
+                                <td class="col estiloCamposColunas">@projeto.DataHoraFim?.ToString("dd/MM/yyyy")</td>
+                                <td class="col estiloCamposColunas">@projeto.SituacaoDescricao</td>
                             </tr>
                             @if (projetoSelecionado == projeto)
                             {

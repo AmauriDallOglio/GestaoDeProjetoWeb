@@ -1,10 +1,10 @@
 ﻿
 :root {
-    --cor-padrao: #e0f2f1;
+    --azul-Menu: #04173d;
+    --cor-padrao: #e0f2f1; /* verde  --teal-100 */
     --bs-border-radius-lg: 0.5rem;
     /*--fonte-padrao: 'Comic Sans MS';*/
     --fonte-padrao: 'Roboto','Comic Sans MS';
-
     /* verde */
     --teal-100: #e0f2f1;
     --teal-200: #b2dfdb;
@@ -318,13 +318,14 @@ html, body {
 .iconePagina {
     height: 40px;
     width: 40px;
-    color: black;
+    color: var(--azul-Menu);
     padding: 0.0rem 0.0rem 0.3rem;
     vertical-align: middle; /* Alinha verticalmente o botão ao meio em relação ao seu contêiner */
 }
 
 .tamanhoFonteTitulo {
     font-size: 28px; /* Tamanho da fonte */
+    color: var(--azul-Menu);
 }
 .tamanhoFonteTituloCaminho {
     font-size: 20px; /* Tamanho da fonte */
@@ -348,11 +349,11 @@ html, body {
 
 
 /* Estilo para o cabeçalho das colunas */
-.estiloCabecalhoColunas {
+.estiloCabecalhoGrid {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
     /*font-weight: bold;*/ /* Negrito */
-    color: #000000; /* Cor do texto */
+    color: var(--azul-Menu); /* Cor do texto */
     text-transform: uppercase; /* Texto em maiúsculas */
 }
 
@@ -362,7 +363,7 @@ html, body {
 .estiloCamposColunas {
     font-family: var(--fonte-padrao);
     font-size: 16px; /* Tamanho da fonte */
-    color: #000000; /* Cor do texto */
+    color: var(--azul-Menu); /* Cor do texto */
     padding: 10px; /* Espaçamento interno */
 }
 
@@ -385,6 +386,29 @@ html, body {
     margin: 20px 0;
 }
 
+.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 0.20rem;
+    border: 0px solid #80cbc4; /* Cor da borda */
+    background-color: white; /* Cor de fundo quando marcado */
+    border-color: #009688; /* Cor da borda quando marcado */
+    box-shadow: 0 0 0 0.1rem #b2dfdb; /* Sombra quando em foco */
+}
+    .form-check-input:checked {
+        background-color: #009688; /* Cor de fundo quando marcado */
+        border-color: #009688; /* Cor da borda quando marcado */
+        box-shadow: 0 0 0 0.1rem #009688; /* Sombra quando em foco */
+    }
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem #009688;
+    }
+
+/* Aparência quando está desabilitado */
+.form-check-input:disabled {
+    background-color: #009688; /* Cor de fundo quando marcado */
+    border-color: #009688; /* Cor da borda quando marcado */
+}
 
 
 /*****************/
@@ -399,7 +423,6 @@ html, body {
     width: 100%; /* Largura do formulário */
     /*max-width: 600px;*/ /* Largura máxima do formulário */
 }
- 
 
 
 /*.form-label {
