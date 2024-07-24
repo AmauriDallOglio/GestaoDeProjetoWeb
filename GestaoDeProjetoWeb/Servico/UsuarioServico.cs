@@ -6,7 +6,6 @@ namespace GestaoDeProjetoWeb.Servico
 {
     public class UsuarioServico : IUsuarioServico
     {
-
         private readonly HttpClient _httpClient;
         string _url;
 
@@ -15,7 +14,6 @@ namespace GestaoDeProjetoWeb.Servico
             _httpClient = new HttpClient();
             _url = new Servidor().ServidorApi();
         }
-
 
         public async Task<List<UsuarioDto>> ObterTodasUsuariosAsync()
         {
@@ -46,13 +44,13 @@ namespace GestaoDeProjetoWeb.Servico
 
         }
 
-        public async Task<string> ExcluirAsync(int id)
-        {
-  
-            var retorno = ($"Erro ao excluir o Squad com Id: {id}");
-            
-            return retorno;
-        }
+        //public async Task<string> ExcluirAsync(int id)
+        //{
+
+        //    var retorno = ($"Erro ao excluir o Squad com Id: {id}");
+
+        //    return retorno;
+        //}
 
 
     }

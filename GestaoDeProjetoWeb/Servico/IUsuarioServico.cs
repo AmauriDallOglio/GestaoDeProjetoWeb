@@ -6,6 +6,6 @@ namespace GestaoDeProjetoWeb.Servico
     {
         Task<List<UsuarioDto>> ObterTodasUsuariosAsync();
 
-        Task<string> ExcluirAsync(int id);
+        //Task<string> ExcluirAsync(int id);
     }
 }
