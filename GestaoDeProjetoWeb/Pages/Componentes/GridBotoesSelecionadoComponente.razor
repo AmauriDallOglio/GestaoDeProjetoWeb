@@ -35,7 +35,7 @@
             Excluir
         </button>
 
-        <button class="botaoCustomizado botaoCustomizadoPagina @(!HabilitaBotaoFormulario ? "botaoEscondido" : "")" @onclick="OnSquad">
+        <button class="botaoCustomizado botaoCustomizadoPagina @(!HabilitaBotaoSquad ? "botaoEscondido" : "")" @onclick="OnSquad">
             <ion-icon class="botaoCustomizadoIcone" name="browsers-outline"></ion-icon>
             Squad
         </button>
@@ -48,6 +48,6 @@
     [Parameter] public EventCallback OnAlterar { get; set; }
     [Parameter] public bool HabilitaBotaoExcluir { get; set; }
     [Parameter] public EventCallback OnExcluir { get; set; }
-    [Parameter] public bool HabilitaBotaoFormulario { get; set; }
+    [Parameter] public bool HabilitaBotaoSquad { get; set; }
     [Parameter] public EventCallback OnSquad { get; set; }
 }

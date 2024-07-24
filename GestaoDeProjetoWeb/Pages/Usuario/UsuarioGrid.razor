@@ -1,0 +1,271 @@
+﻿@page "/Usuario/UsuarioGrid"
+@* @using GestaoDeProjetoWeb.Servico
+@using GestaoDeProjetoWeb.Pages.Componentes
+@using GestaoDeProjetoWeb.Data.DTOs
+@using System.Text.Json
+
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject IUsuarioServico _iusuarioServico
+ *@
+<body class="adicionarCorFundoPagina">
+ 
+    <h1> TEste </h1>
+
+      @*   <GridApresentacaoComponente PaginaAtual="usuario"
+                                InformacaoPagina="usuario/usuarioInfo"
+                                Titulo="Cadastro de usuarios" />
+
+
+        <GridMensagemResultadoComponente Sucesso=@sucesso
+                                         Erro=@erro />
+ 
+
+        <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
+            <div class="form-floating col-6">
+                <input type="text" class="form-control tamanho-fonte-input" id="novoFiltro" @bind="@filtroGrid" />
+                <label for="nomeProjeto">Nome ou descrição</label>
+            </div>
+
+
+
+            <div class="col-md-auto adicionarAjusteBotaoFiltro">
+                <button class="botaoCustomizado botaoCustomizadoPesquisar" OnFiltrar="EventoAtualizarLista">
+                    <ion-icon class="botaoCustomizadoIcone" name="funnel-outline"></ion-icon>
+                    Filtrar
+                </button>
+            </div>
+
+        </div>
+
+
+        <GridBotoesComponente Inserir="EventoBotaoInserir"
+                              Excluir="EventoBotaoExcluir"
+                              BotaoExcluirHabilitado="@botaoExcluirHabilitado" />
+
+
+    <div class="adicionaEspaco adicionarBorda tabelaLargura adicionarCorInterna">
+            @if (usuario != null && usuario.Any())
+            {
+
+
+                <table class="table">
+                    <thead class="adicionarCorInterna">
+                        <tr>
+                            <th class="text-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="idSelecionarTodos" @onclick="EventoSelecionarTodos" />
+                                </div>
+                            </th>
+                            <th class="col-1 estiloCabecalhoGrid">Id</th>
+                            <th class="col-11 estiloCabecalhoGrid">Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuario in usuario.Where(p => string.IsNullOrEmpty(filtroGrid) ||
+                       p.Nome.Contains(filtroGrid, StringComparison.OrdinalIgnoreCase) ||
+                       p.Situacao.ToString().Contains(filtroGrid, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" @bind="usuario.Selecionado" id="idSelecionado" @onclick="() => EventoSelecionado(usuario)" />
+                                    </div>
+                                </td>
+                                <td class="col-1 estiloCamposColunas">@usuario.Id</td>
+                                <td class="col-11 estiloCamposColunas">@usuario.Nome</td>
+                            </tr>
+                            @if (usuarioelecionado == usuario)
+                            {
+                                <tr>
+                                    <td colspan="8">
+                                        <GridBotoesSelecionadoComponente HabilitaBotaoAlterar="true"
+                                                                         OnAlterar="() => EventoBotaoAlterar(usuario)"
+                                                                         HabilitaBotaoExcluir="true"
+                                                                         OnExcluir="EventoBotaoExcluir"
+                                                                         HabilitaBotaousuario="false"
+                                                                         Onusuario="() => null" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <GridSelecionadosComponente Count="@contadorSelecionados" />
+            }
+            else
+            {
+                <GridCarregando />  
+            }
+        </div> *@
+ 
+</body>
+
+@code
+{
+    // private HttpClient httpClient = new HttpClient();
+    // private string filtroGrid = string.Empty;
+    // private string erro = string.Empty;
+    // private string sucesso = string.Empty;
+    // private int contadorSelecionados = 0;
+    // private bool botaoExcluirHabilitado => usuarioSelecionados.Count >= 2;
+    // bool idSelecionarTodos = false;
+    // private UsuarioDto usuarioelecionado = new UsuarioDto();
+    // private List<UsuarioDto> usuarioSelecionados = new List<UsuarioDto>();
+    // private List<UsuarioDto> usuario = new List<UsuarioDto>();
+
+
+    // private async Task EventoAtualizarLista(string novoFiltro)
+    // {
+    //     filtroGrid = novoFiltro;
+    // }
+
+
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     usuario = await CarregaGrid();
+    // }
+
+    // private async Task<List<UsuarioDto>> CarregaGrid()
+    // {
+    //     await AtivarTemporizadorSucesso();
+    //     usuarioSelecionados.Clear();
+    //     contadorSelecionados = 0;
+    //     erro = string.Empty;
+    //     sucesso = string.Empty;
+    //     List<UsuarioDto> usuario = await _iusuarioServico.ObterTodasUsuariosAsync();
+    //     return usuario;
+    // }
+ 
+
+    // private async Task AtivarTemporizadorSucesso()
+    // {
+    //     Console.WriteLine("AtivarTemporizadorSucesso chamado.");
+    //     await Task.Delay(2000); // Aguarda 2 segundos
+    //     sucesso = "";
+    //     StateHasChanged();
+    // }
+
+ 
+    // private async Task AtivarTemporizadorErro()
+    // {
+    //     Console.WriteLine("AtivarTemporizadorErro chamado.");
+    //     erro = "usuario com erro!";
+    //     await Task.Delay(2000); // Aguarda 2 segundos
+    //     erro = "";
+    //     StateHasChanged();
+    // }
+
+ 
+
+    // private async Task EventoBotaoInserir()
+    // {
+    //     try
+    //     {
+    //         NavigationManager.NavigateTo($"usuario/usuarioCadastro/{null}");
+    //         sucesso = "usuario cadastrado com sucesso!";
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         erro = "Ocorreu um erro inesperado: " + ex.Message;
+    //         await AtivarTemporizadorErro();
+    //     }
+
+    // }
+
+    // private async Task EventoBotaoAlterar(UsuarioDto usuario)
+    // {
+    //     try
+    //     {
+    //         var usuarioJson = JsonSerializer.Serialize(usuario);
+    //         var encodedusuarioJson = Uri.EscapeDataString(usuarioJson);
+    //         NavigationManager.NavigateTo($"/usuario/usuarioCadastro/{encodedusuarioJson}");
+    //         sucesso = "usuario cadastrado com sucesso!";
+    //         await AtivarTemporizadorSucesso();
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         erro = "Ocorreu um erro inesperado: " + ex.Message;
+    //         await AtivarTemporizadorErro();
+    //     }
+    // }
+
+    // private async Task EventoBotaoExcluir()
+    // {
+    //     foreach (var usuario in usuarioSelecionados)
+    //     {
+    //         try
+    //         {
+    //             await _iusuarioServico.ExcluirAsync(usuario.Id);
+    //             sucesso = "usuario excluido com sucesso!";
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             erro = "Ocorreu um erro inesperado: " + ex.Message;
+    //             await AtivarTemporizadorErro();
+    //         }
+    //     }
+    //     await CarregaGrid();
+    // }
+
+    // private void EventoSelecionarTodos()
+    // {
+    //     idSelecionarTodos = !idSelecionarTodos;
+    //     contadorSelecionados = 0;
+    //     usuarioSelecionados.Clear();
+
+    //     if (idSelecionarTodos)
+    //     {
+    //         foreach (var usuario in usuario)
+    //         {
+    //             usuario.Selecionado = true;
+    //             if (!usuarioSelecionados.Contains(usuario))
+    //             {
+    //                 usuarioSelecionados.Add(usuario);
+    //                 contadorSelecionados++;
+    //                 usuario.Selecionado = true;
+    //             }
+    //         }
+    //         Console.WriteLine("Checkbox selecionado");
+    //     }
+    //     else
+    //     {
+    //         foreach (var usuario in usuario)
+    //         {
+    //             usuario.Selecionado = true;
+    //             if (!usuarioSelecionados.Contains(usuario))
+    //             {
+    //                 usuario.Selecionado = false;
+    //             }
+    //         }
+    //         Console.WriteLine("Checkbox não selecionado");
+    //     }
+
+    // }
+
+
+    // void EventoSelecionado(UsuarioDto usuario)
+    // {
+
+    //     if (!usuario.Selecionado)
+    //     {
+    //         usuarioSelecionados.Add(usuario);
+    //         contadorSelecionados++;
+    //         usuario.Selecionado = true;
+    //         usuarioelecionado = usuario;
+    //     }
+    //     else
+    //     {
+    //         usuarioSelecionados.Remove(usuario);
+    //         contadorSelecionados--;
+    //         usuario.Selecionado = false;
+    //         usuarioelecionado = new UsuarioDto();
+    //     }
+    // }
+
+
+   
+}
